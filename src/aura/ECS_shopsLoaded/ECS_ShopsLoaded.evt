@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 19.12.2018.
+ -->
+
+<aura:event type="APPLICATION" description="ECS_ShopsLoaded">
+    <aura:attribute name="shops" type="Account[]" />
+</aura:event>

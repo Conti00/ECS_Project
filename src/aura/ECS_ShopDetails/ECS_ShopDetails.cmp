@@ -1,0 +1,45 @@
+<!--
+ - Created by BRITENET on 20.12.2018.
+ -->
+
+<aura:component description="ECS_ShopDetails" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global"
+                controller="ECS_ShopSearchController">
+
+    <aura:attribute type="Boolean" name="isRendered" default="false"/>
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="selectedShopId" type="String"/>
+    <aura:attribute type="Account" name="shop" default="{  'sobjectType': 'Account', 'Id': '', 'Name': '', 'Website': '', 'BillingCity': '', 'Phone': ''}"/>
+    <aura:handler event="c:ECS_SelectedShopOnList" action="{!c.showShopDetail}"/>
+    <lightning:navigation aura:id="navId"/>
+
+    <aura:if isTrue="{!v.isRendered}">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                    </div>
+                </header>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <lightning:recordViewForm recordId="{!v.shop.Id}" objectApiName="Account">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning:outputField fieldName="Name"/>
+                            <lightning:outputField fieldName="Website"/>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning:outputField fieldName="Phone"/>
+                            <lightning:outputField fieldName="BillingCity"/>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning:button tabindex="" label="View" title="View" onclick="{!c.navigationToViewRecord}" />
+                            <lightning:button label="Edit" title="Edit" onclick="{!c.navigationToEditRecord}"/>
+
+
+                        </div>
+                    </div>
+                </lightning:recordViewForm>
+            </div>
+        </article>
+    </aura:if>
+</aura:component>

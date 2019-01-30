@@ -1,0 +1,49 @@
+<!--
+ - Created by BRITENET on 19.12.2018.
+ -->
+
+
+<aura:component description="ECS_ShopSelectedList">
+
+    <aura:attribute name="selectedShops" type="Account[]"/>
+    <aura:attribute name="selectedRowIndex" type="Integer" />
+    <aura:registerEvent type="c:ECS_ShowShopLocalizationEvent" name="showShopLocalizationEvent" />
+    <aura:registerEvent type="c:ECS_SelectedShopOnList" name="selectedShopOnList"/>
+
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+        <tr class="slds-text-title_caps">
+            <th scope="col">
+                <div class="slds-truncate" title="Name">Name</div>
+            </th>
+            <th scope="col">
+                <div class="slds-truncate" title="BillingCity">City</div>
+            </th>
+            <th scope="col">
+                <div class="slds-truncate" title="Country">Country</div>
+            </th>
+            <th scope="col">
+                <div class="slds-truncate" title="Website">Website</div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <aura:iteration items="{!v.selectedShops}" var="shop" indexVar="index">
+            <tr aura:id="row" onclick="{!c.tableRowClicked}" data-id="{!shop.Id}" data-index="{!index}">
+                <td data-label="Name">
+                    <lightning:formattedText value="{!shop.Name}"/>
+                </td>
+                <td data-label="BillingCity">
+                    <lightning:formattedText value="{!shop.BillingCity}"/>
+                </td>
+                <td data-label="Website">
+                    <lightning:formattedText value="{!shop.BillingCountry}"/>
+                </td>
+                <td data-label="Country">
+                    <lightning:formattedText value="{!shop.Website}"/>
+                </td>
+            </tr>
+        </aura:iteration>
+        </tbody>
+    </table>
+</aura:component>

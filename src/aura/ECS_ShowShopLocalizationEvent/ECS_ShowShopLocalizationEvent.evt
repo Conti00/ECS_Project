@@ -1,0 +1,8 @@
+<!--
+ - Created by BRITENET on 19.12.2018.
+ -->
+
+
+<aura:event type="APPLICATION" description="ECS_ShowShopLocalizationEvent">
+    <aura:attribute name="shop" type="Account" />
+</aura:event>

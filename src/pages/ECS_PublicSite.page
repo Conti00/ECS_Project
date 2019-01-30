@@ -1,0 +1,235 @@
+<!--
+ - Created by BRITENET on 18.12.2018.
+ -->
+
+
+<apex:page id="ECS_PublicSite" standardController="Mechanic__c" extensions="ECS_PublicSiteController"
+           showHeader="false" sideBar="false" standardStylesheets="false" docType="html-5.0">
+
+
+
+    <style type='text/css'>
+	.embeddedServiceHelpButton .helpButton .uiButton {
+		background-color: #005290;
+		font-family: "Salesforce Sans", sans-serif;
+	}
+	.embeddedServiceHelpButton .helpButton .uiButton:focus {
+		outline: 1px solid #005290;
+	}
+	@font-face {
+		font-family: 'Salesforce Sans';
+		src: url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.woff') format('woff'),
+		url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.ttf') format('truetype');
+	}
+</style>
+
+
+
+    <HTML>
+    <HEAD>
+        <apex:includeScript value="{!URLFOR($Resource.jquery)}"/>
+        <apex:stylesheet
+                value="{!URLFOR($Resource.SLDSZIP, 'salesforce-lightning-design-system/assets/styles/salesforce-lightning-design-system-vf.min.css')}"/>
+        <META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8"/>
+    </HEAD>
+    <BODY onload="setPageState()">
+    <div class="slds-brand-band slds-brand-band_none slds-theme_shade slds-text-color_default">
+        <article style="margin-top: 20px; padding-bottom: 10px; width: 100%; margin: auto;"
+                 id="standardPage">
+            <div class="slds-tabs--default">
+
+                <div style="text-align:center;height:50%" id="headContainer">
+                <span class="slds-avatar slds-avatar--large">
+                <img src="{!$Resource.ECS_Logo}" alt="logo"/>
+
+                </span>
+                    <br/>
+                    <h1 style="font-size:20px;margin:auto;">{!$Label.Electric_Cars_Shop}</h1>
+                    <br/>
+                </div>
+
+                <div id="contact-tab"
+                     class="slds-tabs--default__content slds-theme_shade slds-theme--inverse slds-text-color_default"
+                     role="tabpanel"
+                     aria-labelledby="contact-tab__item">
+                    <form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
+                        <div class="slds-form slds-form_compound " style="margin:auto;width:30%">
+                            <fieldset class="slds-form-element ">
+                                <legend class="slds-form-element__label slds-text-title_caps">{!$Label.ContactUs}
+                                </legend>
+                                <div class="slds-form-element__group">
+                                    <div class="slds-form-element__row slds-box slds-theme_shade">
+                                        <div class="slds-form-element slds-x-small " style="margin:auto;">
+                                            <input type="hidden" name="oid" value="00D1t000000qgy7"/>
+                                            <input type="hidden" name="retURL"
+                                                   value="{!siteURL+'?merci'}"/>
+                                            <label class="slds-form-element__label"
+                                                   for="first_name">{!$Label.Mech_First_Name}</label>
+                                            <input class="slds-input" id="first_name" maxlength="40" name="first_name"
+                                                   size="20" type="text"/><br/>
+                                            <label class="slds-form-element__label"
+                                                   for="last_name">{!$Label.Mech_LastName}</label>
+                                            <input class="slds-input" id="last_name" maxlength="80" name="last_name"
+                                                   size="20" type="text"/><br/>
+                                            <label class="slds-form-element__label"
+                                                   for="email">{!$Label.Mech_Email}</label>
+                                            <input class="slds-input" id="email" maxlength="80" name="email" size="20"
+                                                   placeholder="example@mail.com"
+                                                   type="email" required="true"/><br/>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label"
+                                                       for="phone">{!$Label.Mech_Phone}</label>
+                                                <input class="slds-input" id="phone" maxlength="40" name="phone"
+                                                       pattern=".{0}|.{5,10}[0-9]" placeholder="1122333"
+                                                       size="20" type="tel"/><br/>
+                                            </div>
+
+                                            <label class="slds-form-element__label"
+                                                   for="company">{!$Label.Company}</label>
+                                            <input class="slds-input" id="company" maxlength="40" name="company"
+                                                   size="20" type="text"/><br/>
+                                            <label class="slds-form-element__label" for="lead_source"></label>
+                                            <input type="hidden" name="lead_source" value="Web to Lead"/>
+                                            <div class="slds-button-group slds-align_absolute-center" role="group">
+                                                <input type="submit" name="submit" value="{!$Label.Send}"
+                                                       class="slds-button slds-button_neutral"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+                <apex:slds/>
+            </div>
+        </article>
+        <div style="display:none;text-align:center;height:100%" id="merciContainer">
+
+            <div style="text-align:center;height:50%" id="headContainer">
+                <span class="slds-avatar slds-avatar--large">
+                <img src="{!$Resource.ECS_Logo}" alt="logo"/>
+
+                </span>
+                <br/>
+                <h1 style="font-size:20px;margin:auto;">Electric Cars Shop</h1>
+                <br/>
+            </div>
+            <div class="slds-theme--inverse slds-text-color_default">
+                <br/>
+                <h1 style="font-size:20px;  color:white;">Thanks We will contact You shortly.</h1>
+                <br/>
+                <a href="{!siteURL}">
+                    <button class="slds-button slds-button_neutral"
+                            style="margin-bottom:2%;">{!$Label.Mech_Close}</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+            var j$ = jQuery.noConflict();
+
+            /*SLDS Tabs JS*/
+            j$('.slds-tabs--default__link,.slds-tabs--scoped__link').click(function(){
+              j$(this).parent().parent().find('.slds-tabs--default__link,.slds-tabs--scoped__link').attr('aria-selected','false');
+              j$(this).attr('aria-selected','true');
+              j$(this).parent().parent().find('.slds-tabs--default__link,.slds-tabs--scoped__link').attr('tabindex','-1');
+              j$(this).attr('tabindex','0');
+              j$(this).parent().addClass('slds-active').siblings().removeClass('slds-active');
+              j$(this).parent().parent().parent().find('.'+j$(this).parent().parent().parent().find('.slds-tabs--default__content,.slds-tabs--scoped__content')[0].classList[0]).removeClass('slds-show').addClass('slds-hide');
+              j$(this).parent().parent().parent().find('#'+j$(this).attr('aria-controls')).removeClass('slds-hide').addClass('slds-show');
+            });
+
+            /*SLDS Tabs JS*/
+
+            function setPageState() {
+                var url = window.location.href;
+                var x = document.getElementById("standardPage");
+                var y = document.getElementById("merciContainer");
+                var bool = url.indexOf("?merci") !== -1;
+                if (url.indexOf("?merci") !== -1) {
+                    x.style.display = "none";
+                    y.style.display = "block";
+                } else {
+                    x.style.display = "block";
+                    y.style.display = "none";
+                }
+        }
+
+
+    </script>
+
+    <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+    <script type='text/javascript'>
+	var initESW = function(gslbBaseURL) {
+		embedded_svc.settings.displayHelpButton = true; //Or false
+		embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+		//embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+		//embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+
+		//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+		//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+		// Settings for Live Agent
+		//embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+			// Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+			// Returns a valid button ID.
+		//};
+		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+		//embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+
+		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+		embedded_svc.settings.entryFeature = 'LiveAgent';
+
+		embedded_svc.init(
+			'https://electriccarshop-dev-ed.my.salesforce.com',
+			'https://mechanicscompany-developer-edition.eu16.force.com/',
+			gslbBaseURL,
+			'00D1t000000qgy7',
+			'Live_Agents',
+			{
+				baseLiveAgentContentURL: 'https://c.la1-c1-fra.salesforceliveagent.com/content',
+				deploymentId: '5721t000000CysU',
+				buttonId: '5731t000000D03l',
+				baseLiveAgentURL: 'https://d.la1-c1-fra.salesforceliveagent.com/chat',
+				eswLiveAgentDevName: 'Live_Agents',
+				isOfflineSupportEnabled: true
+			}
+		);
+	};
+
+	if (!window.embedded_svc) {
+		var s = document.createElement('script');
+		s.setAttribute('src', 'https://electriccarshop-dev-ed.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+		s.onload = function() {
+			initESW(null);
+		};
+		document.body.appendChild(s);
+	} else {
+		initESW('https://service.force.com');
+	}
+</script>
+
+
+
+
+
+
+    </BODY>
+    </HTML>
+</apex:page>
+
+
+
+
+
+
+
+
+
+
