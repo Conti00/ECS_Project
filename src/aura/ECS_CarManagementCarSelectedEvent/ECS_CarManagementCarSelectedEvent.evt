@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 01.02.2019.
+ -->
+
+<aura:event type="COMPONENT" description="ECS_CarManagementCarSelectedEvent">
+    <aura:attribute name="carId" type="String" />
+</aura:event>

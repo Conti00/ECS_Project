@@ -1,0 +1,71 @@
+<!--
+ - Created by BRITENET on 01.02.2019.
+ -->
+
+<aura:component description="ECS_CarManagementSearchForm" controller="ECS_CarsManagerController">
+
+    <aura:attribute name="cars" type="Product2[]"/>
+    <aura:attribute name="selectedYear" type="String"/>
+    <aura:attribute name="yearOptions" type="String[]"/>
+    <aura:attribute name="searchedCar" type="Product2" default="{ 'sobjectType': 'Product2',
+                                                                  'Name': 'BMW',
+                                                                  'ECS_VinNumber__c': '',
+                                                                  'ECS_ProductionYear__c': '',
+                                                                  'ECS_Model__c': ''}"/>
+
+    <aura:registerEvent name="oncarsrecived" type="c:ECS_OnCarsRecieved"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.cars}" action="{!c.onCarsChange}" />
+
+
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+                    <h2>
+                        <span class="slds-text-heading_small">SEARCH FOR CARS</span>
+                    </h2>
+                </div>
+            </header>
+        </div>
+    <br/>
+        <div class="slds-card__body slds-card__body_inner" >
+            <fieldset class="slds-form--compound">
+                <div class="slds-form-element__group">
+                    <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-size--1-of-3">
+                            <lightning:input label="Brand" aura:id="searchCarForm" name="carBrand"
+                                             value="{!v.searchedCar.Name}"/>
+                        </div>
+                        <div class="slds-form-element slds-size--1-of-3">
+                            <lightning:input label="Model" aura:id="searchCarForm" name="carModel"
+                                             value="{!v.searchedCar.ECS_Model__c}"/>
+                        </div>
+
+                        <div class="slds-form-element slds-size--1-of-3">
+                            <lightning:select label="Year" aura:id="searchCarForm" value="{!v.searchedCar.ECS_ProductionYear__c}">
+                                <option value="">All years</option>
+                                <aura:iteration var="year" items="{!v.yearOptions}">
+                                    <option value="{!year}" text="{!year}"/>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <footer class="slds-card__footer " style="text-align:center; ">
+
+                <lightning:buttonGroup >
+                    <lightning:button label="Search" class="slds-m-top--medium" variant="neutral"
+                                      onclick="{!c.searchCars}"/>
+                    <lightning:button label="Clear" class="slds-m-top--medium" variant="neutral"
+                                      onclick="{!c.clearForm}"/>
+                    <!--<lightning:button label="Create" class="slds-m-top&#45;&#45;medium" variant="neutral"-->
+                    <!--onclick="{!c.openCreateCarModal}"/>-->
+                </lightning:buttonGroup>
+            <!--</div>-->
+        </footer>
+
+
+</aura:component>

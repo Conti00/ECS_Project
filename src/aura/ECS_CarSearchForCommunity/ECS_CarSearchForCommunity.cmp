@@ -1,0 +1,27 @@
+<!--
+ - Created by BRITENET on 01.02.2019.
+ -->
+
+<aura:component description="ECS_CarSearchForCommunity" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+
+    <aura:attribute name="selectedCarId" type="String"/>
+    <aura:attribute name="componentType" type="String" default="Community"/>
+    <aura:handler name="oncarsrecived" event="c:ECS_OnCarsRecieved" action="{!c.onSearchedCarsRecived}"/>
+    <aura:handler name="carSelectedEvent" event="c:ECS_CarManagementCarSelectedEvent" action="{!c.onCarSelected}"/>
+
+    <lightning:layout horizontalAlign="center" verticalAlign="start" multipleRows="true">
+        <lightning:layoutItem size="12" padding="around-small" flexibility="grow">
+            <lightning:card title=" ">
+                <c:ECS_CarManagementSearchForm aura:id="carSearchForm"/>
+            </lightning:card>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+    <lightning:layout  horizontalAlign="center" verticalAlign="start" multipleRows="true">
+        <lightning:layoutItem size="12" padding="around-small" flexibility="grow" >
+            <lightning:card title=" ">
+            <c:ECS_CarManagementCarsList aura:id="carList"/>
+                </lightning:card>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

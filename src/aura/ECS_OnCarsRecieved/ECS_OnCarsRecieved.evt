@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 01.02.2019.
+ -->
+
+<aura:event type="COMPONENT" description="ECS_OnCarsRecieved">
+    <aura:attribute name="carsToDisplay" type="Product2[]"/>
+</aura:event>

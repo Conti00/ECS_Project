@@ -1,0 +1,27 @@
+<!--
+ - Created by BRITENET on 01.02.2019.
+ -->
+
+<aura:component description="ECS_Banner"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <ltng:require
+            styles="{!join(',', $Resource.TMDB_Slick + '/TMDB_Slick/slick.css', $Resource.TMDB_Slick + '/TMDB_Slick/slick-theme.css', $Resource.loader +'loader.css', $Resource.card +'card.css')}"
+            scripts="{!join(',', $Resource.TMDB_Slick + '/TMDB_Slick/jquery-3.3.1.js', $Resource.TMDB_Slick + '/TMDB_Slick/slick.js') }"
+            afterScriptsLoaded="{!c.doInit}"/>
+
+
+
+    <div class="carousel" style="text-align:center;">
+        <div style=" text-align:center;"><img style="display:inline-block; width:100%; height:400px "
+                                              src="{!$Resource.ECS_Banner1}"/></div>
+        <div style=" text-align:center;"><img style="display:inline-block; width:100%; height:400px "
+                                              src="{!$Resource.ECS_Banner1}"/></div>
+        <div style=" text-align:center;"><img style="display:inline-block; width:100%; height:400px "
+                                              src="{!$Resource.ECS_Banner1}"/></div>
+    </div>
+
+
+</aura:component>

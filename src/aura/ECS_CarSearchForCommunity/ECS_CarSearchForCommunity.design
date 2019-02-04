@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 01.02.2019.
+ -->
+
+<design:component>
+    <design:attribute name="componentType" dataSource="Standard,Community"/>
+</design:component>

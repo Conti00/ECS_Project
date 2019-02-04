@@ -1,0 +1,21 @@
+/**
+ * Created by BRITENET on 01.02.2019.
+ */
+.THIS {
+    font-size:20px;
+}
+
+.THIS.backgroundInverse {
+    position: relative;
+    background-color: black;
+    height: 80px;
+}
+
+.THIS .slds-card{
+    border:none;
+}
+
+.THIS .slds-button-group{
+    font-size:25px;
+}
+
