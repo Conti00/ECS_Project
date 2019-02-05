@@ -1,0 +1,61 @@
+<!--
+ - Created by BRITENET on 04.02.2019.
+ -->
+
+<aura:component description="ECS_CarManagementGallery"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                controller="ECS_CarsManagerController">
+
+    <aura:attribute name="carId" type="String"/>
+    <aura:attribute name="carImages" type="String[]"/>
+    <aura:attribute name="carTargetFields" type="Product2"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:handler name="change" value="{!v.carId}" action="{!c.onCarIdChange}"/>
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+
+    <force:recordData aura:id="carImages"
+                      recordId="{!v.carId}"
+                      mode="EDIT"
+                      fields="Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c, ECS_ImageID__c"
+                      targetFields="{!v.carTargetFields}"/>
+
+
+    <aura:if isTrue="{!v.isAdmin}">
+        <lightning:card title="Add new Images">
+            <div class="slds-form-element__row slds-grid_align-center">
+                <lightning:fileUpload label="Add images"
+                                      multiple="true"
+                                      accept=".jpg, .png"
+                                      recordId="{!v.carId}"
+                                      onuploadfinished="{!c.handleUploadFinished}"/>
+            </div>
+        </lightning:card>
+    </aura:if>
+
+
+    <aura:if isTrue="{!v.carImages.length != 0 }">
+        <lightning:card title="Car Images:">
+            <aura:if isTrue="{!v.carImages.length >= 2}">
+                <lightning:button label="Show all pictures" onclick="{! c.openAllFiles }"/>
+            </aura:if>
+            <aura:iteration items="{!v.carImages}" var="imageId">
+                <lightning:layoutItem flexibility="grow" class="slds-m-around_large slds-align-middle">
+                    <lightning:fileCard fileId="{!imageId}"/>
+                    <aura:if isTrue="{!imageId != v.carTargetFields.ECS_ImageID__c}">
+                        <aura:if isTrue="{!v.isAdmin}">
+                            <lightning:buttonGroup class="slds-grid_align-center">
+                                <lightning:button variant="neutral" onclick="{!c.setAsMainPicture}" value="{!imageId}" label="Set as main"/>
+                                <lightning:button variant="neutral" onclick="{!c.deleteImage}" value="{!imageId}">Delete
+                                </lightning:button>
+                            </lightning:buttonGroup>
+                        </aura:if>
+                    </aura:if>
+                </lightning:layoutItem>
+            </aura:iteration>
+        </lightning:card>
+        <aura:set attribute="else">
+            <lightning:formattedText value="No images found"/>
+        </aura:set>
+    </aura:if>
+
+</aura:component>

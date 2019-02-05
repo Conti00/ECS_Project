@@ -4,4 +4,6 @@
 
 <aura:event type="COMPONENT" description="ECS_CarManagementCarSelectedEvent">
     <aura:attribute name="carId" type="String" />
+    <aura:attribute name="car" type="Product2"/>
+    <aura:attribute name="carSelected" type="Boolean"/>
 </aura:event>

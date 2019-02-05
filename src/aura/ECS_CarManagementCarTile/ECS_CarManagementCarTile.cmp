@@ -2,12 +2,19 @@
  - Created by BRITENET on 01.02.2019.
  -->
 
-<aura:component description="ECS_CarManagementCarTile">
+<aura:component description="ECS_CarManagementCarTile" controller="ECS_CarsManagerController">
     <aura:attribute name="car" type="Product2"/>
-    <aura:attribute name="selected" type="Boolean" default="false"/>
+    <aura:attribute name="carId" type="String"/>
+    <aura:attribute name="carTargetFields" type="Product2"/>
+    <aura:attribute name="carSelected" type="Boolean" default="false"/>
+    <aura:attribute name="orgUrl" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:registerEvent name="carSelectedEvent" type="c:ECS_CarManagementCarSelectedEvent"/>
 
-    <lightning:button name="{!v.cars.Name }" onclick="{!c.onCarClicked}" class="{! v.selected == true ? 'tile selected' : 'tile'}">
-        <div style="{!'background-image:url(\'https://i2-prod.mirror.co.uk/incoming/article11213804.ece/ALTERNATES/s615/SWNS_JODIE_KIDD_03.jpg\')'}" class="innertile">
+    <lightning:button name="{!v.car.Name }" onclick="{!c.onCarClicked}"
+                      class="{! v.selected == true ? 'tile selected' : 'tile'}">
+        <div style="{!v.car.ECS_ImageID__c != null ?  'background-image:url(\''+v.orgUrl+'/sfc/servlet.shepherd/document/download/'+v.car.ECS_ImageID__c+'\')' : 'background-image:url(\'https://i2-prod.mirror.co.uk/incoming/article11213804.ece/ALTERNATES/s615/SWNS_JODIE_KIDD_03.jpg\')'}"
+             class="innertile">
             <div class="lower-third">
                 <h1 class="slds-truncate">{!v.car.Name}</h1>
             </div>

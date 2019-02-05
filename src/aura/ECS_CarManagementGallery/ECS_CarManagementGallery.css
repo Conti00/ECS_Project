@@ -1,0 +1,13 @@
+/**
+ * Created by BRITENET on 04.02.2019.
+ */
+.THIS {
+}
+
+.THIS .slds-file__title_card{
+    display:none;
+}
+
+.THIS .forceContentFileCard .slds-truncate{
+    display:none;
+}

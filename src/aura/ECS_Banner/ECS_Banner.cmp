@@ -12,8 +12,6 @@
             scripts="{!join(',', $Resource.TMDB_Slick + '/TMDB_Slick/jquery-3.3.1.js', $Resource.TMDB_Slick + '/TMDB_Slick/slick.js') }"
             afterScriptsLoaded="{!c.doInit}"/>
 
-
-
     <div class="carousel" style="text-align:center;">
         <div style=" text-align:center;"><img style="display:inline-block; width:100%; height:400px "
                                               src="{!$Resource.ECS_Banner1}"/></div>
@@ -22,6 +20,5 @@
         <div style=" text-align:center;"><img style="display:inline-block; width:100%; height:400px "
                                               src="{!$Resource.ECS_Banner1}"/></div>
     </div>
-
 
 </aura:component>

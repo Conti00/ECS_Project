@@ -27,7 +27,9 @@ public with sharing class ECS_CarsManagerController {
     private static String generateQueryStringForSearchedCars(Product2 searchedCar) {
         String queryString;
         String conditionsSection = '';
-        queryString = 'SELECT Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c FROM Product2 ';
+        queryString = 'SELECT Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c, ECS_ImageID__c, ' +
+                'ECS_EngineSize__c, ECS_FuelType__c, ECS_BodyStyle__c, ECS_Transmission__c, Description, ' +
+                'ECS_BatteryCapacity__c' + ' FROM Product2 ';
         queryString += (String.isBlank(searchedCar.Name) &&
                 String.isBlank(searchedCar.ECS_VinNumber__c) &&
                 searchedCar.ECS_ProductionYear__c == null &&
@@ -45,5 +47,53 @@ public with sharing class ECS_CarsManagerController {
         queryString += conditionsSection == null ? '' : conditionsSection;
         system.debug('query string: ' + queryString);
         return queryString;
+    }
+
+    @AuraEnabled
+    public static List<String> getImages(String carId) {
+        List<ContentDocumentLink> linksList = [SELECT contentDocumentId FROM ContentDocumentLink WHERE linkedEntityId = :carId];
+        List<String> documentsIds = new List<String>();
+        for (ContentDocumentLink contentLink : linksList) {
+            documentsIds.add(contentLink.contentDocumentId);
+        }
+        return documentsIds;
+    }
+
+    @AuraEnabled
+    public static String setCarMainPictureId(String carId, String pictureId) {
+        Product2 car = [SELECT id,name, ECS_ImageID__c FROM Product2 WHERE id = :carId];
+        car.ECS_ImageID__c = pictureId;
+        try {
+            update car;
+            return 'SUCCESS';
+        } catch (DmlException e) {
+            system.debug('error');
+            return 'ERROR';
+        }
+    }
+    @AuraEnabled
+    public static String removeCarImage(String imageId) {
+        system.debug('on removeCar Apex: picid to delete: ' + imageId);
+        ContentDocument picture = [SELECT id FROM ContentDocument WHERE id = :imageId];
+        try {
+            delete picture;
+            system.debug('on delete!!');
+            return 'SUCCESS';
+        } catch (DmlException e) {
+            return 'ERROR';
+        }
+    }
+
+    @AuraEnabled
+    public static String getBaseUrlString() {
+//        return URL.getSalesforceBaseUrl().toExternalForm();
+//        return URL.getSalesforceBaseUrl().getHost();
+        return ECS_Setting__c.getInstance('ECS_InstanceUrl').ECS_InstanceUrl__c;
+    }
+
+    @AuraEnabled
+    public static Boolean hasCurrentUserAdminProfile() {
+        Profile profile = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
+        return UserInfo.getProfileId() == profile.Id ? true : false;
     }
 }

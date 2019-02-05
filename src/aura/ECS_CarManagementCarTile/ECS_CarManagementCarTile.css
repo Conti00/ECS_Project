@@ -54,3 +54,7 @@
 .THIS.tile.selected {
     border:13px solid rgb(0, 112, 210);
 }
+
+.THIS .slds-text-heading_small {
+    font-size: 2rem;
+}
