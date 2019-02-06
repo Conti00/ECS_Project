@@ -27,7 +27,7 @@ public with sharing class ECS_CarsManagerController {
     private static String generateQueryStringForSearchedCars(Product2 searchedCar) {
         String queryString;
         String conditionsSection = '';
-        queryString = 'SELECT Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c, ECS_ImageID__c, ' +
+        queryString = 'SELECT Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Brand__c, ECS_Model__c, ECS_ImageID__c, ' +
                 'ECS_EngineSize__c, ECS_FuelType__c, ECS_BodyStyle__c, ECS_Transmission__c, Description, ' +
                 'ECS_BatteryCapacity__c' + ' FROM Product2 ';
         queryString += (String.isBlank(searchedCar.Name) &&
@@ -95,5 +95,194 @@ public with sharing class ECS_CarsManagerController {
     public static Boolean hasCurrentUserAdminProfile() {
         Profile profile = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
         return UserInfo.getProfileId() == profile.Id ? true : false;
+    }
+
+    @AuraEnabled
+    public static String addCarToUserCart(Product2 car) {
+        system.debug('apex recived carId: ' + car);
+        List<ECS_Wrappers.ECS_CartItem> cartItems;
+        String currentLowestCarPrice = getCarCurrentLowestPrice(car.Id);
+
+        if (Cache.Session.contains('local.Cart.cartItems')) {
+            cartItems = (List<ECS_Wrappers.ECS_CartItem>) Cache.Session.get('local.Cart.cartItems');
+            if (cartItems != null) {
+                for (Integer ii = 0; ii < cartItems.size(); ii++) {
+                    if (cartItems[ii].car.Id == car.Id) {
+                        throw new AuraHandledException('Item already in cart');
+                    }
+                }
+            }
+        } else {
+            cartItems = new List<ECS_Wrappers.ECS_CartItem>();
+        }
+        cartItems.add(new ECS_Wrappers.ECS_CartItem(car, null, currentLowestCarPrice));
+        Cache.Session.put('local.Cart.cartItems', cartItems);
+        System.debug('cartItems: '+cartItems);
+        System.debug('Session Cache: '+Cache.Session.get('local.Cart.cartItems'));
+        return 'Success';
+    }
+
+    @AuraEnabled
+    public static List<ECS_Wrappers.ECS_CartItem> getCustomerCartItems() {
+        List<ECS_Wrappers.ECS_CartItem> cartItems;
+
+        if (Cache.Session.contains('local.Cart.cartItems')) {
+            cartItems = (List<ECS_Wrappers.ECS_CartItem>) Cache.Session.get('local.Cart.cartItems');
+        } else {
+            cartItems = new List<ECS_Wrappers.ECS_CartItem>();
+        }
+        system.debug(cartItems);
+        return cartItems;
+    }
+
+    @AuraEnabled
+    public static String deleteCustomerCartItem(List<String> listOfIds) {
+        system.debug('given IDS: ' + listOfIds);
+        List<ECS_Wrappers.ECS_CartItem> cartItems;
+
+        if (Cache.Session.contains('local.Cart.cartItems')) {
+            cartItems = (List<ECS_Wrappers.ECS_CartItem>) Cache.Session.get('local.Cart.cartItems');
+        } else {
+            cartItems = new List<ECS_Wrappers.ECS_CartItem>();
+        }
+        system.debug(cartItems);
+        if (cartItems != null) {
+            for (Integer ii = 0; ii < cartItems.size(); ii++) {
+//            for (ECS_Wrappers.ECS_CartItem cartItem : cartItems) {
+                for (String carId : listOfIds) {
+                    if (cartItems[ii].car.Id == carId) {
+                        system.debug('size: ' + cartItems.size());
+                        cartItems.remove(ii);
+                    }
+                }
+
+            }
+
+//            }
+        }
+        system.debug(cartItems);
+
+        Cache.Session.put('local.Cart.cartItems', cartItems);
+        return String.valueOf(cartItems.size());
+    }
+
+    @AuraEnabled
+    public static String getCarStandardPrice(String carId) {
+        String standardPriceBookId = [SELECT id, Name FROM Pricebook2 WHERE Name = 'Standard Price Book'][0].Id;
+        List<PricebookEntry> carStandardPrices = [
+                SELECT Id,UnitPrice
+                FROM PricebookEntry
+                WHERE Product2Id = :carId AND Pricebook2Id = :standardPriceBookId
+        ];
+        return String.valueOf(carStandardPrices[0].UnitPrice);
+    }
+
+    @AuraEnabled
+    public static List<ECS_Wrappers.ECS_CartItem> getCarsWithStandardPrice(List<String> carIds) {
+        List<Product2> cars = [
+                SELECT Id,Name,ECS_Model__c,ECS_ProductionYear__c,ECS_VinNumber__c,ECS_ImageID__c
+                FROM Product2
+                WHERE Id IN :carIds
+        ];
+        List<ECS_Wrappers.ECS_CartItem> carItems = new List<ECS_Wrappers.ECS_CartItem>();
+        for (Product2 car : cars) {
+            String carStandardPrice = getCarStandardPrice(car.Id);
+            carItems.add(new ECS_Wrappers.ECS_CartItem(car, carStandardPrice));
+        }
+        return carItems;
+    }
+
+    @AuraEnabled
+    public static String getCarStandardPriceBookEntryId(String carId) {
+        String standardPriceBookId = [SELECT id, Name FROM Pricebook2 WHERE Name = 'Standard Price Book'][0].Id;
+        List<PricebookEntry> carStandardPrices = [SELECT Id,UnitPrice FROM PricebookEntry WHERE Product2Id = :carId AND Pricebook2Id = :standardPriceBookId];
+        system.debug('selected prices: ' + carStandardPrices);
+        return String.valueOf(carStandardPrices[0].Id);
+    }
+
+    @AuraEnabled
+    public static String[] getCarLowestAndStandardPrice(String carId) {
+
+        AggregateResult minAndMaxPriceResult = [
+                SELECT MIN(UnitPrice)MinPrice, MAX(UnitPrice)MaxPrice
+                FROM PricebookEntry
+                WHERE Product2Id = :carId
+                AND Pricebook2.ECS_currentlyActive__c = true
+                AND Pricebook2.isActive = true
+        ];
+        List<String> minAndMaxPrice = new List<String>();
+        minAndMaxPrice.add(String.valueOf(minAndMaxPriceResult.get('MinPrice')));
+        minAndMaxPrice.add(String.valueOf(minAndMaxPriceResult.get('MaxPrice')));
+        return minAndMaxPrice;
+    }
+
+    @AuraEnabled
+    public static String getCarCurrentLowestPrice(String carId) {
+
+        AggregateResult minPriceResult = [
+                SELECT MIN(UnitPrice)MinPrice
+                FROM PricebookEntry
+                WHERE Product2Id = :carId
+                AND Pricebook2.ECS_currentlyActive__c = true
+                AND Pricebook2.isActive = true
+        ];
+
+        String minPrice = String.valueOf(minPriceResult.get('MinPrice'));
+//        minPrice.add(String.valueOf(minAndMaxPriceResult.get('MinPrice')));
+        return minPrice;
+    }
+
+    @AuraEnabled
+    public static void setNewCarStandardPrice(String carId, Integer carPrice) {
+        PricebookEntry listPrice = new PricebookEntry();
+        listPrice.Pricebook2Id = getStandardPricebookId();
+        listPrice.Product2Id = carId;
+        listPrice.UnitPrice = carPrice;
+        listPrice.IsActive = true;
+
+        try {
+            insert listPrice;
+        } catch (DmlException e) {
+            throw new AuraHandledException('Error creating PriceEntry');
+        }
+
+    }
+
+    @AuraEnabled
+    public static void setSingleCarDiscount(String carId, Integer discountedPrice, String startDate, String endDate, String discountName) {
+        system.debug('given params: ' + carId + ' ' + discountedPrice + ' ' + startDate + ' ' + endDate);
+        if (discountName == null || discountName.length() == 0) {
+            discountName = 'Discount: ' + String.valueOf(startDate) + ' - ' + String.valueOf(endDate);
+        }
+        Pricebook2 discountPricebook = new Pricebook2();
+        discountPricebook.IsActive = true;
+        discountPricebook.Name = discountName;
+        discountPricebook.ECS_BeginDate__c = Date.valueOf(startDate);
+        discountPricebook.ECS_EndDate__c = Date.valueOf(endDate);
+        system.debug(discountPricebook);
+
+        try {
+            insert discountPricebook;
+        } catch (DmlException e) {
+            throw new AuraHandledException('Error creating discount Pricebook');
+        }
+
+        PricebookEntry carDiscountedPricebookEntry = new PricebookEntry();
+        carDiscountedPricebookEntry.Pricebook2Id = discountPricebook.Id;
+        carDiscountedPricebookEntry.Product2Id = carId;
+        carDiscountedPricebookEntry.UnitPrice = Integer.valueOf(discountedPrice);
+        carDiscountedPricebookEntry.IsActive = true;
+        system.debug(carDiscountedPricebookEntry);
+
+        try {
+            insert carDiscountedPricebookEntry;
+        } catch (DmlException e) {
+            throw new AuraHandledException('Error creating PriceEntry');
+        }
+    }
+
+    private static String getStandardPricebookId() {
+
+        return [SELECT id, Name FROM Pricebook2 WHERE Name = 'Standard Price Book'][0].Id;
     }
 }

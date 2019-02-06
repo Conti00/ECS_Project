@@ -20,5 +20,19 @@
                     $A.enqueueAction(orgBaseUrl);
                 },
 
+    onCarAddedToCart: function(component, event, helper){
+            var carObj = component.get("v.car");
+            console.log("car obj: "+JSON.stringify(carObj));
+            helper.addCarToCart(component,carObj);
+        },
+
+        redirectToCart: function(component, event, helper){
+                let urlEvent = $A.get("e.force:navigateToURL");
+                   urlEvent.setParams({
+                     "url": "/cart"
+                   });
+                   urlEvent.fire();
+            },
+
 
 })

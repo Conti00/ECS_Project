@@ -4,6 +4,8 @@
 ({
     doInit: function(component, event, helper){
             helper.getYearOptions(component);
+             helper.getCars(component, component.get("v.searchedCar"));
+
 
     },
 

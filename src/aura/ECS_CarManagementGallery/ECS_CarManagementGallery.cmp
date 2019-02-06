@@ -30,7 +30,7 @@
                                       onuploadfinished="{!c.handleUploadFinished}"/>
             </div>
         </lightning:card>
-    </aura:if>
+
 
 
     <aura:if isTrue="{!v.carImages.length != 0 }">
@@ -57,5 +57,5 @@
             <lightning:formattedText value="No images found"/>
         </aura:set>
     </aura:if>
-
+    </aura:if>
 </aura:component>

@@ -8,7 +8,7 @@
     <aura:attribute name="selectedYear" type="String"/>
     <aura:attribute name="yearOptions" type="String[]"/>
     <aura:attribute name="searchedCar" type="Product2" default="{ 'sobjectType': 'Product2',
-                                                                  'Name': 'BMW',
+                                                                  'Name': '',
                                                                   'ECS_VinNumber__c': '',
                                                                   'ECS_ProductionYear__c': '',
                                                                   'ECS_Model__c': ''}"/>
@@ -56,14 +56,24 @@
         </div>
         <footer class="slds-card__footer " style="text-align:center; ">
 
-                <lightning:buttonGroup >
-                    <lightning:button label="Search" class="slds-m-top--medium" variant="neutral"
-                                      onclick="{!c.searchCars}"/>
-                    <lightning:button label="Clear" class="slds-m-top--medium" variant="neutral"
-                                      onclick="{!c.clearForm}"/>
+            <lightning:button name="Search" onclick="{!c.searchCars}" class="slds-m-top--medium" variant="neutral">
+                <lightning:icon iconName="action:view_relationship" size="medium"/>
+                Search
+            </lightning:button>
+            <lightning:button name="Clear" onclick="{!c.clearForm}" class="slds-m-top--medium" variant="neutral">
+                <lightning:icon iconName="action:remove_relationship" size="medium"/>
+                Clear
+            </lightning:button>
+
+                <!--<lightning:buttonGroup >-->
+                    <!--<lightning:button label="Search" class="slds-m-top&#45;&#45;medium" variant="neutral"-->
+                                      <!--onclick="{!c.searchCars}">-->
+                    <!--</lightning:button>-->
+                    <!--<lightning:button label="Clear" class="slds-m-top&#45;&#45;medium" variant="neutral"-->
+                                      <!--onclick="{!c.clearForm}"/>-->
                     <!--<lightning:button label="Create" class="slds-m-top&#45;&#45;medium" variant="neutral"-->
                     <!--onclick="{!c.openCreateCarModal}"/>-->
-                </lightning:buttonGroup>
+                <!--</lightning:buttonGroup>-->
             <!--</div>-->
         </footer>
 

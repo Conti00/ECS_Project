@@ -19,3 +19,11 @@
 .THIS .slds-text-heading_small{
     font-size: 2rem;
 }
+
+.THIS .slds-button_neutral {
+    border:none;
+}
+
+.THIS .slds-form--compound .slds-form-element__row .slds-form-element{
+    text-align:justify;
+}

@@ -13,7 +13,8 @@
 
     <lightning:button name="{!v.car.Name }" onclick="{!c.onCarClicked}"
                       class="{! v.selected == true ? 'tile selected' : 'tile'}">
-        <div style="{!v.car.ECS_ImageID__c != null ?  'background-image:url(\''+v.orgUrl+'/sfc/servlet.shepherd/document/download/'+v.car.ECS_ImageID__c+'\')' : 'background-image:url(\'https://i2-prod.mirror.co.uk/incoming/article11213804.ece/ALTERNATES/s615/SWNS_JODIE_KIDD_03.jpg\')'}"
+        <div style="{!v.car.ECS_ImageID__c != null ?  'background-image:url(\''+v.orgUrl+'/sfc/servlet.shepherd/document/download/'+v.car.ECS_ImageID__c+'\')'
+                : 'background-image:url(\'https://i2-prod.mirror.co.uk/incoming/article11213804.ece/ALTERNATES/s615/SWNS_JODIE_KIDD_03.jpg\')'}"
              class="innertile">
             <div class="lower-third">
                 <h1 class="slds-truncate">{!v.car.Name}</h1>

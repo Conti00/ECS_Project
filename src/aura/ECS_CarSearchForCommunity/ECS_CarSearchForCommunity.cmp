@@ -35,9 +35,15 @@
             <lightning:card title="">
                 <c:ECS_ProductCard car="{!v.selectedCar}"/>
             </lightning:card>
-            <lightning:button name="BackToSearch" variant="neutral" onclick="{!c.backToSearch}" class="slds-float_right">
+            <lightning:button name="Back to Search" onclick="{!c.backToSearch}" class="slds-float_right">
+                <lightning:icon iconName="action:back" size="medium"/>
                 Back To Search
             </lightning:button>
+
+            <!---->
+            <!--<lightning:button name="BackToSearch" variant="neutral" onclick="{!c.backToSearch}" class="slds-float_right">-->
+                <!--Back To Search-->
+            <!--</lightning:button>-->
         </lightning:layoutItem>
     </lightning:layout>
         <c:ECS_CarManagementGallery carId="{!v.selectedCar.Id}"/>

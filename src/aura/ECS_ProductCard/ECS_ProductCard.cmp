@@ -15,10 +15,35 @@
                 <div class="slds-p-horizontal--small">
                     <fieldset class="slds-form--compound">
                         <div class="slds-form-element__group">
-                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                            <div class="slds-form-element__row slds-grid_vertical-align-start">
                                 <div class="slds-form-element slds-size--1-of-2">
+                                    <aura:if isTrue="{!v.car.ECS_ImageID__c}">
                                     <img src="{!v.orgUrl+'/sfc/servlet.shepherd/document/download/'+v.car.ECS_ImageID__c}"/>
+                                        <aura:set attribute="else">
+                                            <img src="https://i2-prod.mirror.co.uk/incoming/article11213804.ece/ALTERNATES/s615/SWNS_JODIE_KIDD_03.jpg"/>
+
+                                            <!--\'https://i2-prod.mirror.co.uk/incoming/article11213804.ece/ALTERNATES/s615/SWNS_JODIE_KIDD_03.jpg\')'-->
+
+                                        </aura:set>
+                                    </aura:if>
                                 </div>
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <!--<lightning:buttonIcon iconName="new" variant="border-filled"-->
+                                                          <!--alternativeText="Add to cart" iconClass="" size="large" title="Add to Cart" name="Add to Cart"-->
+                                                          <!--onclick="{!c.onCarAddedToCart}">-->
+                                    <!--</lightning:buttonIcon>-->
+
+                                    <lightning:button name="Add to Cart" onclick="{!c.onCarAddedToCart}">
+                                        <lightning:icon iconName="action:new" size="medium"/>
+                                        Add To Cart
+                                    </lightning:button>
+                                    <lightning:button name="Show Cart" onclick="{!c.redirectToCart}">
+                                        <lightning:icon iconName="action:view_relationship" size="medium"/>
+                                        Go To Cart
+                                    </lightning:button>
+
+                                </div>
+
                             </div>
                             <div class="slds-form-element__row slds-grid_vertical-align-end">
                                 <div class="slds-form-element slds-size--1-of-3">
@@ -67,10 +92,21 @@
                                     <ui:outputText value="{!v.car.ECS_Transmission__c}" title="Transmission"
                                                    class="slds-text-heading_medium"/>
                                 </div>
-
-
-
+                                <div class="slds-form-element slds-size--1-of-3">
+                                    <p class="slds-text-body_small slds-text-color_weak">Battery Capacity: </p>
+                                    <ui:outputText value="{!v.car.ECS_BatteryCapacity__c+' kWh'}" title="Battery Capacity"
+                                                   class="slds-text-heading_medium"/>
+                                </div>
                             </div>
+
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-1">
+                                    <p class="slds-text-body_small slds-text-color_weak">Description: </p>
+                                    <ui:outputText value="{!v.car.Description}" title="Description"
+                                                   class="slds-text-heading_medium"/>
+                                </div>
+                            </div>
+
 
 
                         </div>
