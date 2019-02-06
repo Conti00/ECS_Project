@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 06.02.2019.
+ -->
+
+<aura:event type="COMPONENT" description="CD_SelectedTableRowEvent">
+    <aura:attribute name="transferredObject" type="Object"/>
+</aura:event>

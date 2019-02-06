@@ -281,8 +281,105 @@ public with sharing class ECS_CarsManagerController {
         }
     }
 
-    private static String getStandardPricebookId() {
+    public static String getStandardPricebookId() {
 
         return [SELECT id, Name FROM Pricebook2 WHERE Name = 'Standard Price Book'][0].Id;
     }
+
+    @AuraEnabled
+    public static String proceedToCheckout() {
+
+        List<ECS_Wrappers.ECS_CartItem> cartItems;
+
+        System.debug(Cache.Session.get('local.Cart.cartItems'));
+
+        if (Cache.Session.contains('local.Cart.cartItems')) {
+            System.debug('test');
+            cartItems = (List<ECS_Wrappers.ECS_CartItem>) Cache.Session.get('local.Cart.cartItems');
+        }
+
+        System.debug('Cart: '+cartItems);
+
+        String currentUserEmail = UserInfo.getUserEmail();
+        Contact currentUserContact = [SELECT id FROM Contact WHERE Email = :currentUserEmail][0];
+        Pricebook2 standardPriceBook = [SELECT Id FROM Pricebook2 WHERE IsStandard = true];
+        List<OrderItem> orderItems = new List<OrderItem>();
+        Order order = new Order();
+
+        order.AccountId = getCommunityCustomerAccountIdByEmail();
+        order.Name =  'car(s) Order';
+        order.EndDate = Date.today().addDays(30);
+        order.Status = 'Draft';
+        order.Pricebook2Id = standardPriceBook.Id;
+        order.EffectiveDate = Date.today();
+
+        try {
+            insert order;
+            system.debug('created: ' + order);
+        } catch (System.DmlException e) {
+            for (Integer i = 0; i < e.getNumDml(); i++) {
+                System.debug(e.getDmlMessage(i));
+            }
+            throw new AuraHandledException('Error creating order');
+        }
+
+        if (cartItems != null) {
+            for (Integer ii = 0; ii < cartItems.size(); ii++) {
+
+                OrderItem ordLineItem = new OrderItem();
+                ordLineItem.Product2Id = cartItems[ii].car.Id;
+                ordLineItem.OrderId = order.Id;
+                ordLineItem.Quantity = 1;
+                ordLineItem.UnitPrice = Integer.valueOf(getCarCurrentLowestPrice(cartItems[ii].car.Id));
+                ordLineItem.PricebookEntryId = getCarStandardPriceBookEntryId(cartItems[ii].car.Id);
+//                ordLineItem.ECS_StartingPrice__c = Integer.valueOf(getCarStandardPrice(cartItems[ii].car.Id));
+                OrderItems.add(ordLineItem);
+
+            }
+        } else {
+            throw new AuraHandledException('cart is empty');
+        }
+        try {
+            deleteAllCustomerCartItems();
+            insert orderItems;
+            system.debug('created: ' + orderItems);
+        } catch (DmlException e) {
+            throw new AuraHandledException('Error creating meetings');
+        }
+
+        return 'Success';
+
+
+    }
+
+    public static String getCommunityCustomerAccountIdByEmail() {
+        String currentUserEmail = UserInfo.getUserEmail();
+        if (currentUserEmail != null) {
+            List<Contact> contacts = [SELECT AccountId FROM Contact WHERE Email = :currentUserEmail];
+            return contacts[0].AccountId;
+        } else {
+            return 'Error';
+        }
+
+    }
+
+    private static void deleteAllCustomerCartItems() {
+        if (Cache.Session.contains('local.Cart.cartItems')) {
+            Cache.Session.remove('local.Cart.cartItems');
+        }
+    }
+
+    @AuraEnabled
+    public static List<Order> getCustomerOrdersItems() {
+        User currentUser = ECS_Utils.getCurrentUser();
+        List<Order> orders = [
+                SELECT Id, CreatedDate, OrderNumber, TotalAmount, (SELECT Id, UnitPrice, PricebookEntry.Product2.Name, PricebookEntry.Product2.ECS_Model__c, PricebookEntry.Product2.ECS_ProductionYear__c, PricebookEntry.Product2.ECS_VinNumber__c, PricebookEntry.Product2.ECS_ImageID__c FROM OrderItems)
+                FROM Order
+                WHERE
+                OwnerId =: currentUser.Id
+
+        ];
+        return orders;
+    }
+    
 }

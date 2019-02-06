@@ -16,9 +16,9 @@
                 component.set("v.customerCartItems", customerCartItems);
 
                 for(let ii=0; ii < customerCartItems.length; ii++){
-                    if(customerCartItems[ii].hasOwnProperty('meetingDate')){
+//                    if(customerCartItems[ii].hasOwnProperty('meetingDate')){
                         counter++;
-                    }
+//                    }
                     if(counter == customerCartItems.length){
                         component.set("v.isCheckoutEnabled", true);
                     }
