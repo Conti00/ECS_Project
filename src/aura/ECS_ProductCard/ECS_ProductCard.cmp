@@ -20,9 +20,9 @@
                                     <aura:if isTrue="{!v.car.ECS_ImageID__c}">
                                     <img src="{!v.orgUrl+'/sfc/servlet.shepherd/document/download/'+v.car.ECS_ImageID__c}"/>
                                         <aura:set attribute="else">
-                                            <img src="https://i2-prod.mirror.co.uk/incoming/article11213804.ece/ALTERNATES/s615/SWNS_JODIE_KIDD_03.jpg"/>
+                                            <img src="{!v.orgUrl+'/sfc/servlet.shepherd/document/download/0691t000000KgkFAAS'}"/>
 
-                                            <!--\'https://i2-prod.mirror.co.uk/incoming/article11213804.ece/ALTERNATES/s615/SWNS_JODIE_KIDD_03.jpg\')'-->
+
 
                                         </aura:set>
                                     </aura:if>

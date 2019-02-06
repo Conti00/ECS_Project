@@ -4,6 +4,5 @@
 ({
 
      onInit: function(component){
-console.log('helper init');
      },
 })

@@ -20,7 +20,7 @@
                     <thead>
                     <tr class="slds-text-title_caps">
                         <th scope="col">
-                            <div class="slds-truncate" title="Select">Select</div>
+                            <div class="slds-truncate" title="NO.">NO.</div>
                         </th>
                         <th scope="col">
                             <div class="slds-truncate" title="Car Brand">Brand</div>
@@ -44,10 +44,9 @@
                     </thead>
                     <tbody>
                     <aura:iteration items="{!v.customerCartItems}" var="customerCartItem" indexVar="index">
-                        <tr>
+                        <tr aura:id="tableRow" data-index="{!index}" >
                             <td data-label="Name">
-                                <lightning:input type="checkbox-button" label="Input One" name="input1"
-                                                 onchange="{!c.onCartItemSelect}" value="{!customerCartItem.car.Id}"/>
+                                <lightning:formattedNumber value="{!index + 1}"/>
                             </td>
                             <td data-label="Name">
                                 <lightning:formattedText value="{!customerCartItem.car.ECS_Brand__c}"/>
@@ -66,16 +65,16 @@
                             </td>
                             <td data-label="Actions">
 
-                                <!--<lightning:button name="Remove From Cart" onclick="{!c.deleteCartItem}" value="{!customerCartItem.car.Id}">-->
-                                    <!--<lightning:icon iconName="action:remove" size="small"/>-->
-                                    <!--Remove From Cart-->
-                                <!--</lightning:button>-->
+                                <lightning:button name="Remove" onclick="{!c.deleteCartItem}" value="{!customerCartItem.car.Id}">
+                                    <lightning:icon iconName="action:delete" size="small"/>
 
-                                <lightning:buttonMenu iconName="action:more" alternativeText="Settings">
-                                    <lightning:menuItem label="Go To Search" onactive="{!c.redirectToSearch}"/>
-                                    <lightning:menuItem label="Remove From Cart" onactive="{!c.deleteCartItem}"
-                                                        value="{!customerCartItem.car.Id}"/>
-                                </lightning:buttonMenu>
+                                </lightning:button>
+
+                                <!--<lightning:buttonMenu iconName="action:more" alternativeText="Settings">-->
+                                    <!--<lightning:menuItem label="Go To Search" onactive="{!c.redirectToSearch}"/>-->
+                                    <!--<lightning:menuItem label="Remove From Cart" onactive="{!c.deleteCartItem}"-->
+                                                        <!--value="{!customerCartItem.car.Id}"/>-->
+                                <!--</lightning:buttonMenu>-->
                             </td>
                         </tr>
                     </aura:iteration>
@@ -89,6 +88,11 @@
                                       disabled="{!!v.isCheckoutEnabled}">
                         <lightning:icon iconName="action:update" size="medium"/>
                         Checkout
+                    </lightning:button>
+
+                    <lightning:button name="Back to Search" onclick="{!c.redirectToSearch}" class="slds-float_right">
+                        <lightning:icon iconName="action:back" size="medium"/>
+                        Back To Search
                     </lightning:button>
                 </lightning:layoutItem>
             </lightning:layout>
@@ -108,8 +112,11 @@
                                 <lightning:icon iconName="action:change_record_type" size="medium"/>
                                 Buy Something!
                             </lightning:button>
+                            <lightning:button name="Go To Your Orders" onclick="{!c.redirectToOrders}" class="slds-float_right">
+                                <lightning:icon iconName="action:new_task" size="medium"/>
+                                Go To Your Orders
+                            </lightning:button>
                         </lightning:layoutItem>
-
                     </div>
 
 

@@ -45,6 +45,13 @@
     padding-top:3.5rem;
 }
 
+.THIS .slds-table_fixed-layout tbody{
+    font-size:15px;
+}
+
+.THIS .slds-text-heading--small{
+    font-size:20px;
+}
 
 
 

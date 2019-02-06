@@ -62,6 +62,14 @@
                urlEvent.fire();
         },
 
+                redirectToOrders: function(component, event, helper){
+                    let urlEvent = $A.get("e.force:navigateToURL");
+                       urlEvent.setParams({
+                         "url": "/orders"
+                       });
+                       urlEvent.fire();
+                },
+
     sendCarItemsToCheckout: function(component, event, helper){
         console.log('items: '+JSON.stringify(component.get("v.customerCartItems")));
         console.log(JSON.stringify(component.get("v.selectedCarsIds")));
@@ -84,8 +92,5 @@
         component.set("v.selectedCarsIds",listOfSelectedIds);
         console.log("selectedCarsIds       "+JSON.stringify(component.get("v.selectedCarsIds")));
     },
-
-
-
 
 })
