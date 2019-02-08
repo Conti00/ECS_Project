@@ -16,7 +16,6 @@
         <aura:handler name="orderItemSelected" event="c:ECS_SelectedTableRowEvent" action="{!c.handleOrderItemSelected}"/>
         <aura:handler name="change" value="{!v.selectedOrderId}" action="{!c.handleSelectedOrderIdChange}"/>
 
-
                 <lightning:layout horizontalAlign="spread" verticalAlign="start" multipleRows="true">
                     <lightning:layoutItem size="{! v.selectedOrderId == null ? 7 : 7}" padding="around-small"
                                           flexibility="grow">
@@ -28,20 +27,16 @@
                                 <c:DynamicTable
                                         Title="Order products"
                                         SObjectName="OrderItem"
-                                        FieldNames="['Product2.ECS_Brand__c', 'Product2.ECS_Model__c', 'Product2.ECS_ProductionYear__c', 'UnitPrice']"
+                                        FieldNames="['Product2.ECS_Brand__c', 'Product2.ECS_Model__c', 'Product2.ECS_ProductionYear__c', 'UnitPrice',]"
                                         FieldLabels="['Product2.ECS_Brand__c:Brand', 'Product2.ECS_Model__c:Model', 'Product2.ECS_ProductionYear__c:Year', 'UnitPrice: Price']"
                                         MatchCriteria="{#'OrderId = \'' + v.selectedOrderId + '\''}"
                                         ReferenceFields=""
                                         SortByField="Quantity"
                                         SortOrder="DESC"/>
+
                             </aura:if>
                         </lightning:layoutItem>
                     </aura:if>
                 </lightning:layout>
-
-
-
-
-
 
     </aura:component>

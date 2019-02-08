@@ -7,74 +7,67 @@
                 controller="ECS_CarsManagerController">
     <aura:attribute name="customerCartItems" type="Object[]"/>
     <aura:attribute name="isCheckoutEnabled" type="Boolean" default="false"/>
-    <aura:attribute name="meetingDate" type="Date"/>
-    <aura:attribute name="meetingDatePickerVisible" type="Boolean" default="false"/>
-    <aura:attribute name="carIdToSetMeetingDate" type="String[]"/>
     <aura:attribute name="selectedCarsIds" type="String[]"/>
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
 
-    <lightning:card title="Cart" class="slds-tabs_card">
+    <lightning:card title="{!$Label.c.ECS_Cart}" class="slds-tabs_card">
         <aura:if isTrue="{!v.customerCartItems.length>0}">
             <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
                 <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                     <thead>
                     <tr class="slds-text-title_caps">
                         <th scope="col">
-                            <div class="slds-truncate" title="NO.">NO.</div>
+                            <div class="slds-truncate" title="NO.">{!$Label.c.ECS_NO}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Car Brand">Brand</div>
+                            <div class="slds-truncate" title="Car Brand">{!$Label.c.ECS_Brand}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Car Model">Model</div>
+                            <div class="slds-truncate" title="Car Model">{!$Label.c.ECS_Model}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Model Year">Year</div>
+                            <div class="slds-truncate" title="Model Year">{!$Label.c.ECS_Year}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="VIN">VIN</div>
+                            <div class="slds-truncate" title="VIN">{!$Label.c.ECS_VIN}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Price">Price</div>
+                            <div class="slds-truncate" title="Price">{!$Label.c.ECS_Price}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Actions">Actions</div>
+                            <div class="slds-truncate" title="Actions">{!$Label.c.ECS_Actions}</div>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
                     <aura:iteration items="{!v.customerCartItems}" var="customerCartItem" indexVar="index">
-                        <tr aura:id="tableRow" data-index="{!index}" >
-                            <td data-label="Name">
+                        <tr aura:id="tableRow" data-index="{!index}">
+                            <td data-label="{!$Label.c.ECS_NO}">
                                 <lightning:formattedNumber value="{!index + 1}"/>
                             </td>
-                            <td data-label="Name">
+                            <td data-label="{!$Label.c.ECS_Brand}">
                                 <lightning:formattedText value="{!customerCartItem.car.ECS_Brand__c}"/>
                             </td>
-                            <td data-label="Model">
+                            <td data-label="{!$Label.c.ECS_Model}">
                                 <lightning:formattedText value="{!customerCartItem.car.ECS_Model__c}"/>
                             </td>
-                            <td data-label="Year">
+                            <td data-label="{!$Label.c.ECS_Year}">
                                 <lightning:formattedText value="{!customerCartItem.car.ECS_ProductionYear__c}"/>
                             </td>
-                            <td data-label="VIN">
+                            <td data-label="{!$Label.c.ECS_VIN}">
                                 <lightning:formattedText value="{!customerCartItem.car.ECS_VinNumber__c}"/>
                             </td>
-                            <td data-label="Price">
+                            <td data-label="{!$Label.c.ECS_Price}">
                                 <lightning:formattedText value="{!customerCartItem.carPrice}"/>
                             </td>
-                            <td data-label="Actions">
+                            <td data-label="{!$Label.c.ECS_Actions}">
 
-                                <lightning:button name="Remove" onclick="{!c.deleteCartItem}" value="{!customerCartItem.car.Id}">
+                                <lightning:button name="{!$Label.c.ECS_Remove}" onclick="{!c.deleteCartItem}"
+                                                  value="{!customerCartItem.car.Id}">
                                     <lightning:icon iconName="action:delete" size="small"/>
 
                                 </lightning:button>
 
-                                <!--<lightning:buttonMenu iconName="action:more" alternativeText="Settings">-->
-                                    <!--<lightning:menuItem label="Go To Search" onactive="{!c.redirectToSearch}"/>-->
-                                    <!--<lightning:menuItem label="Remove From Cart" onactive="{!c.deleteCartItem}"-->
-                                                        <!--value="{!customerCartItem.car.Id}"/>-->
-                                <!--</lightning:buttonMenu>-->
                             </td>
                         </tr>
                     </aura:iteration>
@@ -87,12 +80,12 @@
                     <lightning:button name="Checkout" onclick="{!c.sendCarItemsToCheckout}"
                                       disabled="{!!v.isCheckoutEnabled}">
                         <lightning:icon iconName="action:update" size="medium"/>
-                        Checkout
+                            {!$Label.c.ECS_Checkout}
                     </lightning:button>
 
                     <lightning:button name="Back to Search" onclick="{!c.redirectToSearch}" class="slds-float_right">
                         <lightning:icon iconName="action:back" size="medium"/>
-                        Back To Search
+                            {!$Label.c.ECS_Back_To_Search}
                     </lightning:button>
                 </lightning:layoutItem>
             </lightning:layout>
@@ -101,25 +94,22 @@
                 <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
                     <h1></h1><br/>
                     <span></span>
-
                     <div class="slds-form-element__row slds-grid_vertical-align-end">
-
-                        <div class="slds-text-align_center">Cart is empty.</div>
-                        <div class="slds-text-align_center">Looks like you have no items in your shopping cart.
+                        <div class="slds-text-align_center">{!$Label.c.ECS_Cart_Is_Empty}</div>
+                        <div class="slds-text-align_center">{!$Label.c.ECS_No_Items_In_Cart}
                         </div>
                         <lightning:layoutItem padding="around-large" class="slds-text-align_center">
-                            <lightning:button name="Go To Search" onclick="{!c.redirectToSearch}">
+                            <lightning:button name="{!$Label.c.ECS_Go_To_Search}" onclick="{!c.redirectToSearch}">
                                 <lightning:icon iconName="action:change_record_type" size="medium"/>
-                                Buy Something!
+                                    {!$Label.c.ECS_Buy_Something}
                             </lightning:button>
-                            <lightning:button name="Go To Your Orders" onclick="{!c.redirectToOrders}" class="slds-float_right">
+                            <lightning:button name="{!$Label.c.ECS_Go_To_Your_Order}" onclick="{!c.redirectToOrders}"
+                                              class="slds-float_right">
                                 <lightning:icon iconName="action:new_task" size="medium"/>
-                                Go To Your Orders
+                                    {!$Label.c.ECS_Go_To_Your_Order}
                             </lightning:button>
                         </lightning:layoutItem>
                     </div>
-
-
                 </lightning:layout>
             </aura:set>
         </aura:if>

@@ -16,15 +16,12 @@
                 component.set("v.customerCartItems", customerCartItems);
 
                 for(let ii=0; ii < customerCartItems.length; ii++){
-//                    if(customerCartItems[ii].hasOwnProperty('meetingDate')){
                         counter++;
-//                    }
                     if(counter == customerCartItems.length){
                         component.set("v.isCheckoutEnabled", true);
                     }
                 }
-                console.log('after load: '+JSON.stringify(component.get("v.selectedCarsIds")));
-                console.log('cart items: '+JSON.stringify(component.get("v.customerCartItems")));
+
             }else{
                 let resultsToast = $A.get("e.force:showToast");
                 if ($A.util.isUndefined(resultsToast)){
@@ -85,50 +82,6 @@
             }
         });
         $A.enqueueAction(action);
-    },
-
-    setMeetingDate: function (component, listOfIds, meetingDate) {
-        let action = component.get('c.setCartItemMeetingDate');
-
-        action.setParams({
-            "listOfCarsIds": listOfIds,
-            "meetingDate": meetingDate
-        });
-
-        action.setCallback(this, function(response){
-            let state = response.getState();
-            if (state === "SUCCESS")
-            {
-                this.loadCustomerCartItems(component);
-                component.set("v.meetingDate", null);
-//                component.set("v.selectedCarsIds", []);
-                let resultsToast = $A.get("e.force:showToast");
-                if ($A.util.isUndefined(resultsToast)){
-                    alert('Item meeting date was set');
-                }else{
-                    resultsToast.setParams({
-                        "type": "success",
-                        "title": "Success",
-                        "message": "Item meeting date was set"
-                    });
-                    resultsToast.fire();
-                }
-            }else{
-                let resultsToast = $A.get("e.force:showToast");
-                if ($A.util.isUndefined(resultsToast)){
-                    alert('Error when setting meeting date');
-                }else{
-                    resultsToast.setParams({
-                        "type": "error",
-                        "title": "Error",
-                        "message": "Error when setting meeting date"
-                    });
-                    resultsToast.fire();
-                }
-            }
-        });
-        $A.enqueueAction(action);
-        component.find("meetingDatePicker").hide();
     },
 
     proceedCheckout: function(component){

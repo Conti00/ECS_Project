@@ -1,0 +1,67 @@
+<!--
+ - Created by BRITENET on 08.02.2019.
+ -->
+
+<aura:component description="ECS_AddCarCase" 
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,
+                force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global"
+                controller="ECS_Utils">
+
+    <aura:attribute name="carId" type="String"/>
+    <aura:attribute name="newCase" type="Case"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="user" type="User"/>
+    <aura:registerEvent name="CaseAdded" type="c:ECS_CaseAdded"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <force:recordData aura:id="service"
+                      fields="Id, Name, Status, ECS_Car__c, Origin, Subject, Description"
+                      targetFields="{!v.newCase}"
+                      targetError="{!v.recordError}"
+                      recordUpdated="{!c.onRecordUpdated}"
+    />
+
+    <lightning:layout multipleRows="true">
+    {!v.user}
+            <fieldset class="slds-form--compound">
+                <div class="slds-form-element__group">
+                    <div class="slds-form-element__row slds-grid_vertical-align-end">
+                        <div class="slds-form-element slds-size--1-of-1">
+                            <lightning:input aura:id="newCaseForm" label="Subject" required="true" value="{!v.newCase.Subject}"/>
+                        </div>
+                    </div>
+                    <div class="slds-form-element__row slds-grid_vertical-align-end">
+                        <div class="slds-form-element slds-size--1-of-1">
+                            <lightning:textarea aura:id="newCaseForm" label="Description" required="true" value="{!v.newCase.Description}"/>
+                        </div>
+                    </div>
+                </div>
+                <aura:if isTrue="{!not(empty(v.recordError))}">
+                    <div class="recordError">
+                            {!v.recordError}
+                    </div>
+                </aura:if>
+            </fieldset>
+
+
+
+
+        <lightning:layoutItem size="12" class="slds-align--absolute-center">
+            <lightning:button name="Submit" onclick="{!c.onSave}">
+                <lightning:icon iconName="action:update_status" size="medium"/>
+                    {!$Label.c.ECS_Submit}
+            </lightning:button>
+
+
+        </lightning:layoutItem>
+
+    </lightning:layout>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            <ui:message title="Error" severity="error" closable="true">
+                    {!v.recordError}
+            </ui:message>
+        </div>
+    </aura:if>
+</aura:component>

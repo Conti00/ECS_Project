@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 07.02.2019.
+ -->
+
+<aura:event type="COMPONENT" description="ECS_ReviewAdded">
+    <aura:attribute name="MovieReviewAdded" type="Boolean"/>
+</aura:event>

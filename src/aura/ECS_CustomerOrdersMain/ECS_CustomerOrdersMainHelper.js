@@ -12,7 +12,6 @@
             {
                 component.set("v.customerOrdersItems", response.getReturnValue());
                 console.log('Main recived orders: '+JSON.stringify(response.getReturnValue()));
-//                helper.summarizeOrdersAmount(component);
             }else{
                 let resultsToast = $A.get("e.force:showToast");
                 if ($A.util.isUndefined(resultsToast)){

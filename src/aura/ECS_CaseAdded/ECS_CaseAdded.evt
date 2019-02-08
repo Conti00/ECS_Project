@@ -1,0 +1,7 @@
+<!--
+ - Created by BRITENET on 08.02.2019.
+ -->
+
+<aura:event type="COMPONENT" description="ECS_CaseAdded">
+    <aura:attribute name="MovieCaseAdded" type="Boolean"/>
+</aura:event>

@@ -1,0 +1,51 @@
+/**
+ * Created by BRITENET on 05.02.2019.
+ */
+
+
+.THIS {
+    font-size:20px;
+}
+
+.THIS .slds-card{
+    border:none;
+}
+
+.THIS .slds-text-color{
+    color:black;
+    font-size:20px;
+
+}
+
+.THIS .slds-table thead th{
+    font-size:25px;
+    color: rgb(114,3,3);
+    font-weight:normal;
+
+}
+
+.THIS .slds-text-heading_small{
+    font-size:25px;
+}
+
+.THIS h2{
+        text-align: center;
+        margin: 25px;
+    }
+
+
+.THIS.slds-tabs_card{
+    border:none;
+}
+
+.THIS .slds-button_neutral {
+    border:none;
+}
+
+.THIS .slds-p-around_large{
+    padding-top:3.5rem;
+}
+
+.THIS .slds-form-element__label{
+    font-size:20px;
+}

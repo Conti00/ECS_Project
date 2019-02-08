@@ -4,7 +4,7 @@
 ({
     getYearOptions: function(component){
         var yearList = [];
-        let beginYear = 1995;
+        let beginYear = 2010;
         let endYear = ((new Date()).getFullYear()+1).toString();
         for (let i = beginYear; i <= endYear; i++){
                 yearList.push(i);

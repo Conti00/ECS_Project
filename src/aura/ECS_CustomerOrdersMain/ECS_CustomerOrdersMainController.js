@@ -8,10 +8,8 @@
         helper.loadCustomerOrdersItems(component);
     },
     handleOrderItemSelected: function(component, event, helper){
-//        console.log("main: transfer object: "+event.getParam("transferredObject"));
         let transfered = event.getParam("transferredObject");
         component.set("v.selectedOrderDetailItem", transfered);
-//        console.log('transfered: '+JSON.stringify(component.get("v.selectedOrderDetailItem")));
         component.set("v.selectedOrderId", transfered.Id);
     },
     handleSelectedOrderIdChange: function(component, event, helper){

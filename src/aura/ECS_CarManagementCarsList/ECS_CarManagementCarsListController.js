@@ -3,7 +3,7 @@
  */
 ({
     onCarsChange: function(component, event, helper){
-        console.log("CarList złapał samochody: "+JSON.stringify(component.get("v.cars")));
+        console.log("CarList "+JSON.stringify(component.get("v.cars")));
 
     },
 })

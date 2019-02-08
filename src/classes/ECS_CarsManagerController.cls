@@ -42,6 +42,7 @@ public with sharing class ECS_CarsManagerController {
         conditionsSection += searchedCar.ECS_ProductionYear__c == null ? '' : 'ECS_ProductionYear__c LIKE \'%' + searchedCar.ECS_ProductionYear__c + '%\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_Model__c) ? ' AND ' : '' ;
         conditionsSection += String.isBlank(searchedCar.ECS_Model__c) ? '' : 'ECS_Model__c = \'' + searchedCar.ECS_Model__c + '\'';
+//        conditionsSection += ' AND IsActive = true';
 
 
         queryString += conditionsSection == null ? '' : conditionsSection;
@@ -86,8 +87,6 @@ public with sharing class ECS_CarsManagerController {
 
     @AuraEnabled
     public static String getBaseUrlString() {
-//        return URL.getSalesforceBaseUrl().toExternalForm();
-//        return URL.getSalesforceBaseUrl().getHost();
         return ECS_Setting__c.getInstance('ECS_InstanceUrl').ECS_InstanceUrl__c;
     }
 
@@ -99,7 +98,6 @@ public with sharing class ECS_CarsManagerController {
 
     @AuraEnabled
     public static String addCarToUserCart(Product2 car) {
-        system.debug('apex recived carId: ' + car);
         List<ECS_Wrappers.ECS_CartItem> cartItems;
         String currentLowestCarPrice = getCarCurrentLowestPrice(car.Id);
 
@@ -117,8 +115,6 @@ public with sharing class ECS_CarsManagerController {
         }
         cartItems.add(new ECS_Wrappers.ECS_CartItem(car, null, currentLowestCarPrice));
         Cache.Session.put('local.Cart.cartItems', cartItems);
-        System.debug('cartItems: '+cartItems);
-        System.debug('Session Cache: '+Cache.Session.get('local.Cart.cartItems'));
         return 'Success';
     }
 
@@ -131,13 +127,11 @@ public with sharing class ECS_CarsManagerController {
         } else {
             cartItems = new List<ECS_Wrappers.ECS_CartItem>();
         }
-        system.debug(cartItems);
         return cartItems;
     }
 
     @AuraEnabled
     public static String deleteCustomerCartItem(List<String> listOfIds) {
-        system.debug('given IDS: ' + listOfIds);
         List<ECS_Wrappers.ECS_CartItem> cartItems;
 
         if (Cache.Session.contains('local.Cart.cartItems')) {
@@ -145,23 +139,18 @@ public with sharing class ECS_CarsManagerController {
         } else {
             cartItems = new List<ECS_Wrappers.ECS_CartItem>();
         }
-        system.debug(cartItems);
+
         if (cartItems != null) {
             for (Integer ii = 0; ii < cartItems.size(); ii++) {
-//            for (ECS_Wrappers.ECS_CartItem cartItem : cartItems) {
                 for (String carId : listOfIds) {
                     if (cartItems[ii].car.Id == carId) {
-                        system.debug('size: ' + cartItems.size());
                         cartItems.remove(ii);
                     }
                 }
 
             }
 
-//            }
         }
-        system.debug(cartItems);
-
         Cache.Session.put('local.Cart.cartItems', cartItems);
         return String.valueOf(cartItems.size());
     }
@@ -228,7 +217,6 @@ public with sharing class ECS_CarsManagerController {
         ];
 
         String minPrice = String.valueOf(minPriceResult.get('MinPrice'));
-//        minPrice.add(String.valueOf(minAndMaxPriceResult.get('MinPrice')));
         return minPrice;
     }
 
@@ -248,39 +236,6 @@ public with sharing class ECS_CarsManagerController {
 
     }
 
-    @AuraEnabled
-    public static void setSingleCarDiscount(String carId, Integer discountedPrice, String startDate, String endDate, String discountName) {
-        system.debug('given params: ' + carId + ' ' + discountedPrice + ' ' + startDate + ' ' + endDate);
-        if (discountName == null || discountName.length() == 0) {
-            discountName = 'Discount: ' + String.valueOf(startDate) + ' - ' + String.valueOf(endDate);
-        }
-        Pricebook2 discountPricebook = new Pricebook2();
-        discountPricebook.IsActive = true;
-        discountPricebook.Name = discountName;
-        discountPricebook.ECS_BeginDate__c = Date.valueOf(startDate);
-        discountPricebook.ECS_EndDate__c = Date.valueOf(endDate);
-        system.debug(discountPricebook);
-
-        try {
-            insert discountPricebook;
-        } catch (DmlException e) {
-            throw new AuraHandledException('Error creating discount Pricebook');
-        }
-
-        PricebookEntry carDiscountedPricebookEntry = new PricebookEntry();
-        carDiscountedPricebookEntry.Pricebook2Id = discountPricebook.Id;
-        carDiscountedPricebookEntry.Product2Id = carId;
-        carDiscountedPricebookEntry.UnitPrice = Integer.valueOf(discountedPrice);
-        carDiscountedPricebookEntry.IsActive = true;
-        system.debug(carDiscountedPricebookEntry);
-
-        try {
-            insert carDiscountedPricebookEntry;
-        } catch (DmlException e) {
-            throw new AuraHandledException('Error creating PriceEntry');
-        }
-    }
-
     public static String getStandardPricebookId() {
 
         return [SELECT id, Name FROM Pricebook2 WHERE Name = 'Standard Price Book'][0].Id;
@@ -291,14 +246,12 @@ public with sharing class ECS_CarsManagerController {
 
         List<ECS_Wrappers.ECS_CartItem> cartItems;
 
-        System.debug(Cache.Session.get('local.Cart.cartItems'));
 
         if (Cache.Session.contains('local.Cart.cartItems')) {
-            System.debug('test');
             cartItems = (List<ECS_Wrappers.ECS_CartItem>) Cache.Session.get('local.Cart.cartItems');
         }
 
-        System.debug('Cart: '+cartItems);
+
 
         String currentUserEmail = UserInfo.getUserEmail();
         Contact currentUserContact = [SELECT id FROM Contact WHERE Email = :currentUserEmail][0];
@@ -306,8 +259,9 @@ public with sharing class ECS_CarsManagerController {
         List<OrderItem> orderItems = new List<OrderItem>();
         Order order = new Order();
 
+
         order.AccountId = getCommunityCustomerAccountIdByEmail();
-        order.Name =  'car(s) Order';
+        order.Name = 'car(s) Order';
         order.EndDate = Date.today().addDays(30);
         order.Status = 'Draft';
         order.Pricebook2Id = standardPriceBook.Id;
@@ -318,14 +272,12 @@ public with sharing class ECS_CarsManagerController {
             system.debug('created: ' + order);
         } catch (System.DmlException e) {
             for (Integer i = 0; i < e.getNumDml(); i++) {
-                System.debug(e.getDmlMessage(i));
             }
             throw new AuraHandledException('Error creating order');
         }
 
         if (cartItems != null) {
             for (Integer ii = 0; ii < cartItems.size(); ii++) {
-
                 OrderItem ordLineItem = new OrderItem();
                 ordLineItem.Product2Id = cartItems[ii].car.Id;
                 ordLineItem.OrderId = order.Id;
@@ -342,13 +294,30 @@ public with sharing class ECS_CarsManagerController {
         try {
             deleteAllCustomerCartItems();
             insert orderItems;
-            system.debug('created: ' + orderItems);
         } catch (DmlException e) {
             throw new AuraHandledException('Error creating meetings');
         }
 
-        return 'Success';
 
+        Set<Id> carsIds = new Set<Id>();
+        for (ECS_Wrappers.ECS_CartItem cartItem : cartItems) {
+            carsIds.add(cartItem.car.Id);
+        }
+
+        List<Product2> listOfProducts = new List<Product2>([SELECT id, isActive FROM Product2 WHERE id IN :carsIds]);
+
+
+        for (integer i = 0; i < listOfProducts.size(); i++) {
+            listOfProducts[i].isActive = false;
+        }
+
+        try {
+            update listOfProducts;
+        } catch (DmlException e) {
+            throw new AuraHandledException('Error updating cars');
+        }
+
+        return 'Success';
 
     }
 
@@ -373,13 +342,132 @@ public with sharing class ECS_CarsManagerController {
     public static List<Order> getCustomerOrdersItems() {
         User currentUser = ECS_Utils.getCurrentUser();
         List<Order> orders = [
-                SELECT Id, CreatedDate, OrderNumber, TotalAmount, (SELECT Id, UnitPrice, PricebookEntry.Product2.Name, PricebookEntry.Product2.ECS_Model__c, PricebookEntry.Product2.ECS_ProductionYear__c, PricebookEntry.Product2.ECS_VinNumber__c, PricebookEntry.Product2.ECS_ImageID__c FROM OrderItems)
+                SELECT Id, CreatedDate, OrderNumber, TotalAmount, (
+                        SELECT Id, UnitPrice,
+                                PricebookEntry.Product2.Name, PricebookEntry.Product2.ECS_Model__c,
+                                PricebookEntry.Product2.ECS_ProductionYear__c, PricebookEntry.Product2.ECS_VinNumber__c,
+                                PricebookEntry.Product2.ECS_ImageID__c
+                        FROM OrderItems
+                )
                 FROM Order
                 WHERE
-                OwnerId =: currentUser.Id
+                        OwnerId = :currentUser.Id
 
         ];
         return orders;
     }
-    
+
+    @AuraEnabled
+    public static List<OrderItem> getCustomerPurchasedItems() {
+        User currentUser = ECS_Utils.getCurrentUser();
+        List<Order> listOfOrders = new List<Order>([
+                SELECT id
+                FROM Order
+                WHERE OwnerId = :currentUser.Id
+        ]);
+
+        Set<Id> carsIds = new Set<Id>();
+        for (Order order : listOfOrders) {
+            carsIds.add(order.Id);
+        }
+
+        List<OrderItem> purchasedItems = new List<OrderItem>([
+                SELECT id, OrderId, ECS_isReviewed__c, Order.CreatedDate, Product2.Id, Product2.Name,
+                        Product2.ECS_Brand__c, Product2.ECS_Model__c, Product2.ECS_VinNumber__c,
+                        Product2.ECS_ProductionYear__c, Product2.ECS_ImageID__c
+                FROM OrderItem
+                WHERE OrderId IN :carsIds
+        ]);
+
+        return purchasedItems;
+    }
+
+    @AuraEnabled
+    public static List<ECS_Review__c> getProductReviewsById(String carId) {
+        List<ECS_Review__c> reviews = [
+                SELECT Id, ECS_Comment__c, ECS_Rating__c, CreatedBy.Username, CreatedDate
+                FROM ECS_Review__c
+                WHERE ECS_Product__c = :carId
+                ORDER BY CreatedDate DESC
+        ];
+        if (reviews != null) {
+            return reviews;
+        } else {
+            return new List<ECS_Review__c>();
+        }
+    }
+
+    @AuraEnabled
+    public static String deleteReviewById(String reviewId) {
+        List<ECS_Review__c> review = [
+                SELECT Id
+                FROM ECS_Review__c
+                WHERE Id = :reviewId
+        ];
+        if (review != null) {
+            try {
+                delete review;
+                return 'Success';
+            } catch (DmlException e) {
+                return 'Error cannot delete review';
+            }
+        } else {
+            return 'Error review not found';
+        }
+    }
+
+    @AuraEnabled
+    public static String setReviewAddedById(String orderItemId) {
+
+        OrderItem orderItem = [SELECT id, ECS_isReviewed__c FROM OrderItem WHERE Id = :orderItemId LIMIT 1];
+        orderItem.ECS_isReviewed__c = true;
+
+        try {
+            update orderItem;
+        } catch (DmlException e) {
+            return 'Error cannot update orderItem';
+        }
+        return 'SUCCESS';
+    }
+
+    @AuraEnabled
+    public static String createCase(Case newCase){
+        User currentUser = ECS_Utils.getCurrentUser();
+        Database.DMLOptions dmlOpts = new Database.DMLOptions();
+        dmlOpts.assignmentRuleHeader.UseDefaultRule = true;
+        newCase.setOptions(dmlOpts);
+
+        newCase.ECS_isCarServiceFromCommunity__c = true;
+        newCase.Status = 'New';
+        newCase.Priority = 'Medium';
+        newCase.Origin = 'Web';
+        newCase.ContactId = currentUser.ContactId;
+        newCase.AccountId = currentUser.AccountId;
+        newCase.SuppliedEmail = currentUser.Email;
+        newCase.SuppliedName = currentUser.Name;
+        try{
+            insert newCase;
+            return 'SUCCESS';
+        }catch (DmlException e){
+            for (Integer i = 0; i < e.getNumDml(); i++) {
+                System.debug(e.getDmlMessage(i));
+            }
+            throw new AuraHandledException('Error when creating new case');
+        }
+    }
+
+    @AuraEnabled
+    public static String setCaseAddedById(String caseItemId) {
+
+        Case caseItem = [SELECT id, ECS_isCaseed__c FROM Case WHERE Id = :caseItemId LIMIT 1];
+        caseItem.ECS_isCaseed__c = true;
+
+        try {
+            update caseItem;
+        } catch (DmlException e) {
+            return 'Error cannot update case';
+        }
+        return 'SUCCESS';
+    }
+
 }

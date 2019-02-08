@@ -18,21 +18,37 @@
                         }
                     });
                     $A.enqueueAction(orgBaseUrl);
-                },
+//                    helper.onInit(component);
+    },
 
     onCarAddedToCart: function(component, event, helper){
             var carObj = component.get("v.car");
             console.log("car obj: "+JSON.stringify(carObj));
             helper.addCarToCart(component,carObj);
-        },
+    },
 
-        redirectToCart: function(component, event, helper){
-                let urlEvent = $A.get("e.force:navigateToURL");
-                   urlEvent.setParams({
-                     "url": "/cart"
-                   });
-                   urlEvent.fire();
-            },
+    redirectToCart: function(component, event, helper){
+            let urlEvent = $A.get("e.force:navigateToURL");
+            urlEvent.setParams({
+                "url": "/cart"
+            });
+            urlEvent.fire();
+    },
+
+    displayReviewModal : function(component, event, helper){
+            component.set("v.displayReviewModal",true);
+            helper.getProductReviews(component);
+
+    },
+
+    hideReviewModal : function(component, event, helper){
+            component.set("v.displayReviewModal",false);
+    },
+
+    deleteMovieReview : function(component, event, helper) {
+                    let reviewId = event.getSource().get("v.value");
+                    helper.deleteReview(component, reviewId);
+    },
 
 
 })

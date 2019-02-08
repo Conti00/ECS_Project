@@ -1,0 +1,50 @@
+<!--
+ - Created by BRITENET on 07.02.2019.
+ -->
+
+<aura:component description="ECS_AddCarReview" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    
+    <aura:attribute name="carId" type="String"/>
+    <aura:attribute name="newReview" type="ECS_Review__c"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:registerEvent name="ReviewAdded" type="c:ECS_ReviewAdded"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <force:recordData aura:id="service"
+                      fields="Id, Name, ECS_Comment__c, ECS_Product__c, ECS_Rating__c"
+                      targetFields="{!v.newReview}"
+                      targetError="{!v.recordError}"
+                      recordUpdated="{!c.onRecordUpdated}"
+    />
+
+    <lightning:layout multipleRows="true">
+
+        <lightning:layoutItem size="12" padding="around-small">
+            <label class="slds-form-element__label" for="input-id-01">{!$Label.c.ECS_Your_Opinion}</label>
+            <lightning:inputRichText value="{!v.newReview.ECS_Comment__c}" disabledCategories="FORMAT_FONT"/>
+        </lightning:layoutItem>
+
+        <lightning:layoutItem size="12" padding="around-small">
+            <label class="slds-form-element__label" for="input-id-01">{!$Label.c.ECS_Rating}</label>
+            <c:FiveStarRating value="{!v.newReview.ECS_Rating__c}" readonly="false" />
+        </lightning:layoutItem>
+
+        <lightning:layoutItem size="12" class="slds-align--absolute-center">
+            <lightning:button name="Submit" onclick="{!c.onSave}">
+                <lightning:icon iconName="action:update_status" size="medium"/>
+                {!$Label.c.ECS_Submit}
+            </lightning:button>
+
+
+        </lightning:layoutItem>
+
+    </lightning:layout>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            <ui:message title="Error" severity="error" closable="true">
+                    {!v.recordError}
+            </ui:message>
+        </div>
+    </aura:if>
+</aura:component>

@@ -2,7 +2,10 @@
  - Created by BRITENET on 01.02.2019.
  -->
 
-<aura:component description="ECS_CarSearchForCommunity" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+<aura:component description="ECS_CarSearchForCommunity"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,
+                force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
 
     <aura:attribute name="selectedCarId" type="String"/>
     <aura:attribute name="selectedCar" type="Product2"/>
@@ -12,41 +15,36 @@
     <aura:handler name="carSelectedEvent" event="c:ECS_CarManagementCarSelectedEvent" action="{!c.onCarSelected}"/>
 
     <aura:if isTrue="{!!v.productCardShown}">
-    <lightning:layout horizontalAlign="center" verticalAlign="start" multipleRows="true">
-        <lightning:layoutItem size="12" padding="around-small" flexibility="grow">
-            <lightning:card title=" ">
-                <c:ECS_CarManagementSearchForm aura:id="carSearchForm"/>
-            </lightning:card>
-        </lightning:layoutItem>
-    </lightning:layout>
-
-    <lightning:layout  horizontalAlign="center" verticalAlign="start" multipleRows="true">
-        <lightning:layoutItem size="12" padding="around-small" flexibility="grow" >
-            <lightning:card title=" ">
-            <c:ECS_CarManagementCarsList aura:id="carList"/>
+        <lightning:layout horizontalAlign="center" verticalAlign="start" multipleRows="true">
+            <lightning:layoutItem size="12" padding="around-small" flexibility="grow">
+                <lightning:card title="">
+                    <c:ECS_CarManagementSearchForm aura:id="carSearchForm"/>
                 </lightning:card>
-        </lightning:layoutItem>
-    </lightning:layout>
+            </lightning:layoutItem>
+        </lightning:layout>
 
-    <aura:set attribute="else">
-    <lightning:layout  horizontalAlign="center" verticalAlign="start" multipleRows="true">
-        <lightning:layoutItem size="12" padding="around-small" flexibility="grow" >
+        <lightning:layout horizontalAlign="center" verticalAlign="start" multipleRows="true">
+            <lightning:layoutItem size="12" padding="around-small" flexibility="grow">
+                <lightning:card title="">
+                    <c:ECS_CarManagementCarsList aura:id="carList"/>
+                </lightning:card>
+            </lightning:layoutItem>
+        </lightning:layout>
 
-            <lightning:card title="">
-                <c:ECS_ProductCard car="{!v.selectedCar}"/>
-            </lightning:card>
-            <lightning:button name="Back to Search" onclick="{!c.backToSearch}" class="slds-float_right">
-                <lightning:icon iconName="action:back" size="medium"/>
-                Back To Search
-            </lightning:button>
+        <aura:set attribute="else">
+            <lightning:layout horizontalAlign="center" verticalAlign="start" multipleRows="true">
+                <lightning:layoutItem size="12" padding="around-small" flexibility="grow">
 
-            <!---->
-            <!--<lightning:button name="BackToSearch" variant="neutral" onclick="{!c.backToSearch}" class="slds-float_right">-->
-                <!--Back To Search-->
-            <!--</lightning:button>-->
-        </lightning:layoutItem>
-    </lightning:layout>
-        <c:ECS_CarManagementGallery carId="{!v.selectedCar.Id}"/>
-    </aura:set>
+                    <lightning:card title="">
+                        <c:ECS_ProductCard car="{!v.selectedCar}"/>
+                    </lightning:card>
+                    <lightning:button name="Back to Search" onclick="{!c.backToSearch}" class="slds-float_right">
+                        <lightning:icon iconName="action:back" size="medium"/>
+                            {!$Label.c.ECS_Back_To_Search}
+                    </lightning:button>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <c:ECS_CarManagementGallery carId="{!v.selectedCar.Id}"/>
+        </aura:set>
     </aura:if>
 </aura:component>

@@ -23,7 +23,7 @@
     <aura:if isTrue="{!v.isAdmin}">
         <lightning:card title="Add new Images">
             <div class="slds-form-element__row slds-grid_align-center">
-                <lightning:fileUpload label="Add images"
+                <lightning:fileUpload label="{!$Label.c.ECS_Add_Image}"
                                       multiple="true"
                                       accept=".jpg, .png"
                                       recordId="{!v.carId}"
@@ -34,9 +34,9 @@
 
 
     <aura:if isTrue="{!v.carImages.length != 0 }">
-        <lightning:card title="Car Images:">
+        <lightning:card>
             <aura:if isTrue="{!v.carImages.length >= 2}">
-                <lightning:button label="Show all pictures" onclick="{! c.openAllFiles }"/>
+                <lightning:button label="{!$Label.c.ECS_Show_All_Pictures}" onclick="{! c.openAllFiles }"/>
             </aura:if>
             <aura:iteration items="{!v.carImages}" var="imageId">
                 <lightning:layoutItem flexibility="grow" class="slds-m-around_large slds-align-middle">
@@ -44,8 +44,8 @@
                     <aura:if isTrue="{!imageId != v.carTargetFields.ECS_ImageID__c}">
                         <aura:if isTrue="{!v.isAdmin}">
                             <lightning:buttonGroup class="slds-grid_align-center">
-                                <lightning:button variant="neutral" onclick="{!c.setAsMainPicture}" value="{!imageId}" label="Set as main"/>
-                                <lightning:button variant="neutral" onclick="{!c.deleteImage}" value="{!imageId}">Delete
+                                <lightning:button variant="neutral" onclick="{!c.setAsMainPicture}" value="{!imageId}" label="{!$Label.c.ECS_Set_As_Main}"/>
+                                <lightning:button variant="neutral" onclick="{!c.deleteImage}" value="{!imageId}">{!$Label.c.ECS_Delete}
                                 </lightning:button>
                             </lightning:buttonGroup>
                         </aura:if>
@@ -54,7 +54,7 @@
             </aura:iteration>
         </lightning:card>
         <aura:set attribute="else">
-            <lightning:formattedText value="No images found"/>
+            <lightning:formattedText value="{!$Label.c.ECS_No_Images_Found}"/>
         </aura:set>
     </aura:if>
     </aura:if>
