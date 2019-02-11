@@ -1,0 +1,33 @@
+/**
+ * Created by BRITENET on 11.02.2019.
+*/
+.THIS {
+
+}
+
+.THIS .slds-text-color_weak{
+    color:black;
+    font-size:20px;
+
+}
+
+.THIS .slds-text-color_weak{
+    font-size:25px;
+    color: rgb(114,3,3);
+}
+
+.THIS .slds-text-heading_small{
+    font-size: 2rem;
+}
+
+.THIS .slds-button_neutral {
+    border:none;
+}
+
+.THIS .slds-form--compound .slds-form-element__row .slds-form-element{
+    text-align:justify;
+}
+
+.THIS .slds-button_neutral{
+    font-size:20px;
+}

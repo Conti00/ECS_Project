@@ -1,0 +1,170 @@
+<!--
+ - Created by BRITENET on 11.02.2019.
+ -->
+
+<aura:component description="ECS_CarManagementDiscount" controller="ECS_CarsManagerController">
+    <aura:attribute name="car" type="Product2"/>
+    <aura:attribute name="carId" type="String"/>
+    <aura:attribute name="carCurrentLowestPrice" type="Integer"/>
+    <aura:attribute name="carNewPrice" type="Integer" default="0"/>
+    <aura:attribute name="amountDiscountValue" type="Integer" default="0"/>
+    <aura:attribute name="percentDiscountValue" type="Integer" default="0"/>
+    <aura:attribute name="discountStartDate" type="Date"/>
+    <aura:attribute name="discountEndDate" type="Date"/>
+    <aura:attribute name="discountName" type="String"/>
+    <aura:attribute name="options" type="List" default="[
+    {'label': '%', 'value': 'percentDiscount'},
+    {'label': '$', 'value': 'amountDiscount'},
+    {'label': 'set Price', 'value': 'setNewPrice'},
+    ]"/>
+    <aura:attribute name="value" type="String" default="amountDiscount"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--<aura:registerEvent name="onSingleCarDiscountCreated" type="c:ECS_OnSingleCarDiscountCreated"/>-->
+
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_1-of-2">
+            <div class="slds-p-horizontal--small">
+                <lightning:radioGroup name="radioButtonGroup"
+                                      label="{!$Label.c.ECS_Type_Of_Discount}"
+                                      options="{! v.options }"
+                                      value="{! v.value }"
+                                      type="button"/>
+            </div>
+
+            <aura:if isTrue="{!v.value == 'amountDiscount'}">
+
+                <div class="slds-p-horizontal--small">
+                    <fieldset class="slds-form--compound">
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-1">
+                                    <lightning:input type="number" name="discountAmount" min="0"
+                                                     max="{!v.carCurrentLowestPrice - 1}" label="Discount value"
+                                                     value="{!v.amountDiscountValue}" formatter="currency" step="1"
+                                                     onchange="{!c.onDiscountAmountChange}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+            </aura:if>
+
+            <aura:if isTrue="{!v.value == 'percentDiscount'}">
+                <div class="slds-p-horizontal--small">
+                    <fieldset class="slds-form--compound">
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:slider label="Discount [%]" size="x-small"
+                                                      value="{!v.percentDiscountValue}" min="0" max="99"
+                                                      onchange="{!c.onDiscountPercentChange}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </aura:if>
+
+            <aura:if isTrue="{!v.value == 'setNewPrice'}">
+                <div class="slds-p-horizontal--small">
+                    <fieldset class="slds-form--compound">
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:input type="number" name="setPrice" min="0"
+                                                     max="{!v.carCurrentLowestPrice - 1}" label="Set Discounted Price"
+                                                     value="{!v.carNewPrice}" formatter="currency" step="1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </aura:if>
+            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                <div class="slds-form-element slds-size--1-of-2 slds-p-horizontal--small">
+                    <lightning:input type="text" label="Promotion Name" value="{!v.discountName}"/>
+                </div>
+            </div>
+            <div class="slds-form-element__row slds-grid_vertical-align-end slds-p-horizontal--small">
+                <div class="slds-form-element slds-size--1-of-2">
+                    <ui:inputDate label="Discount Start Date" required="true" value="{!v.discountStartDate}"
+                                  displayDatePicker="true"/>
+                    <!--<lightning:input type="date" name="Start Date" label="Discount Start Date" required="true" value="{!v.discountStartDate}"/>-->
+                </div>
+                <div class="slds-form-element slds-size--1-of-2">
+                    <ui:inputDate label="Discount End Date" required="true" value="{!v.discountEndDate}"
+                                  displayDatePicker="true"/>
+                    <!--<lightning:input type="date" name="End Date" label="Discount End Date"  required="true" value="{!v.discountEndDate}"/>-->
+                </div>
+            </div>
+            <br/>
+            <div class="slds-form-element__row">
+                <lightning:button name="{!$Label.c.ECS_Confirm}" onclick="{!c.onNewDiscountSave}"
+                                  class="">
+                    <lightning:icon iconName="action:new_task" size="medium"/>
+                    {!$Label.c.ECS_Confirm}
+                </lightning:button>
+            </div>
+        </div>
+
+
+        <div class="slds-col slds-size_1-of-2">
+            <aura:if isTrue="{!v.carId != null}">
+
+                <lightning:layout>
+                    <lightning:layoutItem size="12">
+                        <lightning:card iconName="" variant="narrow">
+                            <div class="slds-p-horizontal--small">
+                                <fieldset class="slds-form--compound">
+                                    <div class="slds-form-element__group">
+
+                                        <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                            <div class="slds-form-element slds-size--1-of-2">
+                                                <p class="slds-text-body_small slds-text-color_weak">Current Price: </p>
+                                                <lightning:formattedNumber style="currency"
+                                                                           value="{!v.carCurrentLowestPrice}"
+                                                                           class="slds-text-heading_medium"
+                                                                           maximumFractionDigits="0"
+                                                                           minimumFractionDigits="0"/>
+                                            </div>
+                                        </div>
+                                        <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                            <div class="slds-form-element slds-size--1-of-2">
+                                                <p class="slds-text-body_small slds-text-color_weak">New Price: </p>
+                                                <lightning:formattedNumber style="currency" value="{!v.carNewPrice}"
+                                                                           class="slds-text-heading_medium"
+                                                                           maximumFractionDigits="0"
+                                                                           minimumFractionDigits="0"/>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </lightning:card>
+
+
+                    </lightning:layoutItem>
+
+
+
+                </lightning:layout>
+
+            </aura:if>
+        </div>
+
+
+
+    </div>
+
+
+    <!--<lightning:button onclick="{!c.closeChangeAssignmentModal}">Cancel</lightning:button>-->
+
+
+</aura:component>

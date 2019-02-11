@@ -43,7 +43,7 @@
                     <lightning:fileCard fileId="{!imageId}"/>
                     <aura:if isTrue="{!imageId != v.carTargetFields.ECS_ImageID__c}">
                         <aura:if isTrue="{!v.isAdmin}">
-                            <lightning:buttonGroup class="slds-grid_align-center">
+                            <lightning:buttonGroup class="">
                                 <lightning:button variant="neutral" onclick="{!c.setAsMainPicture}" value="{!imageId}" label="{!$Label.c.ECS_Set_As_Main}"/>
                                 <lightning:button variant="neutral" onclick="{!c.deleteImage}" value="{!imageId}">{!$Label.c.ECS_Delete}
                                 </lightning:button>

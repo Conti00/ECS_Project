@@ -126,5 +126,25 @@
                      $A.enqueueAction(action);
                  },
 
+    getLowestPrice: function(component, carId){
+              var action = component.get('c.getCarCurrentLowestPrice');
+              action.setParams({
+                  'carId' : carId
+              });
+
+              action.setCallback(this, function(response){
+                  let state = response.getState();
+                  console.log("response: "+response.getState());
+                  if (state === "SUCCESS")
+                  {
+                      console.log("return lowest price value: "+response.getReturnValue());
+                      component.set("v.carCurrentLowestPrice", response.getReturnValue());
+                  }else{
+
+                  }
+              });
+              $A.enqueueAction(action);
+        },
+
 
 })

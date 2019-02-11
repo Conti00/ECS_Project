@@ -10,7 +10,7 @@
         <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
             <aura:if isTrue="{!v.cars.length > 0}">
                 <aura:iteration items="{!v.cars}" end="{!v.cars.lenght}" var="car">
-                    <lightning:layoutItem flexibility="auto" class="slds-m-around_xx-large">
+                    <lightning:layoutItem flexibility="auto"  class="slds-m-around_xx-large" >
                         <c:ECS_CarManagementCarTile car="{!car}"/>
                     </lightning:layoutItem>
                 </aura:iteration>

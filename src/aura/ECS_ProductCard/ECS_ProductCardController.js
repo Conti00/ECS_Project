@@ -19,6 +19,7 @@
                     });
                     $A.enqueueAction(orgBaseUrl);
 //                    helper.onInit(component);
+                    helper.getLowestPrice(component, component.get('v.car.Id'));
     },
 
     onCarAddedToCart: function(component, event, helper){

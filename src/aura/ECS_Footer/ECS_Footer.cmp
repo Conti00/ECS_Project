@@ -1,0 +1,41 @@
+<!--
+ - Created by BRITENET on 11.02.2019.
+ -->
+
+<aura:component description="ECS_Footer" controller="ECS_CarsManagerController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
+
+    <aura:attribute name="isSubscriber" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <lightning:card >
+    <div style="text-align:center;">
+
+        <div style=" text-align:center; display:inline-block; width:100%; height:100%; ">
+            <!--<img style="display:inline-block; width:100%; height:100% "-->
+                                              <!--src="{!$Resource.ECS_Banner_Footer}"/>-->
+
+
+            <aura:if isTrue="{!!v.isSubscriber}">
+            <lightning:button name="{!$Label.c.ECS_Subscribe}" onclick="{!c.subscribe}"
+                              class="">
+                <lightning:icon iconName="action:follow" size="medium"/>
+                    {!$Label.c.ECS_Subscribe}
+            </lightning:button>
+            <aura:set attribute="else">
+            <lightning:button name="{!$Label.c.ECS_Unsubscribe}" onclick="{!c.unsubscribe}"
+                              class="">
+                <lightning:icon iconName="action:following" size="medium"/>
+                    {!$Label.c.ECS_Unsubscribe}
+            </lightning:button>
+            </aura:set>
+            </aura:if>
+        </div>
+    </div>
+
+    </lightning:card>
+
+
+</aura:component>
+

@@ -1,0 +1,9 @@
+/**
+ * Created by BRITENET on 11.02.2019.
+ */
+.THIS {
+}
+.THIS .slds-grid{
+ display:flex;
+ text-align:center;
+}

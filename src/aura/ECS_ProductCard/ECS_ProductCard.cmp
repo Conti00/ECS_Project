@@ -5,6 +5,7 @@
 <aura:component description="ECS_ProductCard" controller="ECS_CarsManagerController">
     <aura:attribute name="carId" type="String"/>
     <aura:attribute name="car" type="Product2"/>
+    <aura:attribute name="carCurrentLowestPrice" type="String"/>
     <aura:attribute name="orgUrl" type="String"/>
     <aura:attribute name="displayReviewModal" type="Boolean"/>
     <aura:attribute name="productReviews" type="ECS_Review__c[]"/>
@@ -13,7 +14,7 @@
 
     <lightning:layout>
         <lightning:layoutItem size="12">
-            <lightning:card iconName="" title="{!v.car.Name}" variant="narrow">
+            <lightning:card iconName="" title="{!v.car.Name +' - '+ v.carCurrentLowestPrice +'€'}" variant="narrow">
                 <div class="slds-p-horizontal--small">
                     <fieldset class="slds-form--compound">
                         <div class="slds-form-element__group">
@@ -114,7 +115,11 @@
                                                    class="slds-text-heading_medium"/>
                                 </div>
                             </div>
+                            <iframe style="text-align:center" width="520" height="280" src="https://www.youtube.com/embed/g1LsT1PVjUA?autoplay=1"></iframe>
+
                         </div>
+
+
                     </fieldset>
                 </div>
 

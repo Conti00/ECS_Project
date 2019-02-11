@@ -14,7 +14,7 @@
 }
 .THIS.tile:hover
 {
-	transform: scale(1.05);
+	transform: scale(1.25);
 }
 
 .THIS .innertile {
@@ -55,3 +55,4 @@
 .THIS .slds-text-heading_small {
     font-size: 2rem;
 }
+

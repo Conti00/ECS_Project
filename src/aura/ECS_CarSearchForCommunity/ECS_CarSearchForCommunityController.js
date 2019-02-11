@@ -13,5 +13,29 @@
 
     backToSearch : function(component, event, helper){
         component.set("v.productCardShown",false);
-    }
+    },
+
+    hideDiscountModal : function(component, event, helper){
+        if(component.get('v.displayModal')){
+        component.set('v.displayModal',false);
+        }
+        else{
+            component.set('v.displayModal', true);
+
+        }
+        component.set("v.typeOfAction",'Discount');
+
+    },
+    
+     hideGalleryModal : function(component, event, helper){
+            if(component.get('v.displayModal')){
+            component.set('v.displayModal',false);
+            }
+            else{
+                component.set('v.displayModal', true);
+    
+            }
+            component.set("v.typeOfAction",'Gallery');
+    
+        }
 })

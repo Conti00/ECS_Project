@@ -229,7 +229,7 @@ public with sharing class ECS_CarsManagerController {
         listPrice.IsActive = true;
 
         try {
-            insert listPrice;
+            upsert listPrice;
         } catch (DmlException e) {
             throw new AuraHandledException('Error creating PriceEntry');
         }
@@ -468,6 +468,77 @@ public with sharing class ECS_CarsManagerController {
             return 'Error cannot update case';
         }
         return 'SUCCESS';
+    }
+
+    @AuraEnabled
+    public static void setSingleCarDiscount(String carId, Integer discountedPrice, String startDate, String endDate, String discountName) {
+        system.debug('given params: ' + carId + ' ' + discountedPrice + ' ' + startDate + ' ' + endDate);
+        if (discountName == null || discountName.length() == 0) {
+            discountName = 'Discount: ' + String.valueOf(startDate) + ' - ' + String.valueOf(endDate);
+        }
+        Pricebook2 discountPricebook = new Pricebook2();
+        discountPricebook.IsActive = true;
+        discountPricebook.Name = discountName;
+        discountPricebook.ECS_BeginDate__c = Date.valueOf(startDate);
+        discountPricebook.ECS_EndDate__c = Date.valueOf(endDate);
+        system.debug(discountPricebook);
+
+        try {
+            insert discountPricebook;
+        } catch (DmlException e) {
+            throw new AuraHandledException('Error creating discount Pricebook');
+        }
+
+        PricebookEntry carDiscountedPricebookEntry = new PricebookEntry();
+        carDiscountedPricebookEntry.Pricebook2Id = discountPricebook.Id;
+        carDiscountedPricebookEntry.Product2Id = carId;
+        carDiscountedPricebookEntry.UnitPrice = Integer.valueOf(discountedPrice);
+        carDiscountedPricebookEntry.IsActive = true;
+        system.debug(carDiscountedPricebookEntry);
+
+        try {
+            insert carDiscountedPricebookEntry;
+        } catch (DmlException e) {
+            throw new AuraHandledException('Error creating PriceEntry');
+        }
+    }
+
+    @AuraEnabled
+    public static Boolean isUserInNewsletterGroup(){
+        User currentUser = ECS_Utils.getCurrentUser();
+        Group newsletterGroup = [SELECT id FROM Group WHERE Name ='Newsletter Group'];
+        GroupMember groupMember = [SELECT id FROM GroupMember WHERE UserOrGroupId=:currentUser.Id AND GroupId=:newsletterGroup.Id LIMIT 1];
+
+        if(groupMember!=null){
+            return true;
+        }
+
+        return false;
+    }
+
+    @AuraEnabled
+    public static void setUserAsMemberNewsletterGroup(){
+        User currentUser = ECS_Utils.getCurrentUser();
+        Group newsletterGroup = [SELECT id FROM Group WHERE Name ='Newsletter Group'];
+
+        GroupMember groupMember = new GroupMember();
+        groupMember.GroupId = newsletterGroup.Id;
+        groupMember.UserOrGroupId = currentUser.Id;
+
+        insert groupMember;
+
+    }
+
+    @AuraEnabled
+    public static void unsetUserAsMemberNewsletterGroup(){
+        User currentUser = ECS_Utils.getCurrentUser();
+        Group newsletterGroup = [SELECT id FROM Group WHERE Name ='Newsletter Group'];
+        GroupMember groupMember = [SELECT id FROM GroupMember WHERE UserOrGroupId=:currentUser.Id AND GroupId=:newsletterGroup.Id LIMIT 1];
+
+        System.debug('GroupMember: '+groupMember);
+
+        delete groupMember;
+
     }
 
 }

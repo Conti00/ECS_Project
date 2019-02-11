@@ -10,7 +10,7 @@ public with sharing class ECS_CasesController {
         List<Case> activeCases = [
                 SELECT Id, Subject, Description, Status, CreatedDate, CaseNumber, ECS_Car__r.Name
                 FROM Case
-                WHERE ContactId =: currentUser.ContactId AND Status != 'Closed'
+                WHERE ContactId =: currentUser.ContactId AND Status != 'Closed' AND ECS_isCarServiceFromCommunity__c = true
         ];
 
         return activeCases;
@@ -22,7 +22,7 @@ public with sharing class ECS_CasesController {
         List<Case> activeCases = [
                 SELECT Id, Subject, Description, Status, CreatedDate, CaseNumber, ClosedDate, ECS_Car__r.Name
                 FROM Case
-                WHERE ContactId =: currentUser.ContactId AND Status = 'Closed'
+                WHERE ContactId =: currentUser.ContactId AND Status = 'Closed' AND ECS_isCarServiceFromCommunity__c = true
         ];
 
         return activeCases;

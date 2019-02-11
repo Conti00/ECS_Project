@@ -11,6 +11,8 @@
     <aura:attribute name="selectedCar" type="Product2"/>
     <aura:attribute name="componentType" type="String" default="Community"/>
     <aura:attribute name="productCardShown" type="Boolean" default="false"/>
+    <aura:attribute name="displayModal" type="Boolean" default="false"/>
+    <aura:attribute name="typeOfAction" type="String" />
     <aura:handler name="oncarsrecived" event="c:ECS_OnCarsRecieved" action="{!c.onSearchedCarsRecived}"/>
     <aura:handler name="carSelectedEvent" event="c:ECS_CarManagementCarSelectedEvent" action="{!c.onCarSelected}"/>
 
@@ -42,9 +44,63 @@
                         <lightning:icon iconName="action:back" size="medium"/>
                             {!$Label.c.ECS_Back_To_Search}
                     </lightning:button>
+                    <lightning:button name="Display Discount" onclick="{!c.hideDiscountModal}" class="slds-float_left">
+                        <lightning:icon iconName="action:edit" size="medium"/>
+                        {!$Label.c.ECS_Make_Discount}
+                    </lightning:button>
+                    <lightning:button name="Display Gallery" onclick="{!c.hideGalleryModal}" class="slds-float_left">
+                        <lightning:icon iconName="action:preview" size="medium"/>
+                        {!$Label.c.ECS_Manage_Gallery}
+                    </lightning:button>
+
                 </lightning:layoutItem>
             </lightning:layout>
-            <c:ECS_CarManagementGallery carId="{!v.selectedCar.Id}"/>
         </aura:set>
+    </aura:if>
+
+    <aura:if isTrue="{!v.displayModal}">
+
+        <!--###### MODAL BOX Start######-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                 aria-describedby="modal-content-id-1"
+                 class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.hideDiscountModal }"
+                                          alternativeText="{!$Label.c.ECS_Close}"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        {!$Label.c.ECS_Manage} {!' '+v.selectedCar.Name}</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                    <lightning:layoutItem size="">
+                        <lightning:card title="" iconName="" class="slds-m-horizontal--small" actions="">
+                            <aura:if isTrue="{!v.typeOfAction=='Discount'}">
+                                <c:ECS_CarManagementDiscount car="{!v.selectedCar}"/>
+                            </aura:if>
+                            <aura:if isTrue="{!v.typeOfAction=='Gallery'}">
+                                <c:ECS_CarManagementGallery carId="{!v.selectedCar.Id}"/>
+                            </aura:if>
+                        </lightning:card>
+                    </lightning:layoutItem>
+
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral"
+                                      label="{!$Label.c.ECS_Close}"
+                                      title="Close"
+                                      onclick="{! c.hideDiscountModal }"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+
     </aura:if>
 </aura:component>

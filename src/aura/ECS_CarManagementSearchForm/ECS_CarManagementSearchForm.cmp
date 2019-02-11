@@ -64,6 +64,10 @@
             <lightning:icon iconName="action:remove_relationship" size="medium"/>
                 {!$Label.c.ECS_Clear}
         </lightning:button>
+        <lightning:button name="{!$Label.c.ECS_Advanced_Search}" onclick="{!c.changeSearch}" class="slds-m-top--medium" variant="neutral">
+            <lightning:icon iconName="action:dial_in" size="medium"/>
+                {!$Label.c.ECS_Advanced_Search}
+        </lightning:button>
     </footer>
 
 
