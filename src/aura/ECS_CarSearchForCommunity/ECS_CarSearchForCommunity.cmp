@@ -5,7 +5,7 @@
 <aura:component description="ECS_CarSearchForCommunity"
                 implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,
                 force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
-                access="global">
+                access="global" controller="ECS_CarsManagerController">
 
     <aura:attribute name="selectedCarId" type="String"/>
     <aura:attribute name="selectedCar" type="Product2"/>
@@ -13,6 +13,8 @@
     <aura:attribute name="productCardShown" type="Boolean" default="false"/>
     <aura:attribute name="displayModal" type="Boolean" default="false"/>
     <aura:attribute name="typeOfAction" type="String" />
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
     <aura:handler name="oncarsrecived" event="c:ECS_OnCarsRecieved" action="{!c.onSearchedCarsRecived}"/>
     <aura:handler name="carSelectedEvent" event="c:ECS_CarManagementCarSelectedEvent" action="{!c.onCarSelected}"/>
 
@@ -42,17 +44,20 @@
                     </lightning:card>
                     <lightning:button name="Back to Search" onclick="{!c.backToSearch}" class="slds-float_right">
                         <lightning:icon iconName="action:back" size="medium"/>
-                            {!$Label.c.ECS_Back_To_Search}
+                        <div>
+                        {!$Label.c.ECS_Back_To_Search}
+                        </div>
                     </lightning:button>
+                    <aura:if isTrue="{!v.isAdmin}">
                     <lightning:button name="Display Discount" onclick="{!c.hideDiscountModal}" class="slds-float_left">
                         <lightning:icon iconName="action:edit" size="medium"/>
-                        {!$Label.c.ECS_Make_Discount}
+                        &nbsp;{!$Label.c.ECS_Make_Discount}
                     </lightning:button>
                     <lightning:button name="Display Gallery" onclick="{!c.hideGalleryModal}" class="slds-float_left">
                         <lightning:icon iconName="action:preview" size="medium"/>
-                        {!$Label.c.ECS_Manage_Gallery}
+                        &nbsp;{!$Label.c.ECS_Manage_Gallery}
                     </lightning:button>
-
+                    </aura:if>
                 </lightning:layoutItem>
             </lightning:layout>
         </aura:set>

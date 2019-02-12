@@ -4,20 +4,19 @@
 ({
     doInit: function(component, event, helper){
             helper.getYearOptions(component);
-             helper.getCars(component, component.get("v.searchedCar"));
+            helper.getCars(component, component.get("v.searchedCar"));
+            helper.fetchPickListVal(component, 'ECS_BodyStyle__c', 'v.bodyStyleOptions');
+            helper.fetchPickListVal(component, 'ECS_FuelType__c', 'v.fuelTypeOptions');
+            helper.fetchPickListVal(component, 'ECS_Transmission__c', 'v.transmissionOptions');
     },
 
     clearForm: function(component, event, helper){
-            var searchedCar = component.get("v.searchedCar");
-            searchedCar.Name = '';
-            searchedCar.ECS_VinNumber__c = '';
-            searchedCar.ECS_Model__c = '';
-            searchedCar.ECS_YearProduction__c = '';
-            component.set("v.searchedCar", searchedCar);
+        helper.clearSearchForm(component,event,helper);
     },
 
     searchCars: function(component, event, helper){
             var searchedCar = component.get("v.searchedCar");
+            console.log(searchedCar);
             helper.getCars(component, searchedCar);
     },
 
@@ -30,5 +29,16 @@
                 "carsToDisplay":component.get("v.cars")
             });
             onRecivedCarsEvent.fire();
+    },
+
+    changeSearch: function(component, event, helper){
+        if(component.get('v.isAdvancedSearch')){
+            component.set('v.isAdvancedSearch',false);
+            helper.clearSearchForm(component,event,helper);
+        }else{
+            component.set('v.isAdvancedSearch',true);
+        }
+
+
     },
 })

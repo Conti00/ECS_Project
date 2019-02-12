@@ -104,7 +104,7 @@
                 <lightning:button name="{!$Label.c.ECS_Confirm}" onclick="{!c.onNewDiscountSave}"
                                   class="">
                     <lightning:icon iconName="action:new_task" size="medium"/>
-                    {!$Label.c.ECS_Confirm}
+                    &nbsp;{!$Label.c.ECS_Confirm}
                 </lightning:button>
             </div>
         </div>

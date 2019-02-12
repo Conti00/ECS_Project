@@ -80,12 +80,12 @@
                     <lightning:button name="Checkout" onclick="{!c.sendCarItemsToCheckout}"
                                       disabled="{!!v.isCheckoutEnabled}">
                         <lightning:icon iconName="action:update" size="medium"/>
-                            {!$Label.c.ECS_Checkout}
+                        &nbsp;{!$Label.c.ECS_Checkout}
                     </lightning:button>
 
                     <lightning:button name="Back to Search" onclick="{!c.redirectToSearch}" class="slds-float_right">
                         <lightning:icon iconName="action:back" size="medium"/>
-                            {!$Label.c.ECS_Back_To_Search}
+                        &nbsp;{!$Label.c.ECS_Back_To_Search}
                     </lightning:button>
                 </lightning:layoutItem>
             </lightning:layout>
@@ -101,12 +101,12 @@
                         <lightning:layoutItem padding="around-large" class="slds-text-align_center">
                             <lightning:button name="{!$Label.c.ECS_Go_To_Search}" onclick="{!c.redirectToSearch}">
                                 <lightning:icon iconName="action:change_record_type" size="medium"/>
-                                    {!$Label.c.ECS_Buy_Something}
+                                &nbsp;{!$Label.c.ECS_Buy_Something}
                             </lightning:button>
                             <lightning:button name="{!$Label.c.ECS_Go_To_Your_Order}" onclick="{!c.redirectToOrders}"
                                               class="slds-float_right">
                                 <lightning:icon iconName="action:new_task" size="medium"/>
-                                    {!$Label.c.ECS_Go_To_Your_Order}
+                                &nbsp;{!$Label.c.ECS_Go_To_Your_Order}
                             </lightning:button>
                         </lightning:layoutItem>
                     </div>

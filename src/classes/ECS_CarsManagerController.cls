@@ -28,12 +28,15 @@ public with sharing class ECS_CarsManagerController {
         String queryString;
         String conditionsSection = '';
         queryString = 'SELECT Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Brand__c, ECS_Model__c, ECS_ImageID__c, ' +
-                'ECS_EngineSize__c, ECS_FuelType__c, ECS_BodyStyle__c, ECS_Transmission__c, Description, ' +
+                'ECS_EngineSize__c, ECS_FuelType__c, ECS_BodyStyle__c, ECS_Transmission__c, Description, ECS_VideoPresentationUrl__c, ' +
                 'ECS_BatteryCapacity__c' + ' FROM Product2 ';
         queryString += (String.isBlank(searchedCar.Name) &&
                 String.isBlank(searchedCar.ECS_VinNumber__c) &&
                 searchedCar.ECS_ProductionYear__c == null &&
-                String.isBlank(searchedCar.ECS_Model__c)) ? '' : 'WHERE ';
+                String.isBlank(searchedCar.ECS_Model__c)&&
+                String.isBlank(searchedCar.ECS_BodyStyle__c) &&
+                String.isBlank(searchedCar.ECS_FuelType__c)&&
+                String.isBlank(searchedCar.ECS_Transmission__c)) ? '' : 'WHERE ';
 
         conditionsSection += String.isBlank(searchedCar.Name) ? '' : 'Name LIKE \'%' + searchedCar.Name + '%\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_VinNumber__c) ? ' AND ' : '' ;
@@ -42,6 +45,12 @@ public with sharing class ECS_CarsManagerController {
         conditionsSection += searchedCar.ECS_ProductionYear__c == null ? '' : 'ECS_ProductionYear__c LIKE \'%' + searchedCar.ECS_ProductionYear__c + '%\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_Model__c) ? ' AND ' : '' ;
         conditionsSection += String.isBlank(searchedCar.ECS_Model__c) ? '' : 'ECS_Model__c = \'' + searchedCar.ECS_Model__c + '\'';
+        conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_BodyStyle__c) ? ' AND ' : '' ;
+        conditionsSection += String.isBlank(searchedCar.ECS_BodyStyle__c) ? '' : 'ECS_BodyStyle__c = \'' + searchedCar.ECS_BodyStyle__c + '\'';
+        conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_FuelType__c) ? ' AND ' : '' ;
+        conditionsSection += String.isBlank(searchedCar.ECS_FuelType__c) ? '' : 'ECS_FuelType__c = \'' + searchedCar.ECS_FuelType__c + '\'';
+        conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_Transmission__c) ? ' AND ' : '' ;
+        conditionsSection += String.isBlank(searchedCar.ECS_Transmission__c) ? '' : 'ECS_Transmission__c = \'' + searchedCar.ECS_Transmission__c + '\'';
 //        conditionsSection += ' AND IsActive = true';
 
 
@@ -534,11 +543,36 @@ public with sharing class ECS_CarsManagerController {
         User currentUser = ECS_Utils.getCurrentUser();
         Group newsletterGroup = [SELECT id FROM Group WHERE Name ='Newsletter Group'];
         GroupMember groupMember = [SELECT id FROM GroupMember WHERE UserOrGroupId=:currentUser.Id AND GroupId=:newsletterGroup.Id LIMIT 1];
-
         System.debug('GroupMember: '+groupMember);
 
         delete groupMember;
+    }
 
+    @AuraEnabled
+    public static List <String> getSelectOptions(sObject objObject, string fld) {
+        system.debug('objObject --->' + objObject);
+        system.debug('fld --->' + fld);
+        List < String > allOpts = new list < String > ();
+        // Get the object type of the SObject.
+        Schema.sObjectType objType = objObject.getSObjectType();
+
+        // Describe the SObject using its object type.
+        Schema.DescribeSObjectResult objDescribe = objType.getDescribe();
+
+        // Get a map of fields for the SObject
+        map < String, Schema.SObjectField > fieldMap = objDescribe.fields.getMap();
+
+        // Get the list of picklist values for this field.
+        list < Schema.PicklistEntry > values =
+                fieldMap.get(fld).getDescribe().getPickListValues();
+
+        // Add these values to the selectoption list.
+        for (Schema.PicklistEntry a: values) {
+            allOpts.add(a.getValue());
+        }
+        system.debug('allOpts ---->' + allOpts);
+        allOpts.sort();
+        return allOpts;
     }
 
 }

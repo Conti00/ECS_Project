@@ -2,6 +2,10 @@
  * Created by BRITENET on 01.02.2019.
  */
 ({
+    onInit: function(component, event, helper){
+           helper.onInit(component);
+        },
+
     onSearchedCarsRecived: function(component, event, helper){
         component.find("carList").set("v.cars", event.getParams().carsToDisplay);
     },

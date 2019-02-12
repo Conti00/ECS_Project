@@ -50,7 +50,7 @@
         <lightning:layoutItem size="12" class="slds-align--absolute-center">
             <lightning:button name="Submit" onclick="{!c.onSave}">
                 <lightning:icon iconName="action:update_status" size="medium"/>
-                    {!$Label.c.ECS_Submit}
+                &nbsp;{!$Label.c.ECS_Submit}
             </lightning:button>
 
 
