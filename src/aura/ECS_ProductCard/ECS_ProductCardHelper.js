@@ -19,6 +19,49 @@
                   $A.enqueueAction(action);
         },
 
+    removeCartItem: function (component, carId) {
+        console.log('items: '+JSON.stringify(component.get("v.selectedCarsIds")));
+        console.log('items to delete: '+component.get("v.selectedCarsIds").length);
+        let action = component.get('c.deleteCustomerCartItem');
+
+        action.setParams({
+            "listOfIds": carId
+        });
+
+        action.setCallback(this, function(response){
+            let state = response.getState();
+            if (state === "SUCCESS")
+            {
+
+
+                let resultsToast = $A.get("e.force:showToast");
+                if ($A.util.isUndefined(resultsToast)){
+                    alert('Item deleted from cart');
+                }else{
+                    resultsToast.setParams({
+                        "type": "success",
+                        "title": "Success",
+                        "message": "Item deleted from cart"
+                    });
+                    resultsToast.fire();
+                }
+            }else{
+                let resultsToast = $A.get("e.force:showToast");
+                if ($A.util.isUndefined(resultsToast)){
+                    alert('Error when deleting cart item');
+                }else{
+                    resultsToast.setParams({
+                        "type": "error",
+                        "title": "Error",
+                        "message": "Error when deleting cart item"
+                    });
+                    resultsToast.fire();
+                }
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
     addCarToCart: function(component,carObj){
           var action = component.get('c.addCarToUserCart');
           action.setParams({

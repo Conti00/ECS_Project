@@ -8,11 +8,11 @@
                  setTimeout(function() {
                              $('.carousel').slick({
                                  autoplay: true,
-                                 autoplaySpeed: 2000,
+                                 autoplaySpeed: 3000,
                                  arrows: false,
                                  dots: true,
                                  infinite: true,
-                                 speed: 300,
+                                 speed: 2000,
                                  slidesToShow: 1,
                                  adaptiveHeight: true,
                                  draggable: true,

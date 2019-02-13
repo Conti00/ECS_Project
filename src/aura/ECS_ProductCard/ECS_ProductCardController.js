@@ -19,6 +19,7 @@
                     });
                     $A.enqueueAction(orgBaseUrl);
                     helper.onInit(component);
+
                     helper.getLowestPrice(component, component.get('v.car.Id'));
     },
 
@@ -26,6 +27,7 @@
             var carObj = component.get("v.car");
             console.log("car obj: "+JSON.stringify(carObj));
             helper.addCarToCart(component,carObj);
+            component.set('v.carInCart',true);
     },
 
     redirectToCart: function(component, event, helper){
@@ -50,6 +52,19 @@
                     let reviewId = event.getSource().get("v.value");
                     helper.deleteReview(component, reviewId);
     },
+
+     deleteCartItem: function (component, event, helper) {
+            let listOfSelectedIds = component.get("v.selectedCarsIds");
+            let carId = event.getSource().get("v.value");
+            if(!listOfSelectedIds.includes(carId)){
+                listOfSelectedIds.push(carId);
+                component.set("v.selectedCarsIds", listOfSelectedIds);
+            }
+
+            helper.removeCartItem(component, listOfSelectedIds);
+            component.set('v.carInCart',false);
+
+        },
 
 
 })

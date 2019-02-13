@@ -16,9 +16,9 @@
         <div style=" text-align:center;"><img style="display:inline-block; width:100%; height:400px "
                                               src="{!$Resource.ECS_Banner1}"/></div>
         <div style=" text-align:center;"><img style="display:inline-block; width:100%; height:400px "
-                                              src="{!$Resource.ECS_Banner1}"/></div>
+                                              src="{!$Resource.ECS_Banner2}"/></div>
         <div style=" text-align:center;"><img style="display:inline-block; width:100%; height:400px "
-                                              src="{!$Resource.ECS_Banner1}"/></div>
+                                              src="{!$Resource.ECS_Banner3}"/></div>
     </div>
 
 </aura:component>

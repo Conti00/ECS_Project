@@ -20,6 +20,12 @@
             helper.getCars(component, searchedCar);
     },
 
+    onCarSelected: function(component, event, helper){
+            component.set("v.selectedCarId", event.getParam("carId"));
+            component.set("v.selectedCar", event.getParam("car"));
+            component.set("v.productCardShown", event.getParam("carSelected"));
+        },
+
     onCarsChange: function(component, event, helper){
         var searchedCar = component.get("v.searchedCar");
         console.log(JSON.stringify(searchedCar));

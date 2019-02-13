@@ -575,4 +575,43 @@ public with sharing class ECS_CarsManagerController {
         return allOpts;
     }
 
+    @AuraEnabled
+    public static PricebookEntry getCar(){
+
+        PricebookEntry car =
+        [SELECT Product2.Id,
+                Product2.Name,
+                Product2.ECS_Brand__c,
+                Product2.ECS_Model__c,
+                Product2.ECS_ImageID__c,
+                Product2.ECS_VinNumber__c,
+                Product2.ECS_ProductionYear__c,
+                Product2.ECS_Transmission__c,
+                Product2.Description,
+                Product2.ECS_BodyStyle__c,
+                Product2.ECS_EngineSize__c,
+                Product2.ECS_FuelType__c,
+                Product2.ECS_BatteryCapacity__c,
+                Pricebook2.ECS_EndDate__c,
+                UnitPrice
+        FROM PricebookEntry WHERE Pricebook2.ECS_CurrentlyActive__c =true
+        ORDER BY Pricebook2.ECS_EndDate__c, UnitPrice ASC LIMIT 1];
+
+        return car;
+    }
+
+    @AuraEnabled
+    public static PricebookEntry getStandardPriceById(String carId){
+
+        PricebookEntry standardPrice =
+        [SELECT Product2.Id,
+                UnitPrice
+        FROM PricebookEntry WHERE Pricebook2.ECS_CurrentlyActive__c =true AND Product2.Id =:carId
+        ORDER BY UnitPrice DESC LIMIT 1];
+
+        return standardPrice;
+    }
+
+
+
 }

@@ -27,3 +27,7 @@
 .THIS .slds-form--compound .slds-form-element__row .slds-form-element{
     text-align:justify;
 }
+
+.THIS .carIsFromHotSale{
+    display:none;
+}

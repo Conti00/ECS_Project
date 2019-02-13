@@ -15,6 +15,7 @@
             listOfSelectedIds.push(carId);
             component.set("v.selectedCarsIds", listOfSelectedIds);
         }
+        console.log(listOfSelectedIds);
 
         helper.removeCartItem(component, listOfSelectedIds);
     },
