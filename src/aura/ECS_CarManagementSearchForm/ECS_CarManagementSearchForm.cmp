@@ -107,7 +107,13 @@
         </lightning:button>
         <lightning:button name="{!$Label.c.ECS_Advanced_Search}" onclick="{!c.changeSearch}" class="slds-m-top--medium" variant="neutral">
             <lightning:icon iconName="action:dial_in" size="medium"/>
-            &nbsp;{!$Label.c.ECS_Advanced_Search}
+            <aura:if isTrue="{!!v.isAdvancedSearch}">
+                &nbsp;{!$Label.c.ECS_Advanced_Search}
+                <aura:set attribute="else">
+                    &nbsp;{!$Label.c.ECS_Basic_Search}
+            </aura:set>
+            </aura:if>
+
         </lightning:button>
     </footer>
 

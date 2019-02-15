@@ -18,6 +18,9 @@
                 }
             });
             $A.enqueueAction(orgBaseUrl);
+            let carId = component.get("v.car.Id");
+            helper.getLowestPrice(component, carId);
+            helper.getStandardPrice(component, carId);
         },
 
 

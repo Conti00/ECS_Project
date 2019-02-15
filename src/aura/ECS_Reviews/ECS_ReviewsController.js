@@ -7,10 +7,18 @@
         },
 
         displayReviewModal : function(component, event, helper){
-            component.set("v.displayReviewModal",true);
+            console.log(event.getSource().get('v.title'));
+            if(event.getSource().get('v.title') =='add'){
+                component.set("v.displayReviewList", false);
+            }else{
+                component.set("v.displayReviewList", true);
+            }
+
             let purchasedItems = event.getSource().get("v.value");
             component.set("v.selectedCarId",purchasedItems.Product2.Id);
+            component.set("v.selectedCarName", purchasedItems.Product2.Name);
             component.set("v.selectedOrderItemId",purchasedItems.Id);
+            component.set("v.displayReviewModal",true);
 
         },
 

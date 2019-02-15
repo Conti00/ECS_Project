@@ -71,6 +71,14 @@
                                 $A.enqueueAction(action);
                       },
 
+    redirectToAddCar: function(component, event, helper){
+            let urlEvent = $A.get("e.force:navigateToURL");
+               urlEvent.setParams({
+                 "url": "/add-car"
+               });
+               urlEvent.fire();
+        },
+
 
 
 

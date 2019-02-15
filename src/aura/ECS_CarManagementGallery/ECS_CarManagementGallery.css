@@ -23,6 +23,7 @@
 
 .THIS .slds-card{
     border:none;
+    text-align:center;
 }
 
 .THIS .slds-text-color{
@@ -66,4 +67,9 @@
 
 .THIS .slds-car{
     border:none;
+}
+
+.THIS .slds-card__body{
+    text-align:center;
+    margin-top:10px;
 }

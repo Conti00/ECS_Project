@@ -1,0 +1,209 @@
+<!--
+ - Created by BRITENET on 14.02.2019.
+ -->
+
+<aura:component description="ECS_ManagementNewCar" controller="ECS_CarsManagerController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,
+                force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
+
+    <aura:attribute name="car" type="Product2"/>
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+    <aura:attribute name="yearOptions" type="String[]"/>
+    <aura:attribute name="bodyStyleOptions" type="String[]"/>
+    <aura:attribute name="fuelTypeOptions" type="String[]"/>
+    <aura:attribute name="transmissionOptions" type="String[]"/>
+    <aura:attribute name="batteryCapacityOptions" type="String[]"/>
+    <aura:attribute name="newCar" type="Product2"
+                    default="{  'sobjectType': 'Product2',
+                                'Name': '',
+                                'ECS_Model__c': '',
+                                'ECS_VinNumber__c': '',
+                                'ECS_EngineSize__c': '',
+                                'ECS_BatteryCapacity__c': '',
+                                'ECS_BodyStyle__c': '',
+                                'ECS_FuelType__c': '',
+                                'Description': '',
+                                'ECS_Transmission__c': '',
+                                'ECS_VideoPresentationUrl__c': '',
+                                'ECS_isCreatingCompleted__c': false,
+                                'ECS_ProductionYear__c': ''}"/>
+    <aura:attribute name="newCarListPrice" type="Integer"/>
+    <aura:attribute name="isRecordLoaded" type="Boolean" default="false"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="carId" type="String"/>
+    <aura:attribute name="newCarCreatingStage" type="String" default="carDetails"/>
+    <aura:attribute name="carToDelete" type="Product2"/>
+    <aura:attribute name="variant" type="String" default="non-linear"/>
+    <aura:attribute name="hideUpdateButton" type="Boolean" default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+
+    <force:recordData aura:id="newCarData"
+                      fields="Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c,
+                          ECS_isCreatingCompleted__c, ECS_EngineSize__c,ECS_BatteryCapacity__c,ECS_BodyStyle__c,
+                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c "
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.car}"
+                      targetFields="{!v.newCar}"/>
+
+
+    <aura:if isTrue="{!v.carId != null}">
+        <force:recordData aura:id="carRecordToDelete"
+                          recordId="{!v.carId}"
+                          mode="EDIT"
+                          fields="Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c,
+                          ECS_isCreatingCompleted__c, ECS_EngineSize__c,ECS_BatteryCapacity__c,ECS_BodyStyle__c,
+                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c "
+                          targetRecord="{!v.carToDelete}"/>
+    </aura:if>
+
+    <aura:if isTrue="{!v.isAdmin}">
+
+        <div class="{!v.newCarCreatingStage == 'carDetails' ? 'slds' : 'slds-hide'}">
+            <lightning:progressIndicator currentStep="1" type="path" hasError="false" variant="base"
+                                         class="progressBar">
+                <lightning:progressStep label="Specify Car Details" value="1"/>
+                <lightning:progressStep label="Add Pictures" value="2"/>
+            </lightning:progressIndicator>
+            <lightning:card iconName="" title="">
+                <div class="slds-p-horizontal--small">
+                    <fieldset class="slds-form--compound">
+                        <div class="slds-form-element__group">
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:input aura:id="newCarFormField" label="Product Name"
+                                                     value="{!v.newCar.Name}" required="true"/>
+                                </div>
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:input label="Car Model" value="{!v.newCar.ECS_Model__c}"
+                                                     aura:id="newCarFormField" required="true"/>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:select label="Model Year" aura:id="newCarFormField"
+                                                      value="{!v.newCar.ECS_ProductionYear__c}" required="true">
+                                        <option value=""></option>
+                                        <aura:iteration var="year" items="{!v.yearOptions}">
+                                            <option value="{!year}" text="{!year}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:input aura:id="newCarFormField" label="VIN"
+                                                     value="{!v.newCar.ECS_VinNumber__c}" required="true"/>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <p class="slds-text-body_small slds-text-color_weak"></p>
+                                    <lightning:input type="number" label="Price" value="{!v.newCarListPrice}"
+                                                     formatter="currency" step="1" required="true"
+                                                     aura:id="newCarFormField"/>
+                                </div>
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <p class="slds-text-body_small slds-text-color_weak"></p>
+                                    <lightning:input type="number" label="Engine Size"
+                                                     value="{!v.newCar.ECS_EngineSize__c}"
+                                                     step="1" required="true" aura:id="newCarFormField"/>
+                                </div>
+                            </div>
+
+
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:select label="{!$Label.c.ECS_Body_Style}" aura:id="searchCarForm"
+                                                      value="{!v.newCar.ECS_BodyStyle__c}" required="true">
+                                        <aura:iteration var="bodyStyle" items="{!v.bodyStyleOptions}">
+                                            <option value="{!bodyStyle.value}" text="{!bodyStyle.label}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:select label="{!$Label.c.ECS_Fuel_Type}" aura:id="searchCarForm"
+                                                      value="{!v.newCar.ECS_FuelType__c}" required="true">
+                                        <aura:iteration var="fuelType" items="{!v.fuelTypeOptions}">
+                                            <option value="{!fuelType.value}" text="{!fuelType.label}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <lightning:select label="{!$Label.c.ECS_Transmission}" aura:id="searchCarForm"
+                                                      value="{!v.newCar.ECS_Transmission__c}" required="true">
+                                        <aura:iteration var="transmission" items="{!v.transmissionOptions}">
+                                            <option value="{!transmission.value}" text="{!transmission.label}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <p class="slds-text-body_small slds-text-color_weak"></p>
+                                    <lightning:input type="number" label="{!$Label.c.ECS_Battery_Capacity}"
+                                                     value="{!v.newCar.ECS_BatteryCapacity__c}"
+                                                     step="0.1" required="true" aura:id="newCarFormField"/>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <p class="slds-text-body_small slds-text-color_weak"></p>
+                                    <lightning:input type="text" label="{!$Label.c.ECS_Description}"
+                                                     value="{!v.newCar.Description}"
+                                                     required="true" aura:id="newCarFormField"/>
+                                </div>
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <p class="slds-text-body_small slds-text-color_weak"></p>
+                                    <lightning:input type="text" label="{!$Label.c.ECS_VideoPresentation}"
+                                                     value="{!v.newCar.ECS_VideoPresentationUrl__c}"
+                                                     aura:id="newCarFormField" placeholder="https://www.youtube.com/embed/yourPresentationId"/>
+                                </div>
+                            </div>
+
+
+                            <div class="slds-form-element__row slds-grid_align-center">
+                                <lightning:button name="{!$Label.c.ECS_Next}" onclick="{!c.handleCreateRecord}">
+                                    <lightning:icon iconName="action:check" size="medium"/>
+                                    &nbsp;{!$Label.c.ECS_Next}
+                                </lightning:button>
+
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </div>
+            </lightning:card>
+        </div>
+        <div class="{!v.newCarCreatingStage == 'carPictures' ? 'slds' : 'slds-hide'}">
+            <lightning:progressIndicator currentStep="2" type="path" hasError="false" variant="base">
+                <lightning:progressStep label="Specify Car Details" value="1"/>
+                <lightning:progressStep label="Add Pictures" value="2"/>
+            </lightning:progressIndicator>
+
+
+            <lightning:card iconName="" title="">
+                <c:ECS_CarManagementGallery carId="{!v.carId}"/>
+            </lightning:card>
+        </div>
+        <aura:set attribute="else">
+            <lightning:card title="">
+                <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
+                    <h1></h1><br/>
+                    <span></span>
+                    <div class="slds-form-element__row slds-grid_vertical-align-end">
+                        <div class="slds-text-align_center">{!$Label.c.ECS_No_permisson_to_access_page}</div>
+                        <div class="slds-text-align_center">{!$Label.c.ECS_Only_administrator_could_add_new_cars}
+                        </div>
+                        <lightning:layoutItem padding="around-large" class="slds-text-align_center">
+                            <lightning:button name="{!$Label.c.ECS_Go_To_Home_Page}" onclick="{!c.redirectToHome}">
+                                <lightning:icon iconName="action:google_news" size="medium"/>
+                                &nbsp;{!$Label.c.ECS_Go_To_Home_Page}
+                            </lightning:button>
+                        </lightning:layoutItem>
+                    </div>
+                </lightning:layout>
+            </lightning:card>
+        </aura:set>
+    </aura:if>
+</aura:component>

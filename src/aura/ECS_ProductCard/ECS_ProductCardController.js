@@ -19,7 +19,7 @@
                     });
                     $A.enqueueAction(orgBaseUrl);
                     helper.onInit(component);
-
+                    helper.getProductReviews(component);
                     helper.getLowestPrice(component, component.get('v.car.Id'));
     },
 
@@ -46,6 +46,14 @@
 
     hideReviewModal : function(component, event, helper){
             component.set("v.displayReviewModal",false);
+    },
+
+    displayPresentationModal : function(component, event, helper){
+                component.set("v.displayPresentationModal",true);
+    },
+
+    hidePresentationModal : function(component, event, helper){
+                component.set("v.displayPresentationModal",false);
     },
 
     deleteMovieReview : function(component, event, helper) {

@@ -44,7 +44,7 @@ public with sharing class ECS_CarsManagerController {
         conditionsSection += String.isNotBlank(conditionsSection) && searchedCar.ECS_ProductionYear__c != null ? ' AND ' : '' ;
         conditionsSection += searchedCar.ECS_ProductionYear__c == null ? '' : 'ECS_ProductionYear__c LIKE \'%' + searchedCar.ECS_ProductionYear__c + '%\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_Model__c) ? ' AND ' : '' ;
-        conditionsSection += String.isBlank(searchedCar.ECS_Model__c) ? '' : 'ECS_Model__c = \'' + searchedCar.ECS_Model__c + '\'';
+        conditionsSection += String.isBlank(searchedCar.ECS_Model__c) ? '' : 'ECS_Model__c LIKE \'%' + searchedCar.ECS_Model__c + '%\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_BodyStyle__c) ? ' AND ' : '' ;
         conditionsSection += String.isBlank(searchedCar.ECS_BodyStyle__c) ? '' : 'ECS_BodyStyle__c = \'' + searchedCar.ECS_BodyStyle__c + '\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_FuelType__c) ? ' AND ' : '' ;
@@ -360,7 +360,7 @@ public with sharing class ECS_CarsManagerController {
                 )
                 FROM Order
                 WHERE
-                        OwnerId = :currentUser.Id
+                        OwnerId = :currentUser.Id ORDER BY CreatedDate DESC
 
         ];
         return orders;
@@ -385,7 +385,7 @@ public with sharing class ECS_CarsManagerController {
                         Product2.ECS_Brand__c, Product2.ECS_Model__c, Product2.ECS_VinNumber__c,
                         Product2.ECS_ProductionYear__c, Product2.ECS_ImageID__c
                 FROM OrderItem
-                WHERE OrderId IN :carsIds
+                WHERE OrderId IN :carsIds ORDER BY Order.CreatedDate DESC
         ]);
 
         return purchasedItems;
@@ -394,7 +394,7 @@ public with sharing class ECS_CarsManagerController {
     @AuraEnabled
     public static List<ECS_Review__c> getProductReviewsById(String carId) {
         List<ECS_Review__c> reviews = [
-                SELECT Id, ECS_Comment__c, ECS_Rating__c, CreatedBy.Username, CreatedDate
+                SELECT Id, ECS_Comment__c, ECS_Rating__c, CreatedBy.Username, CreatedBy.Name, CreatedDate
                 FROM ECS_Review__c
                 WHERE ECS_Product__c = :carId
                 ORDER BY CreatedDate DESC

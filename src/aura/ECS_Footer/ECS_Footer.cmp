@@ -7,15 +7,13 @@
                 access="global">
 
     <aura:attribute name="isSubscriber" type="Boolean" default="false"/>
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
     <lightning:card title="">
         <div class="customBackground" style="text-align:center;">
 
             <div style=" text-align:center; display:inline-block; width:100%; height:100%;">
-                <!--<img style="display:inline-block; width:100%; height:100%; background-image: url({!$Resource.ECS_Banner_Footer}); "-->
-                <!--src="{!$Resource.ECS_Banner_Footer}"/>-->
-
 
                 <aura:if isTrue="{!!v.isSubscriber}">
                     <lightning:button name="{!$Label.c.ECS_Subscribe}" onclick="{!c.subscribe}"
@@ -31,6 +29,7 @@
                         </lightning:button>
                     </aura:set>
                 </aura:if>
+
             </div>
 
 

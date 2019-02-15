@@ -22,6 +22,8 @@
 
 .THIS .slds-button_neutral {
     border:none;
+    margin-left:0px;
+    margin-top:5px;
 }
 
 .THIS .slds-form--compound .slds-form-element__row .slds-form-element{
@@ -30,4 +32,12 @@
 
 .THIS .carIsFromHotSale{
     display:none;
+}
+
+.THIS .customButton{
+    margin-top:2rem !important;
+}
+
+.THIS .slds-p-around_medium{
+    text-align:center;
 }

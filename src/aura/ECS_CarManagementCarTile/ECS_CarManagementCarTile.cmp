@@ -5,6 +5,8 @@
 <aura:component description="ECS_CarManagementCarTile" controller="ECS_CarsManagerController">
     <aura:attribute name="car" type="Product2"/>
     <aura:attribute name="carId" type="String"/>
+    <aura:attribute name="carStandardPrice" type="String"/>
+    <aura:attribute name="carCurrentLowestPrice" type="String"/>
     <aura:attribute name="carSelected" type="Boolean" default="false"/>
     <aura:attribute name="orgUrl" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -17,7 +19,7 @@
                 : 'background-image:url(\''+v.orgUrl+'/sfc/servlet.shepherd/document/download/0691t000000KgkFAAS'}"
              class="innertile">
             <div class="lower-third">
-                <h1 class="slds-truncate">{!v.car.Name}</h1>
+                <h1 class="slds-truncate">{!v.car.Name} - {!v.carCurrentLowestPrice}</h1>
             </div>
         </div>
     </lightning:button>

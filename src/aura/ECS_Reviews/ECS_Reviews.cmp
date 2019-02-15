@@ -9,7 +9,9 @@
     <aura:attribute name="customerPurchasedItems" type="Object[]"/>
     <aura:attribute name="selectedCarsIds" type="String[]"/>
     <aura:attribute name="selectedCarId" type="String"/>
+    <aura:attribute name="selectedCarName" type="String"/>
     <aura:attribute name="displayReviewModal" type="Boolean"/>
+    <aura:attribute name="displayReviewList" type="Boolean"/>
     <aura:attribute name="selectedOrderItemId" type="String"/>
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
     <aura:handler name="ReviewAdded" event="c:ECS_ReviewAdded" action="{!c.onReviewAdded}"/>
@@ -55,12 +57,22 @@
                             <lightning:formattedText value="{!customerPurchasedItem.Product2.ECS_ProductionYear__c}"/>
                         </td>
                         <td data-label="{!$Label.c.ECS_Order_Date}">
-                            <lightning:formattedDateTime day="2-digit" month="numeric" year="numeric"  hour="2-digit" minute="2-digit" value="{!customerPurchasedItem.Order.CreatedDate}"/>
+                            <lightning:formattedDateTime day="2-digit" month="numeric" year="numeric" hour="2-digit"
+                                                         minute="2-digit"
+                                                         value="{!customerPurchasedItem.Order.CreatedDate}"/>
                         </td>
                         <td data-label="{!$Label.c.ECS_Actions}">
-                            <lightning:button name="{!$Label.c.ECS_Add_Review}" disabled="{!customerPurchasedItem.ECS_isReviewed__c}" onclick="{!c.displayReviewModal}" value="{!customerPurchasedItem}">
+                            <lightning:button name="{!$Label.c.ECS_Add_Review}"
+                                              class="{!!customerPurchasedItem.ECS_isReviewed__c?'':'slds-hide'}"
+                                              onclick="{!c.displayReviewModal}" value="{!customerPurchasedItem}" title="add">
+                                <lightning:icon iconName="action:follow" size="medium"/>
+                                &nbsp;{!$Label.c.ECS_Add_Review}
+                            </lightning:button>
+                            <lightning:button name="{!$Label.c.ECS_Watch_Opinion}"
+                                              class="{!customerPurchasedItem.ECS_isReviewed__c?'':'slds-hide'}"
+                                              onclick="{!c.displayReviewModal}" value="{!customerPurchasedItem}" title="watch">
                                 <lightning:icon iconName="action:description" size="medium"/>
-                                {!$Label.c.ECS_Add_Review}
+                                &nbsp;{!$Label.c.ECS_Watch_Opinion}
                             </lightning:button>
                         </td>
                     </tr>
@@ -72,7 +84,8 @@
             <aura:if isTrue="{!v.displayReviewModal}">
 
                 <!--###### MODAL BOX Start######-->
-                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium" >
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                         aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
                     <div class="slds-modal__container">
                         <!-- ###### MODAL BOX HEADER Start ######-->
                         <header class="slds-modal__header">
@@ -81,26 +94,34 @@
                                                   alternativeText="{!$Label.c.ECS_Close}"
                                                   variant="bare-inverse"
                                                   class="slds-modal__close"/>
-                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.ECS_Add_Review}</h2>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                                {!v.selectedCarName}</h2>
                         </header>
                         <!--###### MODAL BOX BODY Part Start######-->
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
 
-                            <lightning:layoutItem size="" >
+                            <lightning:layoutItem size="">
                                 <lightning:card title="" iconName="" class="slds-m-horizontal--small" actions="">
-                                    <c:ECS_AddCarReview carId="{!v.selectedCarId}"/>
+
+                                    <aura:if isTrue="{!!v.displayReviewList}">
+                                        <c:ECS_AddCarReview carId="{!v.selectedCarId}"/>
+                                        <aura:set attribute="else">
+                                            <c:ECS_WatchOpinion carId="{!v.selectedCarId}"/>
+                                        </aura:set>
+                                    </aura:if>
+
                                 </lightning:card>
                             </lightning:layoutItem>
 
 
                         </div>
                         <!--###### MODAL BOX FOOTER Part Start ######-->
-                        <footer class="slds-modal__footer">
-                            <lightning:button variant="neutral"
-                                              label="{!$Label.c.ECS_Close}"
-                                              title="{!$Label.c.ECS_Close}"
-                                              onclick="{! c.hideReviewModal }"/>
-                        </footer>
+                        <!--<footer class="slds-modal__footer">-->
+                            <!--<lightning:button variant="neutral"-->
+                                              <!--label="{!$Label.c.ECS_Close}"-->
+                                              <!--title="{!$Label.c.ECS_Close}"-->
+                                              <!--onclick="{! c.hideReviewModal }"/>-->
+                        <!--</footer>-->
                     </div>
                 </section>
                 <div class="slds-backdrop slds-backdrop_open"></div>

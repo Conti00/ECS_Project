@@ -12,6 +12,7 @@
 
     clearForm: function(component, event, helper){
         helper.clearSearchForm(component,event,helper);
+         helper.getCars(component, component.get("v.searchedCar"));
     },
 
     searchCars: function(component, event, helper){

@@ -1,0 +1,17 @@
+<!--
+ - Created by BRITENET on 13.02.2019.
+ -->
+
+<aura:component description="ECS_CarServiceMap">
+    <!-- attributes -->
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="markersTitle" type="String" />
+
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <!-- the map component -->
+    <lightning:map
+            mapMarkers="{! v.mapMarkers }"
+            markersTitle="{!v.markersTitle}"/>
+</aura:component>
