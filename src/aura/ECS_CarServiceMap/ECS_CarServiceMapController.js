@@ -3,48 +3,18 @@
  */
 ({
     init: function (cmp, event, helper) {
+        let carBrand = cmp.get("v.car.ECS_Brand__c");
+
         cmp.set('v.mapMarkers', [
             {
                 location: {
-                    City: 'Kielce',
+                    City: carBrand,
                     Country: 'Poland',
-                    Street: 'IX wieków Kielc'
                 },
 
                 icon: 'custom:custom20',
-                title: 'Kielce'
-            },
-            {
-                            location: {
-                                City: 'Ostrowiec Swietokrzyski',
-                                Country: 'Poland'
-
-                            },
-
-                            icon: 'custom:custom22',
-                            title: 'Ostrowiec Swietokrzyski'
-                        },
-            {
-                            location: {
-                                City: 'Radom',
-                                Country: 'Poland'
-
-                            },
-
-                            icon: 'custom:custom23',
-                            title: 'Radom'
-                        },
-            {
-                            location: {
-                                City: 'Lublin',
-                                Country: 'Poland',
-                            },
-
-                            icon: 'custom:custom28',
-                            title: 'Lublin'
-                        },
-
-
+                title: carBrand
+            }
 
         ]);
         cmp.set('v.markersTitle', 'City');

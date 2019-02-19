@@ -47,7 +47,6 @@
                         <lightning:input label="{!$Label.c.ECS_Model}" aura:id="searchCarForm" name="carModel"
                                          value="{!v.searchedCar.ECS_Model__c}"/>
                     </div>
-
                     <div class="slds-form-element slds-size--1-of-3">
                         <lightning:select label="{!$Label.c.ECS_Year}" aura:id="searchCarForm"
                                           value="{!v.searchedCar.ECS_ProductionYear__c}">
@@ -57,19 +56,16 @@
                             </aura:iteration>
                         </lightning:select>
                     </div>
-
                 </div>
                 <aura:if isTrue="{!v.isAdvancedSearch}">
                     <div class="slds-form-element__row">
                         <div class="slds-form-element slds-size--1-of-3">
-
                             <lightning:select label="{!$Label.c.ECS_Body_Style}" aura:id="searchCarForm"
                                               value="{!v.searchedCar.ECS_BodyStyle__c}">
                                 <aura:iteration var="bodyStyle" items="{!v.bodyStyleOptions}">
                                     <option value="{!bodyStyle.value}" text="{!bodyStyle.label}"/>
                                 </aura:iteration>
                             </lightning:select>
-
                         </div>
                         <div class="slds-form-element slds-size--1-of-3">
                             <lightning:select label="{!$Label.c.ECS_Fuel_Type}" aura:id="searchCarForm"
@@ -79,7 +75,6 @@
                                 </aura:iteration>
                             </lightning:select>
                         </div>
-
                         <div class="slds-form-element slds-size--1-of-3">
                             <lightning:select label="{!$Label.c.ECS_Transmission}" aura:id="searchCarForm"
                                               value="{!v.searchedCar.ECS_Transmission__c}">
@@ -90,32 +85,31 @@
                         </div>
                     </div>
                 </aura:if>
-
             </div>
         </fieldset>
     </div>
 
     <footer class="slds-card__footer " style="text-align:center; ">
-
-        <lightning:button name="{!$Label.c.ECS_Search}" onclick="{!c.searchCars}" class="slds-m-top--medium" variant="neutral">
+        <lightning:button name="{!$Label.c.ECS_Search}" onclick="{!c.searchCars}" class="slds-m-top--medium"
+                          variant="neutral">
             <lightning:icon iconName="action:view_relationship" size="medium"/>
             &nbsp;{!$Label.c.ECS_Search}
         </lightning:button>
-        <lightning:button name="{!$Label.c.ECS_Clear}" onclick="{!c.clearForm}" class="slds-m-top--medium" variant="neutral">
+        <lightning:button name="{!$Label.c.ECS_Clear}" onclick="{!c.clearForm}" class="slds-m-top--medium"
+                          variant="neutral">
             <lightning:icon iconName="action:remove_relationship" size="medium"/>
             &nbsp;{!$Label.c.ECS_Clear}
         </lightning:button>
-        <lightning:button name="{!$Label.c.ECS_Advanced_Search}" onclick="{!c.changeSearch}" class="slds-m-top--medium" variant="neutral">
+        <lightning:button name="{!$Label.c.ECS_Advanced_Search}" onclick="{!c.changeSearch}" class="slds-m-top--medium"
+                          variant="neutral">
             <lightning:icon iconName="action:dial_in" size="medium"/>
             <aura:if isTrue="{!!v.isAdvancedSearch}">
                 &nbsp;{!$Label.c.ECS_Advanced_Search}
                 <aura:set attribute="else">
                     &nbsp;{!$Label.c.ECS_Basic_Search}
-            </aura:set>
+                </aura:set>
             </aura:if>
-
         </lightning:button>
     </footer>
-
 
 </aura:component>

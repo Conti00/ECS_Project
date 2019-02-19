@@ -63,6 +63,11 @@
                             </td>
                             <td data-label="{!$Label.c.ECS_Actions}">
 
+                                <lightning:button name="{!$Label.c.ECS_Go_to_Product}" onclick="{!c.redirectToDetailsPage}"
+                                                  value="{!customerCartItem.car.Id}">
+                                    <lightning:icon iconName="action:info" size="small"/>
+
+                                </lightning:button>
                                 <lightning:button name="{!$Label.c.ECS_Remove}" onclick="{!c.deleteCartItem}"
                                                   value="{!customerCartItem.car.Id}">
                                     <lightning:icon iconName="action:delete" size="small"/>

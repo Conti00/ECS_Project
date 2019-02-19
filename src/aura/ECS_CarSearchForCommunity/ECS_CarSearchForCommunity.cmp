@@ -18,6 +18,7 @@
     <aura:handler name="oncarsrecived" event="c:ECS_OnCarsRecieved" action="{!c.onSearchedCarsRecived}"/>
     <aura:handler name="carSelectedEvent" event="c:ECS_CarManagementCarSelectedEvent" action="{!c.onCarSelected}"/>
 
+
     <aura:if isTrue="{!!v.productCardShown}">
         <lightning:layout horizontalAlign="center" verticalAlign="start" multipleRows="true">
             <lightning:layoutItem size="12" padding="around-small" flexibility="grow">

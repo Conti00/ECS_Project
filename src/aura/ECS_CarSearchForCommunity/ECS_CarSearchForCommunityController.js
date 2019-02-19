@@ -4,6 +4,14 @@
 ({
     onInit: function(component, event, helper){
            helper.onInit(component);
+           let sPageURL = decodeURIComponent(window.location.search.substring(1));
+                              let carId = sPageURL.substring(6);
+                              component.set("v.selectedCarId", carId);
+                              console.log('url: '+carId);
+
+                              if(carId!=null){
+                                  helper.getCarById(component);
+                              }
         },
 
     onSearchedCarsRecived: function(component, event, helper){

@@ -16,6 +16,7 @@
     <aura:attribute name="carIsFromHotSale" type="Boolean" default="false"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
+
     <lightning:layout>
         <lightning:layoutItem size="12">
             <lightning:card iconName=""
@@ -35,7 +36,8 @@
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-2">
                                     <lightning:button name="{!$Label.c.ECS_Add_To_Cart}"
-                                                      onclick="{!c.onCarAddedToCart}">
+                                                      onclick="{!c.onCarAddedToCart}"
+                                                      class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale':''}">
                                         <lightning:icon iconName="action:new" size="medium"/>
                                         &nbsp;{!$Label.c.ECS_Add_To_Cart}
                                     </lightning:button>
@@ -43,6 +45,11 @@
                                                       class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale':''}">
                                         <lightning:icon iconName="action:view_relationship" size="medium"/>
                                         &nbsp;{!$Label.c.ECS_Go_To_Cart}
+                                    </lightning:button>
+                                    <lightning:button name="{!$Label.c.ECS_Go_to_Product}" onclick="{!c.redirectToDetailsPage}" value="{!v.car.Id}"
+                                                      class="{!equals(v.carIsFromHotSale, true) ? '':'carIsFromHotSale'}">
+                                        <lightning:icon iconName="action:info" size="medium"/>
+                                        &nbsp;{!$Label.c.ECS_Go_to_Product}
                                     </lightning:button>
                                 </div>
 
@@ -221,16 +228,25 @@
 
                     <!--<iframe hidden="{!!v.car.ECS_VideoPresentationUrl__c}" style="text-align:center" width="520"-->
                     <!--height="280" src="{!v.car.ECS_VideoPresentationUrl__c}" class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale': ''}"></iframe>-->
-                    <c:ECS_CarServiceMap/>
+                    <c:ECS_CarServiceMap car="{!v.car}"/>
 
 
                 </div>
             </div>
         </lightning:tab>
         <lightning:tab title="{!$Label.c.ECS_VideoPresentation}" label="{!$Label.c.ECS_VideoPresentation}">
-            <iframe hidden="{!!v.car.ECS_VideoPresentationUrl__c}" style="text-align:center" width="1024"
-                    height="768" src="{!v.car.ECS_VideoPresentationUrl__c}"
+            <aura:if isTrue="{!v.car.ECS_VideoPresentationUrl__c}">
+            <iframe hidden="{!!v.car.ECS_VideoPresentationUrl__c}" style="text-align:center" width="720"
+                    height="460" src="{!v.car.ECS_VideoPresentationUrl__c}"
                     class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale': ''}"></iframe>
+                <aura:set attribute="else">
+                    <lightning:layoutItem class="slds-align_absolute-center"
+                                          flexibility="auto"
+                                          padding="around-small">
+                        <ui:outputText value="No video presentation found"/>
+                    </lightning:layoutItem>
+                </aura:set>
+            </aura:if>
         </lightning:tab>
         </lightning:tabset>
         </div>
@@ -239,6 +255,7 @@
         </lightning:card>
         </lightning:layoutItem>
     </lightning:layout>
+
 </aura:component>
 
 

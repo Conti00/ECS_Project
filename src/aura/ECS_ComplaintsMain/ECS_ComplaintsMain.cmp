@@ -60,6 +60,11 @@
                             <lightning:formattedDateTime day="2-digit" month="numeric" year="numeric"  hour="2-digit" minute="2-digit" value="{!customerPurchasedItem.Order.CreatedDate}"/>
                         </td>
                         <td data-label="{!$Label.c.ECS_Actions}">
+                            <lightning:button name="{!$Label.c.ECS_Go_to_Product}"
+                                              onclick="{!c.redirectToDetailsPage}" value="{!customerPurchasedItem.Product2.Id}">
+                                <lightning:icon iconName="action:info" size="medium"/>
+                                &nbsp;{!$Label.c.ECS_Go_to_Product}
+                            </lightning:button>
                             <lightning:button name="{!$Label.c.ECS_Add_Case}" disabled="{!customerPurchasedItem.ECS_isCaseed__c}" onclick="{!c.displayCaseModal}" value="{!customerPurchasedItem}">
                                 <lightning:icon iconName="action:new_case" size="medium"/>
                                 &nbsp;{!$Label.c.ECS_Add_Case}

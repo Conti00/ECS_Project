@@ -30,7 +30,7 @@
                                         FieldNames="['Product2.ECS_Brand__c', 'Product2.ECS_Model__c', 'Product2.ECS_ProductionYear__c', 'UnitPrice',]"
                                         FieldLabels="['Product2.ECS_Brand__c:Brand', 'Product2.ECS_Model__c:Model', 'Product2.ECS_ProductionYear__c:Year', 'UnitPrice: Price']"
                                         MatchCriteria="{#'OrderId = \'' + v.selectedOrderId + '\''}"
-                                        ReferenceFields=""
+                                        ReferenceFields="['Product2.ECS_Brand__c']"
                                         SortByField="Quantity"
                                         SortOrder="DESC"/>
 

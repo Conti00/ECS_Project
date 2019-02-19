@@ -62,6 +62,11 @@
                                                          value="{!customerPurchasedItem.Order.CreatedDate}"/>
                         </td>
                         <td data-label="{!$Label.c.ECS_Actions}">
+                            <lightning:button name="{!$Label.c.ECS_Go_to_Product}"
+                                              onclick="{!c.redirectToDetailsPage}" value="{!customerPurchasedItem.Product2.Id}">
+                                <lightning:icon iconName="action:info" size="medium"/>
+                                &nbsp;{!$Label.c.ECS_Go_to_Product}
+                            </lightning:button>
                             <lightning:button name="{!$Label.c.ECS_Add_Review}"
                                               class="{!!customerPurchasedItem.ECS_isReviewed__c?'':'slds-hide'}"
                                               onclick="{!c.displayReviewModal}" value="{!customerPurchasedItem}" title="add">

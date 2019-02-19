@@ -24,7 +24,7 @@
         let carId = event.getSource().get("v.value");
         let urlEvent = $A.get("e.force:navigateToURL");
            urlEvent.setParams({
-             "url": "/search-cars?id="+carId
+             "url": "/search-cars?carId="+carId
            });
            urlEvent.fire();
     },

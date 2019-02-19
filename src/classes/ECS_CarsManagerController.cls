@@ -612,6 +612,30 @@ public with sharing class ECS_CarsManagerController {
         return standardPrice;
     }
 
+    @AuraEnabled
+    public static Product2 getCarById(String carId){
+
+        Product2 car =
+        [SELECT Id,
+                Name,
+                ECS_Brand__c,
+                ECS_Model__c,
+                ECS_ImageID__c,
+                ECS_VinNumber__c,
+                ECS_ProductionYear__c,
+                ECS_Transmission__c,
+                Description,
+                ECS_BodyStyle__c,
+                ECS_EngineSize__c,
+                ECS_FuelType__c,
+                ECS_BatteryCapacity__c,
+                ECS_VideoPresentationUrl__c
+
+        FROM Product2 WHERE Id =:carId];
+
+        return car;
+    }
+
 
 
 }
