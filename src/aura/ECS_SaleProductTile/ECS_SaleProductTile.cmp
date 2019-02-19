@@ -18,24 +18,26 @@
                 <div class="upper-third">
                     <h1 class="slds-truncate">{!$Label.c.ECS_HOT_SALE}</h1>
                 </div>
-
-                <c:ECS_ProductCard car="{!v.car.Product2}" carIsFromHotSale="true" carCurrentLowestPrice="{!v.carCurrentLowestPrice}"/>
-
+                <c:ECS_ProductCard car="{!v.car.Product2}" carIsFromHotSale="true"
+                                   carCurrentLowestPrice="{!v.carCurrentLowestPrice}"/>
                 <div class="slds-p-horizontal--small">
                     <fieldset class="slds-form--compound">
                         <div class="slds-form-element__group">
                             <div class="slds-form-element__row slds-grid_vertical-align-start">
 
                                 <div class="slds-form-element slds-size--1-of-3">
-                                    <p class="slds-text-body_small slds-text-color_weak">{!$Label.c.ECS_Sale_Expire}: </p>
-                                    <ui:outputText value="{!v.car.Pricebook2.ECS_EndDate__c }" title="{!$Label.c.ECS_Sale_Expire}"
+                                    <p class="slds-text-body_small slds-text-color_weak">{!$Label.c.ECS_Sale_Expire}
+                                        : </p>
+                                    <ui:outputText value="{!v.car.Pricebook2.ECS_EndDate__c }"
+                                                   title="{!$Label.c.ECS_Sale_Expire}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-3">
                                     <p class="slds-text-body_small slds-text-color_weak">{!$Label.c.ECS_Old_Price}: </p>
                                     <strike>
-                                    <ui:outputText value="{!v.carStandardPrice +'€'}" title="{!$Label.c.ECS_Old_Price}"
-                                                   class="slds-text-heading_medium"/>
+                                        <ui:outputText value="{!v.carStandardPrice +'€'}"
+                                                       title="{!$Label.c.ECS_Old_Price}"
+                                                       class="slds-text-heading_medium"/>
                                     </strike>
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-3">
@@ -43,14 +45,10 @@
                                     <ui:outputText value="{!v.carCurrentLowestPrice +'€'}" title="{!$Label.c.ECS_Price}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
-
                             </div>
-                            </div>
-
-
+                        </div>
                     </fieldset>
                 </div>
-
             </lightning:card>
         </lightning:layoutItem>
     </lightning:layout>

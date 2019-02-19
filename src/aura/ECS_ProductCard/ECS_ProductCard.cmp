@@ -4,6 +4,7 @@
 
 <aura:component description="ECS_ProductCard" controller="ECS_CarsManagerController"
                 implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes" access="global">
+
     <aura:attribute name="carId" type="String"/>
     <aura:attribute name="car" type="Product2"/>
     <aura:attribute name="selectedCarsIds" type="String[]"/>
@@ -14,8 +15,8 @@
     <aura:attribute name="productReviews" type="ECS_Review__c[]"/>
     <aura:attribute name="isAdmin" type="Boolean" default="false"/>
     <aura:attribute name="carIsFromHotSale" type="Boolean" default="false"/>
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <lightning:layout>
         <lightning:layoutItem size="12">
@@ -46,7 +47,8 @@
                                         <lightning:icon iconName="action:view_relationship" size="medium"/>
                                         &nbsp;{!$Label.c.ECS_Go_To_Cart}
                                     </lightning:button>
-                                    <lightning:button name="{!$Label.c.ECS_Go_to_Product}" onclick="{!c.redirectToDetailsPage}" value="{!v.car.Id}"
+                                    <lightning:button name="{!$Label.c.ECS_Go_to_Product}"
+                                                      onclick="{!c.redirectToDetailsPage}" value="{!v.car.Id}"
                                                       class="{!equals(v.carIsFromHotSale, true) ? '':'carIsFromHotSale'}">
                                         <lightning:icon iconName="action:info" size="medium"/>
                                         &nbsp;{!$Label.c.ECS_Go_to_Product}
@@ -57,25 +59,26 @@
                             <div class="slds-form-element__row slds-grid_vertical-align-end">
                                 <div class="slds-form-element slds-size--1-of-3">
                                     <p class="slds-text-body_small slds-text-color_weak">
-                                        {!$Label.c.ECS_Product_Name}: </p>
+                                    {!$Label.c.ECS_Product_Name}: </p>
                                     <ui:outputText value="{!v.car.Name}" title="{!$Label.c.ECS_Product_Name}"
                                                    class="slds-text-heading_medium"/>
-
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-3">
                                     <p class="slds-text-body_small slds-text-color_weak">{!$Label.c.ECS_Model}: </p>
                                     <ui:outputText value="{!v.car.ECS_Model__c}" title="{!$Label.c.ECS_Model}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
-                                <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element slds-size--1-of-3': 'slds-form-element slds-size--1-of-3'}">
+                                <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element slds-size--1-of-3'
+                                        : 'slds-form-element slds-size--1-of-3'}">
                                     <p class="slds-text-body_small slds-text-color_weak">
-                                        {!$Label.c.ECS_Engine_Size}: </p>
+                                    {!$Label.c.ECS_Engine_Size}: </p>
                                     <ui:outputText value="{!v.car.ECS_EngineSize__c}"
                                                    title="{!$Label.c.ECS_Engine_Size}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
                             </div>
-                            <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end': 'slds-form-element__row slds-grid_vertical-align-end'}">
+                            <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end'
+                                    : 'slds-form-element__row slds-grid_vertical-align-end'}">
                                 <div class="slds-form-element slds-size--1-of-3">
                                     <p class="slds-text-body_small slds-text-color_weak">{!$Label.c.ECS_Year}: </p>
                                     <ui:outputText value="{!v.car.ECS_ProductionYear__c}" title="{!$Label.c.ECS_Year}"
@@ -93,58 +96,57 @@
                                 </div>
                             </div>
 
-                            <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end': 'slds-form-element__row slds-grid_vertical-align-end'}">
+                            <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end'
+                                    : 'slds-form-element__row slds-grid_vertical-align-end'}">
                                 <div class="slds-form-element slds-size--1-of-3">
                                     <p class="slds-text-body_small slds-text-color_weak">
-                                        {!$Label.c.ECS_Body_Style}: </p>
+                                    {!$Label.c.ECS_Body_Style}: </p>
                                     <ui:outputText value="{!v.car.ECS_BodyStyle__c}" title="{!$Label.c.ECS_Body_Style}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-3">
                                     <p class="slds-text-body_small slds-text-color_weak">
-                                        {!$Label.c.ECS_Transmission}: </p>
+                                    {!$Label.c.ECS_Transmission}: </p>
                                     <ui:outputText value="{!v.car.ECS_Transmission__c}"
                                                    title="{!$Label.c.ECS_Transmission}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-3">
                                     <p class="slds-text-body_small slds-text-color_weak">
-                                        {!$Label.c.ECS_Battery_Capacity}: </p>
+                                    {!$Label.c.ECS_Battery_Capacity}: </p>
                                     <ui:outputText value="{!v.car.ECS_BatteryCapacity__c+' kWh'}"
                                                    title="{!$Label.c.ECS_Battery_Capacity}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
                             </div>
 
-                            <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end': 'slds-form-element__row slds-grid_vertical-align-end'}">
+                            <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end'
+                                    : 'slds-form-element__row slds-grid_vertical-align-end'}">
                                 <div class="slds-form-element slds-size--1-of-1">
                                     <p class="slds-text-body_small slds-text-color_weak">
-                                        {!$Label.c.ECS_Description}: </p>
+                                    {!$Label.c.ECS_Description}: </p>
                                     <ui:outputText value="{!v.car.Description}" title="{!$Label.c.ECS_Description}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
                             </div>
-
-
                         </div>
-
                     </fieldset>
                 </div>
 
-                <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end': 'slds-form-element__row slds-grid_vertical-align-end'}">
+                <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end'
+                        : 'slds-form-element__row slds-grid_vertical-align-end'}">
                     <lightning:tabset variant="scoped">
                         <lightning:tab title="{!$Label.c.ECS_Reviews}" label="{!$Label.c.ECS_Reviews}">
                             <lightning:layoutItem size="">
                                 <lightning:card title="" iconName="" class="slds-m-horizontal--small" actions="">
+
                                     <aura:if isTrue="{!v.productReviews.length > 0}">
                                         <div class="">
                                             <ul class="slds-feed__list">
                                                 <aura:iteration items="{!v.productReviews}" var="productReview">
-
                                                     <li class="slds-feed__item slds-p-vertical--x-small"
                                                         style="border-bottom: 1px solid rgb(217, 219, 221)">
                                                         <article class="slds-post">
-
                                                             <div class="slds-grid slds-grid--align-spread">
                                                                 <p class="slds-col ">
                                                                     <header class="slds-post__header slds-media">
@@ -152,110 +154,101 @@
                                                                             <a href="javascript:void(0);"
                                                                                class="slds-avatar slds-avatar_circle slds-avatar_large">
                                                                                 <lightning:icon
-                                                                                        iconName="standard:messaging_user"></lightning:icon>
+                                                                                        iconName="standard:messaging_user"/>
                                                                             </a>
+                                                                            <div class="slds-media__body">
+                                                                                <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate ">
+                                                                                    <lightning:formattedDateTime
+                                                                                            value="{!productReview.CreatedDate}"
+                                                                                            year="numeric"
+                                                                                            day="2-digit" month="short"
+                                                                                            weekday="short"
+                                                                                            hour="2-digit"
+                                                                                            minute="2-digit"/>
+                                                                                </div>
+                                                                                <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center">
+                                                                                        {!productReview.CreatedBy.Name}
+                                                                                </div>
+                                                                                <div class="slds-text-body_small">
+                                                                                    <c:FiveStarRating
+                                                                                            value="{!productReview.ECS_Rating__c}"
+                                                                                            readonly="true"/>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <lightning:layout
+                                                                                            multipleRows="true">
+                                                                                        <lightning:layoutItem size="12"
+                                                                                                              padding="around-small">
+                                                                                            <label class="slds-form-element__label"
+                                                                                                   for="input-id-01">{!$Label.c.ECS_Opinion}</label>
+                                                                                            <ui:outputRichText
+                                                                                                    value="{!productReview.ECS_Comment__c}"/>
+                                                                                        </lightning:layoutItem>
+                                                                                    </lightning:layout>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="slds-media__body">
-                                                                            <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate ">
-                                                                                <lightning:formattedDateTime
-                                                                                        value="{!productReview.CreatedDate}"
-                                                                                        year="numeric"
-                                                                                        day="2-digit" month="short"
-                                                                                        weekday="short"
-                                                                                        hour="2-digit"
-                                                                                        minute="2-digit"/>
-
-                                                                            </div>
-                                                                            <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center">
-                                                                                {!productReview.CreatedBy.Name}
-                                                                            </div>
-                                                                <p class="slds-text-body_small">
-                                                                    <c:FiveStarRating
-                                                                            value="{!productReview.ECS_Rating__c}"
-                                                                            readonly="true"/>
+                                                                    </header>
                                                                 </p>
-
+                                                                <p class="slds-col slds-size--2-of-12">
+                                                                    <aura:if isTrue="{!v.isAdmin}">
+                                                                        <lightning:button name="Remove Reviews"
+                                                                                          onclick="{!c.deleteMovieReview}"
+                                                                                          value="{!productReview.Id}"
+                                                                                          class="slds-float_right">
+                                                                            <lightning:icon iconName="action:delete"
+                                                                                            size="medium"/>
+                                                                        </lightning:button>
+                                                                    </aura:if>
+                                                                </p>
                                                             </div>
-                                                            </header>
-                                                            <div>
-                                                                <lightning:layout multipleRows="true">
-                                                                    <lightning:layoutItem size="12"
-                                                                                          padding="around-small">
-                                                                        <label class="slds-form-element__label"
-                                                                               for="input-id-01">{!$Label.c.ECS_Opinion}</label>
-                                                                        <ui:outputRichText
-                                                                                value="{!productReview.ECS_Comment__c}"/>
-                                                                    </lightning:layoutItem>
-                                                                </lightning:layout>
-                                                            </div>
-                                                            </p>
-                                                            <p class="slds-col slds-size--2-of-12">
-                                                                <aura:if isTrue="{!v.isAdmin}">
-                                                                    <lightning:button name="Remove Reviews"
-                                                                                      onclick="{!c.deleteMovieReview}"
-                                                                                      value="{!productReview.Id}"
-                                                                                      class="slds-float_right">
-                                                                        <lightning:icon iconName="action:delete"
-                                                                                        size="medium"/>
-                                                                    </lightning:button>
-                                                                </aura:if>
-                                                            </p>
-
+                                                        </article>
+                                                    </li>
+                                                </aura:iteration>
+                                            </ul>
                                         </div>
-                                        </article>
-                                        </li>
-                                        </aura:iteration>
 
-                                        </ul>
+                                        <aura:set attribute="else">
+                                            <lightning:layoutItem class="slds-align_absolute-center"
+                                                                  flexibility="auto"
+                                                                  padding="around-small">
+                                                <ui:outputText value="No reviews found"/>
+                                            </lightning:layoutItem>
+                                        </aura:set>
+                                    </aura:if>
 
+                                </lightning:card>
+                            </lightning:layoutItem>
+                        </lightning:tab>
+                        <lightning:tab title="{!$Label.c.ECS_Service_Map}" label="{!$Label.c.ECS_Service_Map}">
+                            <div class="slds-form-element slds-size--2-of-3">
+                                <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end':
+                                        'slds-form-element__row slds-grid_vertical-align-end'}">
+                                    <c:ECS_CarServiceMap car="{!v.car}"/>
+                                </div>
+                            </div>
+                        </lightning:tab>
+                        <lightning:tab title="{!$Label.c.ECS_VideoPresentation}"
+                                       label="{!$Label.c.ECS_VideoPresentation}">
+                            <aura:if isTrue="{!v.car.ECS_VideoPresentationUrl__c}">
+                                <iframe hidden="{!!v.car.ECS_VideoPresentationUrl__c}" style="text-align:center"
+                                        width="720"
+                                        height="460" src="{!v.car.ECS_VideoPresentationUrl__c}"
+                                        class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale': ''}"></iframe>
+                                <aura:set attribute="else">
+                                    <lightning:layoutItem class="slds-align_absolute-center"
+                                                          flexibility="auto"
+                                                          padding="around-small">
+                                        <ui:outputText value="No video presentation found"/>
+                                    </lightning:layoutItem>
+                                </aura:set>
+                            </aura:if>
+                        </lightning:tab>
+                    </lightning:tabset>
                 </div>
-                <aura:set attribute="else">
-                    <lightning:layoutItem class="slds-align_absolute-center"
-                                          flexibility="auto"
-                                          padding="around-small">
-                        <ui:outputText value="No reviews found"/>
-                    </lightning:layoutItem>
-                </aura:set>
-                </aura:if>
-
             </lightning:card>
         </lightning:layoutItem>
-
-        </lightning:tab>
-        <lightning:tab title="{!$Label.c.ECS_Service_Map}" label="{!$Label.c.ECS_Service_Map}">
-            <div class="slds-form-element slds-size--2-of-3">
-                <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale slds-form-element__row slds-grid_vertical-align-end': 'slds-form-element__row slds-grid_vertical-align-end'}">
-
-                    <!--<iframe hidden="{!!v.car.ECS_VideoPresentationUrl__c}" style="text-align:center" width="520"-->
-                    <!--height="280" src="{!v.car.ECS_VideoPresentationUrl__c}" class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale': ''}"></iframe>-->
-                    <c:ECS_CarServiceMap car="{!v.car}"/>
-
-
-                </div>
-            </div>
-        </lightning:tab>
-        <lightning:tab title="{!$Label.c.ECS_VideoPresentation}" label="{!$Label.c.ECS_VideoPresentation}">
-            <aura:if isTrue="{!v.car.ECS_VideoPresentationUrl__c}">
-            <iframe hidden="{!!v.car.ECS_VideoPresentationUrl__c}" style="text-align:center" width="720"
-                    height="460" src="{!v.car.ECS_VideoPresentationUrl__c}"
-                    class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale': ''}"></iframe>
-                <aura:set attribute="else">
-                    <lightning:layoutItem class="slds-align_absolute-center"
-                                          flexibility="auto"
-                                          padding="around-small">
-                        <ui:outputText value="No video presentation found"/>
-                    </lightning:layoutItem>
-                </aura:set>
-            </aura:if>
-        </lightning:tab>
-        </lightning:tabset>
-        </div>
-
-
-        </lightning:card>
-        </lightning:layoutItem>
     </lightning:layout>
-
 </aura:component>
 
 

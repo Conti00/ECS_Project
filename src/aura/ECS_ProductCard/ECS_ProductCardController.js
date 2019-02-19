@@ -3,85 +3,71 @@
  */
 ({
 
-    doInit : function(component, event, helper){
-        var orgBaseUrl = component.get("c.getBaseUrlString");
-                    orgBaseUrl.setParams({
+	doInit: function (component, event, helper) {
+		helper.getOrgUrl(component);
+		helper.onInit(component);
+		helper.getProductReviews(component);
+		helper.getLowestPrice(component, component.get('v.car.Id'));
+	},
 
-                    });
-                    orgBaseUrl.setCallback(this, function(response){
-                        var state = response.getState();
-                        if(state === "SUCCESS"){
-                            component.set("v.orgUrl", response.getReturnValue());
-                            console.log("org url: "+component.get("v.orgUrl"));
-                        }else{
-                            console.log("Error geting images, ");
-                        }
-                    });
-                    $A.enqueueAction(orgBaseUrl);
-                    helper.onInit(component);
-                    helper.getProductReviews(component);
-                    helper.getLowestPrice(component, component.get('v.car.Id'));
-    },
+	onCarAddedToCart: function (component, event, helper) {
+		var carObj = component.get("v.car");
+		helper.addCarToCart(component, carObj);
+		component.set('v.carInCart', true);
+	},
 
-    onCarAddedToCart: function(component, event, helper){
-            var carObj = component.get("v.car");
-            console.log("car obj: "+JSON.stringify(carObj));
-            helper.addCarToCart(component,carObj);
-            component.set('v.carInCart',true);
-    },
+	redirectToCart: function (component, event, helper) {
+		let urlEvent = $A.get("e.force:navigateToURL");
+		urlEvent.setParams({
+			"url": "/cart"
+		});
+		urlEvent.fire();
+	},
 
-    redirectToCart: function(component, event, helper){
-            let urlEvent = $A.get("e.force:navigateToURL");
-            urlEvent.setParams({
-                "url": "/cart"
-            });
-            urlEvent.fire();
-    },
+	displayReviewModal: function (component, event, helper) {
+		component.set("v.displayReviewModal", true);
+		helper.getProductReviews(component);
 
-    displayReviewModal : function(component, event, helper){
-            component.set("v.displayReviewModal",true);
-            helper.getProductReviews(component);
+	},
 
-    },
+	hideReviewModal: function (component, event, helper) {
+		component.set("v.displayReviewModal", false);
+	},
 
-    hideReviewModal : function(component, event, helper){
-            component.set("v.displayReviewModal",false);
-    },
+	displayPresentationModal: function (component, event, helper) {
+		component.set("v.displayPresentationModal", true);
+	},
 
-    displayPresentationModal : function(component, event, helper){
-                component.set("v.displayPresentationModal",true);
-    },
+	hidePresentationModal: function (component, event, helper) {
+		component.set("v.displayPresentationModal", false);
+	},
 
-    hidePresentationModal : function(component, event, helper){
-                component.set("v.displayPresentationModal",false);
-    },
+	deleteMovieReview: function (component, event, helper) {
+		let reviewId = event.getSource().get("v.value");
+		helper.deleteReview(component, reviewId);
+	},
 
-    deleteMovieReview : function(component, event, helper) {
-                    let reviewId = event.getSource().get("v.value");
-                    helper.deleteReview(component, reviewId);
-    },
+	deleteCartItem: function (component, event, helper) {
+		let listOfSelectedIds = component.get("v.selectedCarsIds");
+		let carId = event.getSource().get("v.value");
+		if (!listOfSelectedIds.includes(carId)) {
+			listOfSelectedIds.push(carId);
+			component.set("v.selectedCarsIds", listOfSelectedIds);
+		}
 
-     deleteCartItem: function (component, event, helper) {
-            let listOfSelectedIds = component.get("v.selectedCarsIds");
-            let carId = event.getSource().get("v.value");
-            if(!listOfSelectedIds.includes(carId)){
-                listOfSelectedIds.push(carId);
-                component.set("v.selectedCarsIds", listOfSelectedIds);
-            }
+		helper.removeCartItem(component, listOfSelectedIds);
+		component.set('v.carInCart', false);
 
-            helper.removeCartItem(component, listOfSelectedIds);
-            component.set('v.carInCart',false);
+	},
 
-        },
-
-     redirectToDetailsPage: function(component, event, helper){
-             let carId = event.getSource().get("v.value");
-             let urlEvent = $A.get("e.force:navigateToURL");
-                urlEvent.setParams({
-                  "url": "/search-cars?carId="+carId
-                });
-                urlEvent.fire();
-         },
+	redirectToDetailsPage: function (component, event, helper) {
+		let carId = event.getSource().get("v.value");
+		let urlEvent = $A.get("e.force:navigateToURL");
+		urlEvent.setParams({
+			"url": "/search-cars?carId=" + carId
+		});
+		urlEvent.fire();
+	},
 
 
 })

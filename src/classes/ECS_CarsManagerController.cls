@@ -33,9 +33,9 @@ public with sharing class ECS_CarsManagerController {
         queryString += (String.isBlank(searchedCar.Name) &&
                 String.isBlank(searchedCar.ECS_VinNumber__c) &&
                 searchedCar.ECS_ProductionYear__c == null &&
-                String.isBlank(searchedCar.ECS_Model__c)&&
+                String.isBlank(searchedCar.ECS_Model__c) &&
                 String.isBlank(searchedCar.ECS_BodyStyle__c) &&
-                String.isBlank(searchedCar.ECS_FuelType__c)&&
+                String.isBlank(searchedCar.ECS_FuelType__c) &&
                 String.isBlank(searchedCar.ECS_Transmission__c)) ? '' : 'WHERE ';
 
         conditionsSection += String.isBlank(searchedCar.Name) ? '' : 'Name LIKE \'%' + searchedCar.Name + '%\'';
@@ -51,11 +51,8 @@ public with sharing class ECS_CarsManagerController {
         conditionsSection += String.isBlank(searchedCar.ECS_FuelType__c) ? '' : 'ECS_FuelType__c = \'' + searchedCar.ECS_FuelType__c + '\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_Transmission__c) ? ' AND ' : '' ;
         conditionsSection += String.isBlank(searchedCar.ECS_Transmission__c) ? '' : 'ECS_Transmission__c = \'' + searchedCar.ECS_Transmission__c + '\'';
-//        conditionsSection += ' AND IsActive = true';
-
 
         queryString += conditionsSection == null ? '' : conditionsSection;
-        system.debug('query string: ' + queryString);
         return queryString;
     }
 
@@ -77,17 +74,14 @@ public with sharing class ECS_CarsManagerController {
             update car;
             return 'SUCCESS';
         } catch (DmlException e) {
-            system.debug('error');
             return 'ERROR';
         }
     }
     @AuraEnabled
     public static String removeCarImage(String imageId) {
-        system.debug('on removeCar Apex: picid to delete: ' + imageId);
         ContentDocument picture = [SELECT id FROM ContentDocument WHERE id = :imageId];
         try {
             delete picture;
-            system.debug('on delete!!');
             return 'SUCCESS';
         } catch (DmlException e) {
             return 'ERROR';
@@ -194,7 +188,6 @@ public with sharing class ECS_CarsManagerController {
     public static String getCarStandardPriceBookEntryId(String carId) {
         String standardPriceBookId = [SELECT id, Name FROM Pricebook2 WHERE Name = 'Standard Price Book'][0].Id;
         List<PricebookEntry> carStandardPrices = [SELECT Id,UnitPrice FROM PricebookEntry WHERE Product2Id = :carId AND Pricebook2Id = :standardPriceBookId];
-        system.debug('selected prices: ' + carStandardPrices);
         return String.valueOf(carStandardPrices[0].Id);
     }
 
@@ -261,7 +254,6 @@ public with sharing class ECS_CarsManagerController {
         }
 
 
-
         String currentUserEmail = UserInfo.getUserEmail();
         Contact currentUserContact = [SELECT id FROM Contact WHERE Email = :currentUserEmail][0];
         Pricebook2 standardPriceBook = [SELECT Id FROM Pricebook2 WHERE IsStandard = true];
@@ -278,7 +270,6 @@ public with sharing class ECS_CarsManagerController {
 
         try {
             insert order;
-            system.debug('created: ' + order);
         } catch (System.DmlException e) {
             for (Integer i = 0; i < e.getNumDml(); i++) {
             }
@@ -293,7 +284,6 @@ public with sharing class ECS_CarsManagerController {
                 ordLineItem.Quantity = 1;
                 ordLineItem.UnitPrice = Integer.valueOf(getCarCurrentLowestPrice(cartItems[ii].car.Id));
                 ordLineItem.PricebookEntryId = getCarStandardPriceBookEntryId(cartItems[ii].car.Id);
-//                ordLineItem.ECS_StartingPrice__c = Integer.valueOf(getCarStandardPrice(cartItems[ii].car.Id));
                 OrderItems.add(ordLineItem);
 
             }
@@ -360,7 +350,8 @@ public with sharing class ECS_CarsManagerController {
                 )
                 FROM Order
                 WHERE
-                        OwnerId = :currentUser.Id ORDER BY CreatedDate DESC
+                        OwnerId = :currentUser.Id
+                ORDER BY CreatedDate DESC
 
         ];
         return orders;
@@ -385,7 +376,8 @@ public with sharing class ECS_CarsManagerController {
                         Product2.ECS_Brand__c, Product2.ECS_Model__c, Product2.ECS_VinNumber__c,
                         Product2.ECS_ProductionYear__c, Product2.ECS_ImageID__c
                 FROM OrderItem
-                WHERE OrderId IN :carsIds ORDER BY Order.CreatedDate DESC
+                WHERE OrderId IN :carsIds
+                ORDER BY Order.CreatedDate DESC
         ]);
 
         return purchasedItems;
@@ -440,7 +432,7 @@ public with sharing class ECS_CarsManagerController {
     }
 
     @AuraEnabled
-    public static String createCase(Case newCase){
+    public static String createCase(Case newCase) {
         User currentUser = ECS_Utils.getCurrentUser();
         Database.DMLOptions dmlOpts = new Database.DMLOptions();
         dmlOpts.assignmentRuleHeader.UseDefaultRule = true;
@@ -454,10 +446,10 @@ public with sharing class ECS_CarsManagerController {
         newCase.AccountId = currentUser.AccountId;
         newCase.SuppliedEmail = currentUser.Email;
         newCase.SuppliedName = currentUser.Name;
-        try{
+        try {
             insert newCase;
             return 'SUCCESS';
-        }catch (DmlException e){
+        } catch (DmlException e) {
             for (Integer i = 0; i < e.getNumDml(); i++) {
                 System.debug(e.getDmlMessage(i));
             }
@@ -481,7 +473,6 @@ public with sharing class ECS_CarsManagerController {
 
     @AuraEnabled
     public static void setSingleCarDiscount(String carId, Integer discountedPrice, String startDate, String endDate, String discountName) {
-        system.debug('given params: ' + carId + ' ' + discountedPrice + ' ' + startDate + ' ' + endDate);
         if (discountName == null || discountName.length() == 0) {
             discountName = 'Discount: ' + String.valueOf(startDate) + ' - ' + String.valueOf(endDate);
         }
@@ -490,7 +481,6 @@ public with sharing class ECS_CarsManagerController {
         discountPricebook.Name = discountName;
         discountPricebook.ECS_BeginDate__c = Date.valueOf(startDate);
         discountPricebook.ECS_EndDate__c = Date.valueOf(endDate);
-        system.debug(discountPricebook);
 
         try {
             insert discountPricebook;
@@ -503,7 +493,6 @@ public with sharing class ECS_CarsManagerController {
         carDiscountedPricebookEntry.Product2Id = carId;
         carDiscountedPricebookEntry.UnitPrice = Integer.valueOf(discountedPrice);
         carDiscountedPricebookEntry.IsActive = true;
-        system.debug(carDiscountedPricebookEntry);
 
         try {
             insert carDiscountedPricebookEntry;
@@ -513,12 +502,12 @@ public with sharing class ECS_CarsManagerController {
     }
 
     @AuraEnabled
-    public static Boolean isUserInNewsletterGroup(){
+    public static Boolean isUserInNewsletterGroup() {
         User currentUser = ECS_Utils.getCurrentUser();
-        Group newsletterGroup = [SELECT id FROM Group WHERE Name ='Newsletter Group'];
-        GroupMember groupMember = [SELECT id FROM GroupMember WHERE UserOrGroupId=:currentUser.Id AND GroupId=:newsletterGroup.Id LIMIT 1];
+        Group newsletterGroup = [SELECT id FROM Group WHERE Name = 'Newsletter Group'];
+        GroupMember groupMember = [SELECT id FROM GroupMember WHERE UserOrGroupId = :currentUser.Id AND GroupId = :newsletterGroup.Id LIMIT 1];
 
-        if(groupMember!=null){
+        if (groupMember != null) {
             return true;
         }
 
@@ -526,9 +515,9 @@ public with sharing class ECS_CarsManagerController {
     }
 
     @AuraEnabled
-    public static void setUserAsMemberNewsletterGroup(){
+    public static void setUserAsMemberNewsletterGroup() {
         User currentUser = ECS_Utils.getCurrentUser();
-        Group newsletterGroup = [SELECT id FROM Group WHERE Name ='Newsletter Group'];
+        Group newsletterGroup = [SELECT id FROM Group WHERE Name = 'Newsletter Group'];
 
         GroupMember groupMember = new GroupMember();
         groupMember.GroupId = newsletterGroup.Id;
@@ -539,103 +528,99 @@ public with sharing class ECS_CarsManagerController {
     }
 
     @AuraEnabled
-    public static void unsetUserAsMemberNewsletterGroup(){
+    public static void unsetUserAsMemberNewsletterGroup() {
         User currentUser = ECS_Utils.getCurrentUser();
-        Group newsletterGroup = [SELECT id FROM Group WHERE Name ='Newsletter Group'];
-        GroupMember groupMember = [SELECT id FROM GroupMember WHERE UserOrGroupId=:currentUser.Id AND GroupId=:newsletterGroup.Id LIMIT 1];
-        System.debug('GroupMember: '+groupMember);
+        Group newsletterGroup = [SELECT id FROM Group WHERE Name = 'Newsletter Group'];
+        GroupMember groupMember = [SELECT id FROM GroupMember WHERE UserOrGroupId = :currentUser.Id AND GroupId = :newsletterGroup.Id LIMIT 1];
+        System.debug('GroupMember: ' + groupMember);
 
         delete groupMember;
     }
 
     @AuraEnabled
     public static List <String> getSelectOptions(sObject objObject, string fld) {
-        system.debug('objObject --->' + objObject);
-        system.debug('fld --->' + fld);
+
         List < String > allOpts = new list < String > ();
-        // Get the object type of the SObject.
         Schema.sObjectType objType = objObject.getSObjectType();
-
-        // Describe the SObject using its object type.
         Schema.DescribeSObjectResult objDescribe = objType.getDescribe();
-
-        // Get a map of fields for the SObject
         map < String, Schema.SObjectField > fieldMap = objDescribe.fields.getMap();
-
-        // Get the list of picklist values for this field.
         list < Schema.PicklistEntry > values =
                 fieldMap.get(fld).getDescribe().getPickListValues();
-
-        // Add these values to the selectoption list.
-        for (Schema.PicklistEntry a: values) {
+        for (Schema.PicklistEntry a : values) {
             allOpts.add(a.getValue());
         }
-        system.debug('allOpts ---->' + allOpts);
         allOpts.sort();
         return allOpts;
     }
 
     @AuraEnabled
-    public static PricebookEntry getCar(){
+    public static PricebookEntry getCar() {
 
-        PricebookEntry car =
-        [SELECT Product2.Id,
-                Product2.Name,
-                Product2.ECS_Brand__c,
-                Product2.ECS_Model__c,
-                Product2.ECS_ImageID__c,
-                Product2.ECS_VinNumber__c,
-                Product2.ECS_ProductionYear__c,
-                Product2.ECS_Transmission__c,
-                Product2.Description,
-                Product2.ECS_BodyStyle__c,
-                Product2.ECS_EngineSize__c,
-                Product2.ECS_FuelType__c,
-                Product2.ECS_BatteryCapacity__c,
-                Pricebook2.ECS_EndDate__c,
-                UnitPrice
-        FROM PricebookEntry WHERE Pricebook2.ECS_CurrentlyActive__c =true
-        ORDER BY Pricebook2.ECS_EndDate__c, UnitPrice ASC LIMIT 1];
+        PricebookEntry car = [
+                SELECT Product2.Id,
+                        Product2.Name,
+                        Product2.ECS_Brand__c,
+                        Product2.ECS_Model__c,
+                        Product2.ECS_ImageID__c,
+                        Product2.ECS_VinNumber__c,
+                        Product2.ECS_ProductionYear__c,
+                        Product2.ECS_Transmission__c,
+                        Product2.Description,
+                        Product2.ECS_BodyStyle__c,
+                        Product2.ECS_EngineSize__c,
+                        Product2.ECS_FuelType__c,
+                        Product2.ECS_BatteryCapacity__c,
+                        Pricebook2.ECS_EndDate__c,
+                        UnitPrice
+                FROM PricebookEntry
+                WHERE Pricebook2.ECS_CurrentlyActive__c = true
+                ORDER BY Pricebook2.ECS_EndDate__c, UnitPrice ASC
+                LIMIT 1
+        ];
 
         return car;
     }
 
     @AuraEnabled
-    public static PricebookEntry getStandardPriceById(String carId){
+    public static PricebookEntry getStandardPriceById(String carId) {
 
-        PricebookEntry standardPrice =
-        [SELECT Product2.Id,
-                UnitPrice
-        FROM PricebookEntry WHERE Pricebook2.ECS_CurrentlyActive__c =true AND Product2.Id =:carId
-        ORDER BY UnitPrice DESC LIMIT 1];
+        PricebookEntry standardPrice = [
+                SELECT Product2.Id,
+                        UnitPrice
+                FROM PricebookEntry
+                WHERE Pricebook2.ECS_CurrentlyActive__c = true AND Product2.Id = :carId
+                ORDER BY UnitPrice DESC
+                LIMIT 1
+        ];
 
         return standardPrice;
     }
 
     @AuraEnabled
-    public static Product2 getCarById(String carId){
+    public static Product2 getCarById(String carId) {
 
-        Product2 car =
-        [SELECT Id,
-                Name,
-                ECS_Brand__c,
-                ECS_Model__c,
-                ECS_ImageID__c,
-                ECS_VinNumber__c,
-                ECS_ProductionYear__c,
-                ECS_Transmission__c,
-                Description,
-                ECS_BodyStyle__c,
-                ECS_EngineSize__c,
-                ECS_FuelType__c,
-                ECS_BatteryCapacity__c,
-                ECS_VideoPresentationUrl__c
+        Product2 car = [
+                SELECT Id,
+                        Name,
+                        ECS_Brand__c,
+                        ECS_Model__c,
+                        ECS_ImageID__c,
+                        ECS_VinNumber__c,
+                        ECS_ProductionYear__c,
+                        ECS_Transmission__c,
+                        Description,
+                        ECS_BodyStyle__c,
+                        ECS_EngineSize__c,
+                        ECS_FuelType__c,
+                        ECS_BatteryCapacity__c,
+                        ECS_VideoPresentationUrl__c
 
-        FROM Product2 WHERE Id =:carId];
+                FROM Product2
+                WHERE Id = :carId
+        ];
 
         return car;
     }
-
 
 
 }

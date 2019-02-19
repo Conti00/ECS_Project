@@ -4,20 +4,7 @@
 
  ({
         doInit: function(component, event, helper){
-            var orgBaseUrl = component.get("c.getBaseUrlString");
-            orgBaseUrl.setParams({
-
-            });
-            orgBaseUrl.setCallback(this, function(response){
-                var state = response.getState();
-                if(state === "SUCCESS"){
-                    component.set("v.orgUrl", response.getReturnValue());
-                    console.log("org url: "+component.get("v.orgUrl"));
-                }else{
-                    console.log("Error geting images, ");
-                }
-            });
-            $A.enqueueAction(orgBaseUrl);
+            helper.getOrgUrl(component);
             let carId = component.get("v.car.Id");
             helper.getLowestPrice(component, carId);
             helper.getStandardPrice(component, carId);
@@ -35,6 +22,5 @@
          });
          selectedCarEvent.fire();
      },
-
 
  })
