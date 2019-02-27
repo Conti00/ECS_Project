@@ -3,16 +3,14 @@
  -->
 
 <aura:component description="ECS_CarServiceMap">
-    <!-- attributes -->
     <aura:attribute name="mapMarkers" type="Object"/>
     <aura:attribute name="markersTitle" type="String" />
     <aura:attribute name="car" type="Product2"/>
 
-    <!-- handlers-->
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
-    <!-- the map component -->
     <lightning:map
-            mapMarkers="{! v.mapMarkers }"
+            mapMarkers="{!v.mapMarkers}"
+            zoomLevel="15"
             markersTitle="{!v.markersTitle}"/>
 </aura:component>

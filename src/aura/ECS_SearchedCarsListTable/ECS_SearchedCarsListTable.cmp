@@ -1,0 +1,77 @@
+<!--
+ - Created by BRITENET on 26.02.2019.
+ -->
+
+
+
+<aura:component description="ECS_SearchedCarsListTable">
+    <aura:attribute name="cars" type="Product2[]"/>
+    <aura:attribute name="selectedCarsIds" type="String[]"/>
+    <aura:attribute name="selectedCarsObjects" type="Product2[]"/>
+    <aura:attribute name="selectedRowIndex" type="Integer"/>
+
+    <aura:registerEvent name="carsIdsListSelected" type="c:ECS_CarsIdsListSelected"/>
+
+    <lightning:card title="" iconName="" class="slds-tabs_card">
+        <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="Select">Select</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Car Brand">Brand</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Car Model">Model</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Model Year">Year</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="VIN">VIN</div>
+                    </th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <aura:iteration items="{!v.cars}" var="car" indexVar="index">
+                    <tr aura:id="tableRow" onclick="{!c.tableRowClicked}" data-id="{!car.Id}"
+                        data-index="{!index}">
+                        <td data-label="Name" >
+                            <lightning:input type="checkbox-button" label="Input One" name="input1"
+                                             onchange="{!c.onCartItemSelect}" value="{!car.Id}"/>
+                        </td>
+                        <td data-label="Name">
+                            <lightning:formattedText value="{!car.Name}"/>
+                        </td>
+                        <td data-label="Model">
+                            <lightning:formattedText value="{!car.ECS_Model__c}"/>
+                        </td>
+                        <td data-label="Year">
+                            <lightning:formattedText value="{!car.ECS_ProductionYear__c}"/>
+                        </td>
+                        <td data-label="VIN">
+                            <lightning:formattedText value="{!car.ECS_VinNumber__c}"/>
+                        </td>
+                    </tr>
+                </aura:iteration>
+                </tbody>
+            </table>
+        </lightning:layout>
+        <lightning:layout horizontalAlign="center">
+            <lightning:layoutItem padding="around-small">
+                <lightning:button name="{!$Label.c.ECS_Add_Selected}" onclick="{!c.addSelectedIds}" class="slds-m-top--medium" disabled="{!v.selectedCarsIds.length > 1 ? false : true}"
+                                  variant="neutral">
+                    <lightning:icon iconName="action:new" size="medium"/>
+                    &nbsp;{!$Label.c.ECS_Add_Selected}
+                </lightning:button>
+
+
+                <!--<lightning:button label="Add Selected" onclick="{!c.addSelectedIds}" disabled="{!v.selectedCarsIds.length == 0 ? true : false}"/>-->
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:card>
+
+</aura:component>

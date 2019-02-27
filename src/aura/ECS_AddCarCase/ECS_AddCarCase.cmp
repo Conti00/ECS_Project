@@ -16,7 +16,7 @@
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <force:recordData aura:id="service"
-                      fields="Id, Name, Status, ECS_Car__c, Origin, Subject, Description"
+                      fields="Id, Name, Status, ECS_Car__c, ECS_Order__c, Origin, Subject, Description"
                       targetFields="{!v.newCase}"
                       targetError="{!v.recordError}"
                       recordUpdated="{!c.onRecordUpdated}"

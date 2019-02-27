@@ -3,7 +3,7 @@
  */
 ({
     getProductReviews: function(component){
-                     var action = component.get('c.getProductReviewsById');
+                     var action = component.get('c.getProductReviewsByIdAndUser');
                       console.log('carId: '+component.get("v.carId"));
                      action.setParams({
                          carId: String(component.get("v.carId"))
@@ -31,4 +31,17 @@
                      });
                      $A.enqueueAction(action);
                  },
+
+    editReview: function(component, productReview){
+        console.log('productReviewId: '+productReview.Id);
+//        var editRecordEvent = $A.get("e.force:editRecord");
+//                editRecordEvent.setParams({
+//                    "recordId": productReviewId
+//                });
+//                editRecordEvent.fire();
+
+     component.set("v.productReviewToUpdate", productReview);
+     component.set('v.openAddReview',true);
+
+    }
 })

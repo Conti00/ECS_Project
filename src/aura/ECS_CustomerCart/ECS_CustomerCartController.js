@@ -49,4 +49,8 @@
         helper.proceedCheckout(component);
     },
 
+    onCartItemsChange: function(component, event, helper){
+            helper.summarizeCartAmount(component);
+        },
+
 })

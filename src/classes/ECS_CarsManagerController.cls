@@ -28,7 +28,7 @@ public with sharing class ECS_CarsManagerController {
         String queryString;
         String conditionsSection = '';
         queryString = 'SELECT Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Brand__c, ECS_Model__c, ECS_ImageID__c, ' +
-                'ECS_EngineSize__c, ECS_FuelType__c, ECS_BodyStyle__c, ECS_Transmission__c, Description, ECS_VideoPresentationUrl__c, ' +
+                'ECS_EngineSize__c, ECS_FuelType__c, ECS_BodyStyle__c, ECS_Transmission__c, Description, ECS_VideoPresentationUrl__c, ECS_Service_Location__Latitude__s, ECS_Service_Location__Longitude__s, ' +
                 'ECS_BatteryCapacity__c' + ' FROM Product2 ';
         queryString += (String.isBlank(searchedCar.Name) &&
                 String.isBlank(searchedCar.ECS_VinNumber__c) &&
@@ -51,6 +51,7 @@ public with sharing class ECS_CarsManagerController {
         conditionsSection += String.isBlank(searchedCar.ECS_FuelType__c) ? '' : 'ECS_FuelType__c = \'' + searchedCar.ECS_FuelType__c + '\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_Transmission__c) ? ' AND ' : '' ;
         conditionsSection += String.isBlank(searchedCar.ECS_Transmission__c) ? '' : 'ECS_Transmission__c = \'' + searchedCar.ECS_Transmission__c + '\'';
+        conditionsSection +=' AND isActive = true';
 
         queryString += conditionsSection == null ? '' : conditionsSection;
         return queryString;
@@ -103,6 +104,7 @@ public with sharing class ECS_CarsManagerController {
     public static String addCarToUserCart(Product2 car) {
         List<ECS_Wrappers.ECS_CartItem> cartItems;
         String currentLowestCarPrice = getCarCurrentLowestPrice(car.Id);
+        List<OrderItem> purchasedItems = getCustomerPurchasedItems();
 
         if (Cache.Session.contains('local.Cart.cartItems')) {
             cartItems = (List<ECS_Wrappers.ECS_CartItem>) Cache.Session.get('local.Cart.cartItems');
@@ -116,6 +118,12 @@ public with sharing class ECS_CarsManagerController {
         } else {
             cartItems = new List<ECS_Wrappers.ECS_CartItem>();
         }
+
+//        for (Integer ii = 0; ii < purchasedItems.size(); ii++) {
+//            if (purchasedItems[ii].Product2.Id == car.Id) {
+//                throw new AuraHandledException('Item already bought');
+//            }
+//        }
         cartItems.add(new ECS_Wrappers.ECS_CartItem(car, null, currentLowestCarPrice));
         Cache.Session.put('local.Cart.cartItems', cartItems);
         return 'Success';
@@ -399,6 +407,22 @@ public with sharing class ECS_CarsManagerController {
     }
 
     @AuraEnabled
+    public static List<ECS_Review__c> getProductReviewsByIdAndUser(String carId) {
+        User currentUser = ECS_Utils.getCurrentUser();
+        List<ECS_Review__c> reviews = [
+                SELECT Id, ECS_Comment__c, ECS_Rating__c, CreatedBy.Username, CreatedBy.Name, CreatedDate
+                FROM ECS_Review__c
+                WHERE ECS_Product__c = :carId AND CreatedBy.Username = :currentUser.Email
+                ORDER BY CreatedDate DESC
+        ];
+        if (reviews != null) {
+            return reviews;
+        } else {
+            return new List<ECS_Review__c>();
+        }
+    }
+
+    @AuraEnabled
     public static String deleteReviewById(String reviewId) {
         List<ECS_Review__c> review = [
                 SELECT Id
@@ -574,6 +598,7 @@ public with sharing class ECS_CarsManagerController {
                         UnitPrice
                 FROM PricebookEntry
                 WHERE Pricebook2.ECS_CurrentlyActive__c = true
+                AND Product2.IsActive = true
                 ORDER BY Pricebook2.ECS_EndDate__c, UnitPrice ASC
                 LIMIT 1
         ];

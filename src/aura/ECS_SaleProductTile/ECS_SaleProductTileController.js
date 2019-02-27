@@ -8,7 +8,7 @@
 	},
 
 	onCarAddedToCart: function (component, event, helper) {
-		var carObj = component.get("v.car");
+		let carObj = component.get("v.car");
 		helper.addCarToCart(component, carObj);
 	},
 })

@@ -4,21 +4,20 @@
 ({
 	doInit: function (component, event, helper) {
 		helper.getYearOptions(component);
-		helper.getCars(component, component.get("v.searchedCar"));
+		helper.getCars(component);
 		helper.fetchPickListVal(component, 'ECS_BodyStyle__c', 'v.bodyStyleOptions');
 		helper.fetchPickListVal(component, 'ECS_FuelType__c', 'v.fuelTypeOptions');
 		helper.fetchPickListVal(component, 'ECS_Transmission__c', 'v.transmissionOptions');
 	},
 
 	clearForm: function (component, event, helper) {
-		helper.clearSearchForm(component, event, helper);
-		helper.getCars(component, component.get("v.searchedCar"));
+		helper.clearSearchForm(component);
+		helper.getCars(component);
 	},
 
 	searchCars: function (component, event, helper) {
-		var searchedCar = component.get("v.searchedCar");
-		console.log(searchedCar);
-		helper.getCars(component, searchedCar);
+		let searchedCar = component.get("v.searchedCar");
+		helper.getCars(component);
 	},
 
 	onCarSelected: function (component, event, helper) {
@@ -28,8 +27,8 @@
 	},
 
 	onCarsChange: function (component, event, helper) {
-		var searchedCar = component.get("v.searchedCar");
-		var onRecivedCarsEvent = component.getEvent("oncarsrecived");
+		let searchedCar = component.get("v.searchedCar");
+		let onRecivedCarsEvent = component.getEvent("oncarsrecived");
 		onRecivedCarsEvent.setParams({
 			"carsToDisplay": component.get("v.cars")
 		});
@@ -39,7 +38,7 @@
 	changeSearch: function (component, event, helper) {
 		if (component.get('v.isAdvancedSearch')) {
 			component.set('v.isAdvancedSearch', false);
-			helper.clearSearchForm(component, event, helper);
+			helper.clearSearchForm(component);
 		} else {
 			component.set('v.isAdvancedSearch', true);
 		}

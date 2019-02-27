@@ -2,10 +2,14 @@
  - Created by BRITENET on 07.02.2019.
  -->
 
-<aura:component description="ECS_AddCarReview" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
-    
+<aura:component description="ECS_AddCarReview"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,
+                force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global"
+                controller="ECS_CarsManagerController">
+
     <aura:attribute name="carId" type="String"/>
     <aura:attribute name="newReview" type="ECS_Review__c"/>
+    <aura:attribute name="reviewId" type="String"/>
     <aura:attribute name="recordError" type="String"/>
     <aura:registerEvent name="ReviewAdded" type="c:ECS_ReviewAdded"/>
 
@@ -27,13 +31,13 @@
 
         <lightning:layoutItem size="12" padding="around-small">
             <label class="slds-form-element__label" for="input-id-01">{!$Label.c.ECS_Rating}</label>
-            <c:FiveStarRating value="{!v.newReview.ECS_Rating__c}" readonly="false" />
+            <c:FiveStarRating value="{!v.newReview.ECS_Rating__c}" readonly="false"/>
         </lightning:layoutItem>
 
         <lightning:layoutItem size="12" class="slds-align--absolute-center">
             <lightning:button name="Submit" onclick="{!c.onSave}">
                 <lightning:icon iconName="action:update_status" size="medium"/>
-                {!$Label.c.ECS_Submit}
+                    {!$Label.c.ECS_Submit}
             </lightning:button>
 
 

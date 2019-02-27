@@ -12,11 +12,6 @@
     display:none;
 }
 
-/**
- * Created by BRITENET on 08.02.2019.
- */
-
-
 .THIS {
     font-size:20px;
 }
@@ -41,6 +36,12 @@
 
 .THIS .slds-text-heading_small{
     font-size:25px;
+}
+
+.THIS .custom-box {
+    text-align: center;
+    padding: 1rem;
+    border: 1px solid #d8dde6;
 }
 
 .THIS h2{
@@ -70,6 +71,40 @@
 }
 
 .THIS .slds-card__body{
-    text-align:center;
+
     margin-top:10px;
+    text-align:center;
 }
+
+.THIS .slds-button-group{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.THIS .slds-file--card{
+    border:none;
+}
+
+.THIS .slds-list_horizontal{
+    border-bottom: 1px solid rgb(217,219,221);
+}
+
+.THIS .customClass{
+    display:inline-flex;
+}
+
+.THIS .fileCardClass>div{
+    width:0px;
+}
+
+.THIS .mainPhoto{
+     font-size:25px;
+     color: rgb(114,3,3);
+     padding-bottom:0.5rem;
+}
+
+.THIS .buttons{
+    text-align:left;
+    padding-bottom:0.5rem;
+}
+

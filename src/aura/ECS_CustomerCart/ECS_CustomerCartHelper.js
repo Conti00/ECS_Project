@@ -114,4 +114,14 @@
 
     },
 
+    summarizeCartAmount: function(component){
+            let cart = component.get("v.customerCartItems");
+            let totalAmount = 0;
+            for(var ii=0; ii<cart.length; ii++){
+                totalAmount += parseInt(cart[ii].carPrice);
+            }
+            console.log(totalAmount);
+            component.set("v.cartTotalAmount", totalAmount);
+        },
+
 })

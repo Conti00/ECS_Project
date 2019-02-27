@@ -2,21 +2,24 @@
  * Created by BRITENET on 13.02.2019.
  */
 ({
-    init: function (cmp, event, helper) {
-        let carBrand = cmp.get("v.car.ECS_Brand__c");
+    init: function (component, event, helper) {
+        let carBrand = component.get("v.car.ECS_Brand__c");
+        let longitude = component.get("v.car.ECS_Service_Location__Longitude__s");
+        let latitude = component.get("v.car.ECS_Service_Location__Latitude__s")
 
-        cmp.set('v.mapMarkers', [
+        component.set('v.mapMarkers', [
             {
                 location: {
-                    City: carBrand,
-                    Country: 'Poland',
+                    'Latitude':latitude,
+                    'Longitude':longitude
                 },
 
                 icon: 'custom:custom20',
-                title: carBrand
+                title: carBrand +' Service',
+                description: ''
             }
 
         ]);
-        cmp.set('v.markersTitle', 'City');
+        component.set('v.markersTitle', 'City');
     }
 })

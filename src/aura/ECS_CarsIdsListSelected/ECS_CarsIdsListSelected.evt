@@ -1,0 +1,8 @@
+<!--
+ - Created by BRITENET on 26.02.2019.
+ -->
+
+<aura:event type="COMPONENT" description="ECS_CarsIdsListSelected">
+    <aura:attribute name="carIds" type="String[]"/>
+    <aura:attribute name="cars" type="Product2[]"/>
+</aura:event>

@@ -1,0 +1,213 @@
+<!--
+ - Created by BRITENET on 26.02.2019.
+ -->
+
+
+<aura:component description="ECS_PriceManagementAddNewDiscount" controller="ECS_PriceManagementController">
+    <aura:attribute name="carIds" type="String[]"/>
+    <aura:attribute name="selectedCars" type="Product2[]"/>
+    <aura:attribute name="selectedCarsWithPriceObjects" type="Object[]"/>
+    <!--<aura:attribute name="carCurrentLowestPrice" type="Integer"/>-->
+    <!--<aura:attribute name="carNewPrice" type="Integer"  default="0"/>-->
+    <aura:attribute name="amountDiscountValue" type="Integer" default="0"/>
+    <aura:attribute name="percentDiscountValue" type="Integer" default="0"/>
+    <aura:attribute name="discountStartDate" type="Date"/>
+    <aura:attribute name="discountEndDate" type="Date"/>
+    <aura:attribute name="discountName" type="String"/>
+    <aura:attribute name="value" type="String" default="percentDiscount"/>
+    <aura:attribute name="options" type="List" default="[
+    {'label': '%', 'value': 'percentDiscount'},
+    {'label': '$', 'value': 'amountDiscount'}
+    ]"/>
+    <!--<aura:attribute name="value" type="String" default="amountDiscount"/>-->
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="oncarsrecived" event="c:ECS_OnCarsRecieved" action="{!c.onSearchedCarsRecived}"/>
+    <aura:handler name="change" value="{!v.selectedCars}" action="{!c.onSelectedCarsChange}"/>
+    <aura:handler name="carsIdsListSelected" event="c:ECS_CarsIdsListSelected" action="{!c.onCarsIdsListRecived}"/>
+    <aura:registerEvent name="onNewDiscountCreated" type="c:ECS_OnSingleCarDiscountCreated"/>
+
+
+    <lightning:layout horizontalAlign="spread" verticalAlign="start" multipleRows="true">
+        <lightning:layoutItem size="6" padding="around-small" flexibility="grow">
+            <lightning:card title="">
+                <c:ECS_CarManagementSearchForm aura:id="carSearchForm"/>
+                <c:ECS_SearchedCarsListTable aura:id="carList"/>
+            </lightning:card>
+        </lightning:layoutItem>
+        <lightning:layoutItem flexibility="grow" size="6" padding="around-small">
+
+            <aura:if isTrue="{!v.carIds.length != 0}">
+
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2>
+                                <span class="slds-text-heading_small">{!$Label.c.ECS_Discount_Configuration}</span>
+                            </h2>
+                        </div>
+                    </header>
+                </div>
+                <br/>
+
+                <lightning:layoutItem flexibility="grow" size="6" padding="around-small">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                        <thead>
+                        <tr class="slds-text-title_caps">
+
+                            <th scope="col">
+                                <div class="slds-truncate" title="Name">Brand</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Model">Model</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Year">Year</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Standard Price">Standard Price</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="New Price">New Price</div>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <aura:iteration items="{!v.selectedCarsWithPriceObjects}" var="carItem" indexVar="index">
+                            <tr aura:id="tableRow" onclick="{!c.tableRowClicked}" data-id="{!carItem.car.Id}"
+                                data-index="{!index}">
+
+                                <td data-label="Name">
+                                    <lightning:formattedText value="{!carItem.car.Name}"/>
+                                </td>
+                                <td data-label="Car Model">
+                                    <lightning:formattedText value="{!carItem.car.ECS_Model__c}"/>
+                                </td>
+                                <td data-label="Year">
+                                    <lightning:formattedText value="{!carItem.car.ECS_ProductionYear__c}"/>
+                                </td>
+                                <td data-label="Standard Price">
+                                    <lightning:formattedNumber style="currency" value="{!carItem.carPrice}"
+                                                               aura:id="carPrice"/>
+                                </td>
+                                <td data-label="New Price" data-index="{!index}" aura:id="newPriceContainer">
+                                    <div aura:id="discountedPriceContainer">
+                                        <lightning:formattedNumber style="currency" value="" aura:id="newCarPrice"/>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </aura:iteration>
+                        </tbody>
+                    </table>
+                </lightning:layoutItem>
+
+                <lightning:layoutItem size="6" padding="around-small" flexibility="grow">
+
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-p-horizontal--small">
+                                <lightning:radioGroup name="radioButtonGroup"
+                                                      label="Discount Type"
+                                                      options="{! v.options }"
+                                                      value="{! v.value }"
+                                                      type="button"/>
+                            </div>
+
+                            <aura:if isTrue="{!v.value == 'amountDiscount'}">
+
+                                <div class="slds-p-horizontal--small">
+                                    <fieldset class="slds-form--compound">
+                                        <div class="slds-form-element__group">
+                                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                                <div class="slds-form-element slds-size--1-of-1">
+                                                    <lightning:input type="number" name="discountAmount" min="0"
+                                                                     max="{!v.carCurrentLowestPrice - 1}"
+                                                                     label="Discount value"
+                                                                     value="{!v.amountDiscountValue}" formatter="currency"
+                                                                     step="1" onchange="{!c.onAmountInputValueChange}"
+                                                                     aura:id="discountAmountInput"
+                                                                     messageWhenBadInput="input error"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                            </aura:if>
+
+                            <aura:if isTrue="{!v.value == 'percentDiscount'}">
+                                <div class="slds-p-horizontal--small">
+                                    <fieldset class="slds-form--compound">
+                                        <div class="slds-form-element__group">
+                                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                                <div class="slds-form-element slds-size--1-of-1">
+                                                    <lightning:slider label="Discount [%]" size="x-small"
+                                                                      value="{!v.percentDiscountValue}"
+                                                                      min="0" max="99"
+                                                                      onchange="{!c.onPercentInputValueChange}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </aura:if>
+
+
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-1 slds-p-horizontal--small">
+                                    <lightning:input type="text" label="Promotion Name" value="{!v.discountName}"/>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row slds-grid_vertical-align-end slds-p-horizontal--small">
+                                <div class="slds-form-element slds-size--1-of-1">
+                                    <ui:inputDate label="Discount Start Date" required="true" value="{!v.discountStartDate}"
+                                                  displayDatePicker="true"/>
+                                    <!--<lightning:input type="date" aura:id="discountAmountInput" name="Start Date" label="Discount Start Date" required="true" value="{!v.discountStartDate}"/>-->
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row slds-grid_vertical-align-end slds-p-horizontal--small">
+                                <div class="slds-form-element slds-size--1-of-1">
+                                    <ui:inputDate label="Discount End Date" required="true" value="{!v.discountEndDate}"
+                                                  displayDatePicker="true"/>
+                                    <!--<lightning:input type="date" aura:id="discountAmountInput" name="End Date" label="Discount End Date"  required="true" value="{!v.discountEndDate}"/>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-form-element__row slds-grid_vertical-align-end slds-p-horizontal--small">
+
+                        <lightning:button name="{!$Label.c.ECS_Create_Discount}" onclick="{!c.onNewDiscountSave}" class="slds-m-top--medium"
+                                          variant="neutral">
+                            <lightning:icon iconName="action:quote" size="medium"/>
+                            &nbsp;{!$Label.c.ECS_Create_Discount}
+                        </lightning:button>
+
+                        <lightning:button name="{!$Label.c.ECS_Clear}" onclick="{!c.clearDiscountData}" class="slds-m-top--medium"
+                                          variant="neutral">
+                            <lightning:icon iconName="action:remove_relationship" size="medium"/>
+                            &nbsp;{!$Label.c.ECS_Clear}
+                        </lightning:button>
+
+                    </div>
+
+                </lightning:layoutItem>
+
+            </aura:if>
+
+            <!--<c:ECS_SearchedCarsListTable aura:id="carList"/>-->
+        </lightning:layoutItem>
+
+
+    <!--<lightning:layout horizontalAlign="spread" verticalAlign="start" multipleRows="true">-->
+
+
+    </lightning:layout>
+
+    <!--<c:ECS_Modal aura:id="searchForCarsModal" hasCloseButton="true" title="SearchForCars" size="large">-->
+
+
+    <!--</c:ECS_Modal>-->
+
+</aura:component>

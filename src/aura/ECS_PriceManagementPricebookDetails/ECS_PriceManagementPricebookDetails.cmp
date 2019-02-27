@@ -1,0 +1,85 @@
+<!--
+ - Created by BRITENET on 26.02.2019.
+ -->
+
+<aura:component description="ECS_PriceManagementPricebookDetails" controller="ECS_PriceManagementController">
+
+    <aura:attribute name="pricebookId" type="String"/>
+    <aura:attribute name="pricebookEntrys" type="PricebookEntry[]"/>
+    <aura:attribute name="selectedPricebookEntryId" type="String"/>
+    <aura:attribute name="selectedCarId" type="String"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.pricebookId}" action="{!c.onSelectedPricebookIdChange}"/>
+
+    <!--<force:recordData aura:id="pbDetails"-->
+    <!--recordId="{!v.pricebookId}"-->
+    <!--mode="VIEW"-->
+    <!--recordUpdated="{!c.recordUpdated}"-->
+    <!--fields="Id, Name, ECS_BeginDate__c, ECS_EndDate__c, ECS_CurrentlyActive__c"-->
+    <!--targetFields="{!v.pbTargetFields}"/>-->
+
+    <lightning:card title="{!'Discount Name: '+v.pricebookEntrys[0].Pricebook2.Name }">
+        <p class="slds-p-horizontal_small">Cars covered by this discount:</p>
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+            <tr class="slds-text-title_caps">
+                <th scope="col">
+                    <div class="slds-truncate" title="Name">Brand</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Model">Model</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Price">Price</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Actions">Actions</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <aura:iteration items="{!v.pricebookEntrys}" var="pbEntry" indexVar="index">
+                <tr aura:id="tableRow"  data-id="{!pbEntry.Product2.Id}" data-index="{!index}">
+                    <!--<tr aura:id="tableRow" onclick="{!c.tableRowClicked}" data-id="{!pbEntry.Product2.Id}" data-index="{!index}">-->
+                    <td data-label="Name">
+                        <lightning:formattedText value="{!pbEntry.Name}"/>
+                    </td>
+                    <td data-label="Model">
+                        <lightning:formattedText value="{!pbEntry.Product2.ECS_Model__c}"/>
+                    </td>
+                    <td data-label="Price">
+                        <lightning:formattedNumber style="currency" value="{!pbEntry.UnitPrice}"
+                                                   class="slds-text-heading_small"
+                                                   maximumFractionDigits="0" minimumFractionDigits="0"/>
+                    </td>
+                    <td data-label="Actions">
+
+                        <lightning:buttonMenu iconName="utility:settings" alternativeText="Settings">
+                            <lightning:menuItem label="Remove from discount" onactive="{!c.onRemoveCarFromDiscount}"
+                                                value="{!pbEntry.Id}" />
+                        </lightning:buttonMenu>
+                    </td>
+                </tr>
+            </aura:iteration>
+            </tbody>
+        </table>
+    </lightning:card>
+
+    <c:ECS_Modal aura:id="carDetailsModal" hasCloseButton="true" title="Details" size="small">
+
+        <lightning:layout horizontalAlign="center" verticalAlign="start" multipleRows="true">
+            <lightning:layoutItem size="12" padding="around-small" flexibility="grow">
+                <lightning:card title=" ">
+                    <!--<c:ECS_CarDetails  carId="{!v.selectedCarId}"/>-->
+                </lightning:card>
+            </lightning:layoutItem>
+        </lightning:layout>
+
+        <aura:set attribute="footer">
+            <!--<lightning:button onclick="{!c.closeSetDiscountModal}" label="Cancel"/>-->
+            <!--<lightning:button class="slds-button&#45;&#45;destructive" onclick="{!c.onNewDiscountSave}" label="Save"/>-->
+        </aura:set>
+    </c:ECS_Modal>
+
+</aura:component>

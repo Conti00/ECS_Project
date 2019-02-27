@@ -1,0 +1,27 @@
+<!--
+ - Created by BRITENET on 26.02.2019.
+ -->
+
+<aura:component description="ECS_PriceManagementMain" implements="flexipage:availableForAllPageTypes" access="global">
+    
+    <aura:attribute name="selectedPricebookId" type="String"/>
+    <aura:handler name="pricebookSelected" event="c:ECS_PricebookSelectedEvent" action="{!c.handlePricebookSelected}"/>
+
+    <lightning:layout horizontalAlign="spread" verticalAlign="start" multipleRows="true">
+        <lightning:layoutItem size="{! v.selectedPricebookId == null ? 7 : 7}" padding="around-small" flexibility="grow" >
+            <lightning:card title=""  class="slds-tabs_card">
+                <!--<aura:set attribute="actions">-->
+                <!--<lightning:button label="New Discount" onclick="{!c.createNewDiscountModalOpen}"/>-->
+                <!--</aura:set>-->
+                <c:ECS_PriceBooksList/>
+            </lightning:card>
+        </lightning:layoutItem>
+        <aura:if isTrue="{!v.selectedPricebookId != null}">
+            <lightning:layoutItem flexibility="grow" size="5" padding="around-small" >
+                <c:ECS_PriceManagementPricebookDetails aura:id="pricebookDetails" pricebookId="{!v.selectedPricebookId}" />
+            </lightning:layoutItem>
+        </aura:if>
+    </lightning:layout>
+
+
+</aura:component>

@@ -26,8 +26,7 @@
                             <div class="slds-form-element__row slds-grid_vertical-align-start">
 
                                 <div class="slds-form-element slds-size--1-of-3">
-                                    <p class="slds-text-body_small slds-text-color_weak">{!$Label.c.ECS_Sale_Expire}
-                                        : </p>
+                                    <p class="slds-text-body_small slds-text-color_weak">{!$Label.c.ECS_Sale_Expire}: </p>
                                     <ui:outputText value="{!v.car.Pricebook2.ECS_EndDate__c }"
                                                    title="{!$Label.c.ECS_Sale_Expire}"
                                                    class="slds-text-heading_medium"/>

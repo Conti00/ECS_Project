@@ -87,13 +87,12 @@
     },
 
     navigateToSObject : function (component, event, helper) {
-        let record_id = event.currentTarget.id;
-        let navigate = $A.get('e.force:navigateToSObject');
-        navigate.setParams({
-            'recordId': record_id,
-            'slideDevName': 'detail'
-        });
-        navigate.fire();
+         let carId = event.currentTarget.id;
+                let urlEvent = $A.get("e.force:navigateToURL");
+                   urlEvent.setParams({
+                     "url": "/search-cars?carId="+carId
+                   });
+                   urlEvent.fire();
     }
 
 })

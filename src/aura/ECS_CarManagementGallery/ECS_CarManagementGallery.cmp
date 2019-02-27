@@ -19,7 +19,6 @@
                       fields="Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c, ECS_ImageID__c"
                       targetFields="{!v.carTargetFields}"/>
 
-
     <aura:if isTrue="{!v.isAdmin}">
         <lightning:card title="Add new Images">
             <div class="slds-form-element__row slds-grid_align-center">
@@ -32,33 +31,55 @@
         </lightning:card>
 
 
+        <aura:if isTrue="{!v.carImages.length != 0 }">
+            <lightning:card class="slds-grid_align-center">
+                <aura:iteration items="{!v.carImages}" var="imageId">
+                    <lightning:layout class="customClass" multipleRows="true">
+                        <lightning:layoutItem padding="around-small">
+                            <div class="custom-box">
+                                <div class="fileCardClass">
+                                <lightning:fileCard fileId="{!imageId}"/></div>
+                                <aura:if isTrue="{!imageId != v.carTargetFields.ECS_ImageID__c}">
+                                    <aura:if isTrue="{!v.isAdmin}">
+                                        <div class="buttons">
 
-    <aura:if isTrue="{!v.carImages.length != 0 }">
-        <lightning:card>
-            <aura:if isTrue="{!v.carImages.length >= 2}">
-                <lightning:button label="{!$Label.c.ECS_Show_All_Pictures}" onclick="{! c.openAllFiles }"/>
-            </aura:if>
-            <aura:iteration items="{!v.carImages}" var="imageId">
-                <lightning:layoutItem flexibility="grow" class="slds-m-around_large slds-align-middle">
-                    <lightning:fileCard fileId="{!imageId}"/>
-                    <aura:if isTrue="{!imageId != v.carTargetFields.ECS_ImageID__c}">
-                        <aura:if isTrue="{!v.isAdmin}">
-                            <lightning:buttonGroup class="">
-                                <lightning:button variant="neutral" onclick="{!c.setAsMainPicture}" value="{!imageId}" label="{!$Label.c.ECS_Set_As_Main}"/>
-                                <lightning:button variant="neutral" onclick="{!c.deleteImage}" value="{!imageId}">{!$Label.c.ECS_Delete}
-                                </lightning:button>
-                            </lightning:buttonGroup>
-                        </aura:if>
-                    </aura:if>
-                </lightning:layoutItem>
-            </aura:iteration>
-        </lightning:card>
-        <aura:set attribute="else">
-            <lightning:card >
-            <lightning:formattedText value="{!$Label.c.ECS_No_Images_Found}"/>
+                                            <lightning:button name="{!$Label.c.ECS_Set_As_Main}"
+                                                              onclick="{!c.setAsMainPicture}"
+                                                              value="{!imageId}"
+                                                              variant="neutral">
+                                                <lightning:icon iconName="action:following" size="medium"/>
+                                                &nbsp;{!$Label.c.ECS_Set_As_Main}
+                                            </lightning:button>
+                                        </div>
+                                        <div class="buttons">
+                                        <lightning:button name="{!$Label.c.ECS_Delete}" onclick="{!c.deleteImage}"
+                                                          value="{!imageId}"
+                                                          variant="neutral">
+                                            <lightning:icon iconName="action:close" size="medium"/>
+                                            &nbsp;{!$Label.c.ECS_Delete}
+                                        </lightning:button>
+                                        </div>
+                                    </aura:if>
+                                    <aura:set attribute="else">
+                                        <div class="mainPhoto">
+                                            <lightning:icon iconName="action:approval" size="medium"/>
+
+                                            This is main photo
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+
+                            </div>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </aura:iteration>
             </lightning:card>
-        </aura:set>
 
-    </aura:if>
+            <aura:set attribute="else">
+                <lightning:card>
+                    <lightning:formattedText value="{!$Label.c.ECS_No_Images_Found}"/>
+                </lightning:card>
+            </aura:set>
+        </aura:if>
     </aura:if>
 </aura:component>

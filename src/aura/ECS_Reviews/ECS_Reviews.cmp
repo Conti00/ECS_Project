@@ -73,6 +73,12 @@
                                 <lightning:icon iconName="action:follow" size="medium"/>
                                 &nbsp;{!$Label.c.ECS_Add_Review}
                             </lightning:button>
+                            <!--<lightning:button name="{!$Label.c.ECS_Watch_Opinion}"-->
+                                              <!--class="{!customerPurchasedItem.ECS_isReviewed__c?'':'slds-hide'}"-->
+                                              <!--onclick="{!c.displayReviewModal}" value="{!customerPurchasedItem}" title="watch">-->
+                                <!--<lightning:icon iconName="action:description" size="medium"/>-->
+                                <!--&nbsp;{!$Label.c.ECS_Watch_Opinion}-->
+                            <!--</lightning:button>-->
                             <lightning:button name="{!$Label.c.ECS_Watch_Opinion}"
                                               class="{!customerPurchasedItem.ECS_isReviewed__c?'':'slds-hide'}"
                                               onclick="{!c.displayReviewModal}" value="{!customerPurchasedItem}" title="watch">

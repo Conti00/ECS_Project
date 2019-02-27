@@ -18,8 +18,8 @@
 
 	onCarSelected: function (component, event, helper) {
 		component.set("v.selectedCarId", event.getParam("carId"));
-		component.set("v.selectedCar", event.getParam("car"));
 		component.set("v.productCardShown", event.getParam("carSelected"));
+		component.set("v.selectedCar", event.getParam("car"));
 	},
 
 	backToSearch: function (component, event, helper) {

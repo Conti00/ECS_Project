@@ -12,8 +12,10 @@
                     let newCase = component.get("v.newCase");
                     let carId = component.get("v.carId").toString();
                     newCase.ECS_Car__c = carId;
+                    newCase.ECS_Order__c='';
                     newCase.Origin = 'Web';
                     newCase.ECS_isCarServiceFromCommunity__c = true;
+
 
                     component.set("v.newCase", newCase);
                     console.log('callback: '+JSON.stringify(component.get("v.newCase")));

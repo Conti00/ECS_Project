@@ -1,0 +1,16 @@
+/**
+ * Created by BRITENET on 26.02.2019.
+ */
+.THIS .toggleColor {
+    color:red;
+    font-weight:bold;
+}
+
+.THIS .slds-media__body {
+    text-align:center;
+
+}
+
+.THIS .slds-text-heading_small {
+    font-size:25px;
+}

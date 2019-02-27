@@ -12,7 +12,8 @@
 
         onSave: function(component, event, helper){
             let obj = component.get("v.newReview");
-            console.log('on rewiev save controller');
+            let reviewId = component.get("v.reviewId").toString();
+
             component.find("service").saveRecord(function(saveResult) {
                 console.log('save result: '+saveResult.state);
 
@@ -27,15 +28,19 @@
                             "message": "Review Saved successfully."
                         });
                         resultsToast.fire();
+                        helper.deleteReview(component,reviewId);
                     }
                     helper.onInit(component);
                     let ReviewSavedEvent = component.getEvent("ReviewAdded");
                     ReviewSavedEvent.fire();
+                    console.log('event fire');
                 }
                 else {
                     console.log(JSON.stringify(saveResult.error));
                 }
             });
         },
+
+
 
 })

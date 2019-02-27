@@ -8,6 +8,7 @@
 		helper.onInit(component);
 		helper.getProductReviews(component);
 		helper.getLowestPrice(component, component.get('v.car.Id'));
+		helper.loadCarImages(component);
 	},
 
 	onCarAddedToCart: function (component, event, helper) {
@@ -69,5 +70,21 @@
 		urlEvent.fire();
 	},
 
+	openAllFiles: function(component, event, helper){
+            var imagesIds = component.get("v.carImages");
+            $A.get('e.lightning:openFiles').fire({
+                recordIds: imagesIds,
+                selectedRecordId: imagesIds[0]
+            });
+        },
+
+    editReview : function(component, event, helper){
+            let productReview = event.getSource().get("v.value");
+            helper.editReview(component, productReview);
+        },
+
+    onReviewAdded : function(component, event, helper) {
+               console.log("handle event");
+           },
 
 })

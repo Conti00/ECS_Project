@@ -6,9 +6,11 @@
                 implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes" access="global"
                 controller="ECS_CarsManagerController">
     <aura:attribute name="customerCartItems" type="Object[]"/>
+    <aura:attribute name="cartTotalAmount" type="Decimal" default="0"/>
     <aura:attribute name="isCheckoutEnabled" type="Boolean" default="false"/>
     <aura:attribute name="selectedCarsIds" type="String[]"/>
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <aura:handler name="change" value="{!v.customerCartItems}" action="{!c.onCartItemsChange}"/>
 
 
     <lightning:card title="{!$Label.c.ECS_Cart}" class="slds-tabs_card">
@@ -33,7 +35,7 @@
                             <div class="slds-truncate" title="VIN">{!$Label.c.ECS_VIN}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Price">{!$Label.c.ECS_Price}</div>
+                            <div class="slds-truncate" title="Price">{!$Label.c.ECS_Current_Price}</div>
                         </th>
                         <th scope="col">
                             <div class="slds-truncate" title="Actions">{!$Label.c.ECS_Actions}</div>
@@ -58,12 +60,13 @@
                             <td data-label="{!$Label.c.ECS_VIN}">
                                 <lightning:formattedText value="{!customerCartItem.car.ECS_VinNumber__c}"/>
                             </td>
-                            <td data-label="{!$Label.c.ECS_Price}">
+                            <td data-label="{!$Label.c.ECS_Current_Price}">
                                 <lightning:formattedText value="{!customerCartItem.carPrice}"/>
                             </td>
                             <td data-label="{!$Label.c.ECS_Actions}">
 
-                                <lightning:button name="{!$Label.c.ECS_Go_to_Product}" onclick="{!c.redirectToDetailsPage}"
+                                <lightning:button name="{!$Label.c.ECS_Go_to_Product}"
+                                                  onclick="{!c.redirectToDetailsPage}"
                                                   value="{!customerCartItem.car.Id}">
                                     <lightning:icon iconName="action:info" size="small"/>
 
@@ -71,16 +74,21 @@
                                 <lightning:button name="{!$Label.c.ECS_Remove}" onclick="{!c.deleteCartItem}"
                                                   value="{!customerCartItem.car.Id}">
                                     <lightning:icon iconName="action:delete" size="small"/>
-
                                 </lightning:button>
-
                             </td>
                         </tr>
                     </aura:iteration>
                     </tbody>
                 </table>
-
             </lightning:layout>
+
+            <lightning:layout horizontalAlign="end">
+                <div class="slds-float_right">
+                    <lightning:formattedText class="totalAmountClass" value="{!$Label.c.ECS_Total_Amount}"/>
+                    <ui:outputCurrency value="{!v.cartTotalAmount}"/>
+                </div>
+            </lightning:layout>
+
             <lightning:layout horizontalAlign="center">
                 <lightning:layoutItem padding="around-large">
                     <lightning:button name="Checkout" onclick="{!c.sendCarItemsToCheckout}"
@@ -95,6 +103,9 @@
                     </lightning:button>
                 </lightning:layoutItem>
             </lightning:layout>
+
+
+
 
             <aura:set attribute="else">
                 <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>

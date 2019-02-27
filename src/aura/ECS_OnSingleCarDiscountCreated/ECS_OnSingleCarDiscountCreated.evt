@@ -1,0 +1,6 @@
+<!--
+ - Created by BRITENET on 26.02.2019.
+ -->
+
+<aura:event type="COMPONENT" description="ECS_OnSingleCarDiscountCreated">
+</aura:event>

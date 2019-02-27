@@ -8,11 +8,12 @@
                 access="global" controller="ECS_CarsManagerController">
 
     <aura:attribute name="selectedCarId" type="String"/>
-    <aura:attribute name="selectedCar" type="Product2"/>
     <aura:attribute name="productCardShown" type="Boolean" default="false"/>
     <aura:attribute name="displayModal" type="Boolean" default="false"/>
     <aura:attribute name="typeOfAction" type="String"/>
+    <aura:attribute name="selectedCar" type="Product2"/>
     <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
     <aura:handler name="oncarsrecived" event="c:ECS_OnCarsRecieved" action="{!c.onSearchedCarsRecived}"/>
     <aura:handler name="carSelectedEvent" event="c:ECS_CarManagementCarSelectedEvent" action="{!c.onCarSelected}"/>

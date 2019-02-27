@@ -45,7 +45,19 @@
 			var state = response.getState();
 			if (state === "SUCCESS") {
 				component.set("v.orgUrl", response.getReturnValue());
-			} else {}
+			} else {
+				let resultsToast = $A.get("e.force:showToast");
+				if ($A.util.isUndefined(resultsToast)) {
+					alert('Error while getting Url');
+				} else {
+					resultsToast.setParams({
+						"type": "error",
+						"title": "Error",
+						"message": "Error while getting Url"
+					});
+					resultsToast.fire();
+				}
+			}
 		});
 		$A.enqueueAction(orgBaseUrl);
 
@@ -62,7 +74,18 @@
 			if (state === "SUCCESS") {
 				component.set("v.carStandardPrice", response.getReturnValue());
 			} else {
-				
+				let resultsToast = $A.get("e.force:showToast");
+				if ($A.util.isUndefined(resultsToast)) {
+					alert('Error while getting price');
+				} else {
+					resultsToast.setParams({
+						"type": "error",
+						"title": "Error",
+						"message": "Error while getting price"
+					});
+					resultsToast.fire();
+				}
+
 			}
 		});
 		$A.enqueueAction(action);
@@ -79,6 +102,17 @@
 			if (state === "SUCCESS") {
 				component.set("v.carCurrentLowestPrice", response.getReturnValue());
 			} else {
+				let resultsToast = $A.get("e.force:showToast");
+				if ($A.util.isUndefined(resultsToast)) {
+					alert('Error while getting price');
+				} else {
+					resultsToast.setParams({
+						"type": "error",
+						"title": "Error",
+						"message": "Error while getting price"
+					});
+					resultsToast.fire();
+				}
 
 			}
 		});

@@ -27,6 +27,7 @@
                                 'ECS_Transmission__c': '',
                                 'ECS_VideoPresentationUrl__c': '',
                                 'ECS_isCreatingCompleted__c': false,
+                                'IsActive': true,
                                 'ECS_ProductionYear__c': ''}"/>
     <aura:attribute name="newCarListPrice" type="Integer"/>
     <aura:attribute name="isRecordLoaded" type="Boolean" default="false"/>
@@ -43,7 +44,7 @@
     <force:recordData aura:id="newCarData"
                       fields="Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c,
                           ECS_isCreatingCompleted__c, ECS_EngineSize__c,ECS_BatteryCapacity__c,ECS_BodyStyle__c,
-                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c "
+                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c,IsActive "
                       targetError="{!v.recordError}"
                       targetRecord="{!v.car}"
                       targetFields="{!v.newCar}"/>
@@ -55,7 +56,7 @@
                           mode="EDIT"
                           fields="Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c,
                           ECS_isCreatingCompleted__c, ECS_EngineSize__c,ECS_BatteryCapacity__c,ECS_BodyStyle__c,
-                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c "
+                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c, IsActive "
                           targetRecord="{!v.carToDelete}"/>
     </aura:if>
 
@@ -160,6 +161,14 @@
                                                      aura:id="newCarFormField" placeholder="https://www.youtube.com/embed/yourPresentationId"/>
                                 </div>
                             </div>
+                            <div class="slds-form-element__row slds-grid_vertical-align-end">
+                                <div class="slds-form-element slds-size--1-of-2">
+                                    <p class="slds-text-body_small slds-text-color_weak"></p>
+                                    <lightning:input type="checkbox" label="{!$Label.c.ECS_Active}"
+                                                     value="{!v.newCar.IsActive}"
+                                                     aura:id="newCarFormField"/>
+                                </div>
+                            </div>
 
 
                             <div class="slds-form-element__row slds-grid_align-center">
@@ -182,7 +191,7 @@
             </lightning:progressIndicator>
 
 
-            <lightning:card iconName="" title="">
+            <lightning:card iconName="" title="" >
                 <c:ECS_CarManagementGallery carId="{!v.carId}"/>
             </lightning:card>
         </div>

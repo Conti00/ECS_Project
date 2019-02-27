@@ -1,0 +1,97 @@
+<!--
+ - Created by BRITENET on 26.02.2019.
+ -->
+
+    <aura:component description="ECS_PriceBooksList" controller="ECS_PriceManagementController">
+
+        <aura:attribute name="pricebooksItems" type="Object[]"/>
+        <!--<aura:attribute name="pricebooksItems" type="Pricebook2[]"/>-->
+        <aura:attribute name="selectedRowIndex" type="Integer"/>
+        <aura:attribute name="selectedPricebookId" type="String"/>
+        <aura:attribute name="selectedPricebooksIds" type="String[]"/>
+        <aura:attribute name="openSearchModal" type="Boolean" default="false"/>
+        <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+        <aura:handler name="onNewDiscountCreated" event="c:ECS_OnSingleCarDiscountCreated"
+                      action="{!c.handleNewDiscountCreated}"/>
+        <aura:registerEvent name="pricebookSelected" type="c:ECS_PricebookSelectedEvent"/>
+
+        <lightning:card title="" class="slds-tabs_card">
+            <aura:set attribute="actions">
+                <lightning:button iconName="utility:add" onclick="{!c.createNewDiscountModalOpen}"/>
+            </aura:set>
+
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="Pricebook Name">Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Discount start date">Start Date</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Discount end date">End Date</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Active">Active</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Discount Value">Value</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Actions">Actions</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <aura:iteration items="{!v.pricebooksItems}" var="pricebook" indexVar="index">
+                    <tr aura:id="tableRow" onclick="{!c.tableRowClicked}" data-id="{!pricebook.pricebook.Id}"
+                        data-index="{!index}">
+                        <td data-label="Name">
+                            <lightning:formattedText value="{!pricebook.pricebook.Name}"/>
+                        </td>
+                        <td data-label="Start Date">
+                            <lightning:formattedText value="{!pricebook.pricebook.ECS_BeginDate__c}"/>
+                        </td>
+                        <td data-label="End Date">
+                            <lightning:formattedText value="{!pricebook.pricebook.ECS_EndDate__c}"/>
+                        </td>
+                        <td data-label="Active">
+                            <ui:outputCheckbox value="{!pricebook.pricebook.ECS_CurrentlyActive__c}" />
+                        </td>
+                        <td data-label="Value">
+                            <lightning:formattedText value="{!pricebook.pricebook.ECS_DiscountValue__c}"/>
+                        </td>
+                        <td data-label="Actions">
+
+                            <lightning:button iconName="utility:delete" onclick="{!c.openPricebookDeleteModal}"
+                                              value="{!pricebook.pricebook.Id}"/>
+
+
+                            <!--<lightning:buttonMenu iconName="utility:delete" alternativeText="Settings">-->
+                                <!--<lightning:menuItem label="Delete Discount" onactive="{!c.openPricebookDeleteModal}"-->
+                                                    <!--value="{!pricebook.pricebook.Id}"/>-->
+                            <!--</lightning:buttonMenu>-->
+                        </td>
+                    </tr>
+                </aura:iteration>
+                </tbody>
+            </table>
+        </lightning:card>
+
+
+        <c:ECS_Modal aura:id="newDiscountModal" hasCloseButton="true" title="New Discount" size="large">
+        <c:ECS_PriceManagementAddNewDiscount/>
+        </c:ECS_Modal>
+
+        <c:ECS_Modal aura:id="deletePricebookModal" hasCloseButton="false" title="Confirm Discount Delete" size="small">
+            <aura:set attribute="footer">
+                <lightning:button onclick="{!c.onCancelDeleteClicked}" variant="neutral" label="Cancel"/>
+                <lightning:button variant="destructive" onclick="{!c.onDiscountDelete}" label="Delete"/>
+            </aura:set>
+        </c:ECS_Modal>
+
+        <!--&lt;!&ndash;<aura:if isTrue="{!v.openSearchModal}">&ndash;&gt;-->
+            <!--<c:ECS_PriceManagementAddNewDiscount/>-->
+        <!--&lt;!&ndash;</aura:if>&ndash;&gt;-->
+    </aura:component>

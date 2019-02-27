@@ -4,10 +4,10 @@
 ({
 
 	onInit: function (component) {
-		var action = component.get("c.hasCurrentUserAdminProfile");
+		let action = component.get("c.hasCurrentUserAdminProfile");
 
 		action.setCallback(this, function (response) {
-			var state = response.getState();
+			let state = response.getState();
 			if (state === "SUCCESS") {
 				let isAdmin = response.getReturnValue();
 				component.set("v.isAdmin", isAdmin);
@@ -17,7 +17,7 @@
 	},
 
 	getCarById: function (component) {
-		var action = component.get('c.getCarById');
+		let action = component.get('c.getCarById');
 		let carId = component.get("v.selectedCarId");
 		action.setParams({
 			'carId': carId

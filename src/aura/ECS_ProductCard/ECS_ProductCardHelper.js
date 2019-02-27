@@ -25,11 +25,42 @@
 			var state = response.getState();
 			if (state === "SUCCESS") {
 				component.set("v.orgUrl", response.getReturnValue());
-			} else {}
+			} else {
+				let resultsToast = $A.get("e.force:showToast");
+				if ($A.util.isUndefined(resultsToast)) {
+					alert('Error while getting Url');
+				} else {
+					resultsToast.setParams({
+						"type": "error",
+						"title": "Error",
+						"message": "Error while getting Url"
+					});
+					resultsToast.fire();
+				}
+			}
 		});
 		$A.enqueueAction(orgBaseUrl);
 
 	},
+
+	loadCarImages: function(component){
+            var selectedCarId = component.get("v.car.Id");
+            if(selectedCarId != null){
+                var action = component.get("c.getImages");
+                action.setParams({
+                    "carId" : selectedCarId
+                });
+                action.setCallback(this, function(response){
+                    var state = response.getState();
+                    if(state === "SUCCESS"){
+                        component.set("v.carImages", response.getReturnValue());
+                    }else{
+                        console.log("Error geting images, ");
+                    }
+                });
+                $A.enqueueAction(action);
+            }
+        },
 
 
 	removeCartItem: function (component, carId) {
@@ -93,7 +124,7 @@
 					resultsToast.setParams({
 						"type": "error",
 						"title": "Error",
-						"message": "Car already in cart"
+						"message": "The product has already been bought or is in a cart"
 					});
 					resultsToast.fire();
 				}
@@ -178,11 +209,29 @@
 			if (state === "SUCCESS") {
 				component.set("v.carCurrentLowestPrice", response.getReturnValue());
 			} else {
+				let resultsToast = $A.get("e.force:showToast");
+				if ($A.util.isUndefined(resultsToast)) {
+					alert('Error while getting price');
+				} else {
+					resultsToast.setParams({
+						"type": "error",
+						"title": "Error",
+						"message": "Error while getting price"
+					});
+					resultsToast.fire();
+				}
 
 			}
 		});
 		$A.enqueueAction(action);
 	},
+
+    editReview: function(component, productReview){
+
+         component.set("v.productReviewToUpdate", productReview);
+         component.set('v.editModal',true);
+
+        }
 
 
 })

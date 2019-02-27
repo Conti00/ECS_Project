@@ -7,85 +7,100 @@
 
     <aura:attribute name="carId" type="String"/>
     <aura:attribute name="productReviews" type="ECS_Review__c[]"/>
+    <aura:attribute name="productReviewToUpdate" type="ECS_Review__c"/>
+    <aura:attribute name="openAddReview" type="Boolean"/>
     <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
-
 
 
     <lightning:layoutItem size="">
         <lightning:card title="" iconName="" class="" actions="">
-            <aura:if isTrue="{!v.productReviews.length > 0}">
-                <div class="slds-feed">
-                    <ul class="slds-feed__list">
-                        <aura:iteration items="{!v.productReviews}" var="productReview">
+            <aura:if isTrue="{!!v.openAddReview}">
+                <aura:if isTrue="{!v.productReviews.length > 0}">
+                    <div class="slds-feed">
+                        <ul class="slds-feed__list">
+                            <aura:iteration items="{!v.productReviews}" var="productReview">
 
-                            <li class="slds-feed__item slds-p-vertical--x-small"
-                                style="border-bottom: 2px solid rgb(217, 219, 221)">
-                                <article class="slds-post">
+                                <li class="slds-feed__item slds-p-vertical--x-small"
+                                    style="border-bottom: 2px solid rgb(217, 219, 221)">
+                                    <article class="slds-post">
 
-                                    <div class="slds-grid slds-grid--align-spread">
-                                        <p class="slds-col slds-size--10-of-12">
-                                            <header class="slds-post__header slds-media">
-                                                <div class="slds-media__figure">
-                                                    <a href="javascript:void(0);"
-                                                       class="slds-avatar slds-avatar_circle slds-avatar_large">
-                                                        <lightning:icon
-                                                                iconName="standard:messaging_user"></lightning:icon>
-                                                    </a>
-                                                </div>
-                                                <div class="slds-media__body">
-                                                    <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center">
-                                                        <lightning:formattedDateTime
-                                                                value="{!productReview.CreatedDate}"
-                                                                year="numeric"
-                                                                day="2-digit" month="short"
-                                                                weekday="short"
-                                                                hour="2-digit"
-                                                                minute="2-digit"/>
-
+                                        <div class="slds-grid slds-grid--align-spread">
+                                            <p class="slds-col slds-size--10-of-12">
+                                                <header class="slds-post__header slds-media">
+                                                    <div class="slds-media__figure">
+                                                        <a href="javascript:void(0);"
+                                                           class="slds-avatar slds-avatar_circle slds-avatar_large">
+                                                            <lightning:icon
+                                                                    iconName="standard:messaging_user"></lightning:icon>
+                                                        </a>
                                                     </div>
-                                                    <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center">
-                                                            {!productReview.CreatedBy.Username}
+                                                    <div class="slds-media__body">
+                                                        <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center">
+                                                            <lightning:formattedDateTime
+                                                                    value="{!productReview.CreatedDate}"
+                                                                    year="numeric"
+                                                                    day="2-digit" month="short"
+                                                                    weekday="short"
+                                                                    hour="2-digit"
+                                                                    minute="2-digit"/>
+
+                                                        </div>
+                                                        <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center">
+                                                                {!productReview.CreatedBy.Username}
+                                                        </div>
+                                                        <div class="slds-text-body_small">
+                                                            <c:FiveStarRating
+                                                                    value="{!productReview.ECS_Rating__c}"
+                                                                    readonly="true"/>
+                                                        </div>
                                                     </div>
-                                        <p class="slds-text-body_small">
-                                            <c:FiveStarRating
-                                                    value="{!productReview.ECS_Rating__c}"
-                                                    readonly="true"/>
-                                        </p>
+                                                </header>
+                                            <div>
+                                                <lightning:layout multipleRows="true">
+                                                    <lightning:layoutItem size="12"
+                                                                          padding="around-small">
+                                                        <label class="slds-form-element__label"
+                                                               for="input-id-01">{!$Label.c.ECS_Opinion}</label>
+                                                        <ui:outputRichText
+                                                                value="{!productReview.ECS_Comment__c}"/>
+                                                    </lightning:layoutItem>
+                                                </lightning:layout>
+                                            </div>
+                                            </p>
+                                            <p class="slds-col slds-size--2-of-12">
+                                                <lightning:button name="Remove Reviews"
+                                                                  onclick="{!c.editReview}"
+                                                                  value="{!productReview}"
+                                                                  class="slds-float_right">
+                                                    <lightning:icon iconName="action:edit"
+                                                                    size="medium"/>
+                                                </lightning:button>
 
-                                    </div>
-                                    </header>
-                                    <div>
-                                        <lightning:layout multipleRows="true">
-                                            <lightning:layoutItem size="12"
-                                                                  padding="around-small">
-                                                <label class="slds-form-element__label"
-                                                       for="input-id-01">{!$Label.c.ECS_Opinion}</label>
-                                                <ui:outputRichText
-                                                        value="{!productReview.ECS_Comment__c}"/>
-                                            </lightning:layoutItem>
-                                        </lightning:layout>
-                                    </div>
-                                    </p>
-                </div>
-                </article>
-                </li>
-                </aura:iteration>
+                                            </p>
 
-                </ul>
+                                        </div>
+                                    </article>
+                                </li>
+                            </aura:iteration>
+                        </ul>
 
-                </div>
+                    </div>
+                    <aura:set attribute="else">
+                        <lightning:layoutItem class="slds-align_absolute-center"
+                                              flexibility="auto"
+                                              padding="around-small">
+                            <ui:outputText value="No reviews found"/>
+                        </lightning:layoutItem>
+                    </aura:set>
+                </aura:if>
                 <aura:set attribute="else">
-                    <lightning:layoutItem class="slds-align_absolute-center"
-                                          flexibility="auto"
-                                          padding="around-small">
-                        <ui:outputText value="No reviews found"/>
-                    </lightning:layoutItem>
+                    <c:ECS_AddCarReview carId="{!v.carId}" reviewId="{!v.productReviewToUpdate.Id}"/>
                 </aura:set>
+
             </aura:if>
 
         </lightning:card>
     </lightning:layoutItem>
-
 
 
 </aura:component>
