@@ -42,6 +42,7 @@
     text-align: center;
     padding: 1rem;
     border: 1px solid #d8dde6;
+    height:315px;
 }
 
 .THIS h2{
@@ -98,9 +99,12 @@
 }
 
 .THIS .mainPhoto{
+     vertical-align: text-bottom;
      font-size:25px;
+     font-weight:300;
      color: rgb(114,3,3);
      padding-bottom:0.5rem;
+     border-color:green;
 }
 
 .THIS .buttons{

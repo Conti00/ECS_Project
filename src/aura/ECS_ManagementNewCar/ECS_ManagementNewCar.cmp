@@ -27,7 +27,7 @@
                                 'ECS_Transmission__c': '',
                                 'ECS_VideoPresentationUrl__c': '',
                                 'ECS_isCreatingCompleted__c': false,
-                                'IsActive': true,
+                                'IsActive': '',
                                 'ECS_ProductionYear__c': ''}"/>
     <aura:attribute name="newCarListPrice" type="Integer"/>
     <aura:attribute name="isRecordLoaded" type="Boolean" default="false"/>
@@ -42,9 +42,9 @@
 
 
     <force:recordData aura:id="newCarData"
-                      fields="Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c,
+                      fields="Id, Name, IsActive, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c,
                           ECS_isCreatingCompleted__c, ECS_EngineSize__c,ECS_BatteryCapacity__c,ECS_BodyStyle__c,
-                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c,IsActive "
+                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c "
                       targetError="{!v.recordError}"
                       targetRecord="{!v.car}"
                       targetFields="{!v.newCar}"/>
@@ -165,7 +165,7 @@
                                 <div class="slds-form-element slds-size--1-of-2">
                                     <p class="slds-text-body_small slds-text-color_weak"></p>
                                     <lightning:input type="checkbox" label="{!$Label.c.ECS_Active}"
-                                                     value="{!v.newCar.IsActive}"
+                                                     checked="{!v.newCar.IsActive}"
                                                      aura:id="newCarFormField"/>
                                 </div>
                             </div>

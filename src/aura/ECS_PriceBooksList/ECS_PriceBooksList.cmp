@@ -46,7 +46,7 @@
                 <tbody>
                 <aura:iteration items="{!v.pricebooksItems}" var="pricebook" indexVar="index">
                     <tr aura:id="tableRow" onclick="{!c.tableRowClicked}" data-id="{!pricebook.pricebook.Id}"
-                        data-index="{!index}">
+                        data-index="{!index}" onsort="{!pricebook.pricebook.ECS_BeginDate__c}">
                         <td data-label="Name">
                             <lightning:formattedText value="{!pricebook.pricebook.Name}"/>
                         </td>
@@ -66,12 +66,6 @@
 
                             <lightning:button iconName="utility:delete" onclick="{!c.openPricebookDeleteModal}"
                                               value="{!pricebook.pricebook.Id}"/>
-
-
-                            <!--<lightning:buttonMenu iconName="utility:delete" alternativeText="Settings">-->
-                                <!--<lightning:menuItem label="Delete Discount" onactive="{!c.openPricebookDeleteModal}"-->
-                                                    <!--value="{!pricebook.pricebook.Id}"/>-->
-                            <!--</lightning:buttonMenu>-->
                         </td>
                     </tr>
                 </aura:iteration>

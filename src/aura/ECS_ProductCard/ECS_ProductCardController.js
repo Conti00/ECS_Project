@@ -4,11 +4,15 @@
 ({
 
 	doInit: function (component, event, helper) {
+
 		helper.getOrgUrl(component);
 		helper.onInit(component);
 		helper.getProductReviews(component);
-		helper.getLowestPrice(component, component.get('v.car.Id'));
+//		helper.getLowestPrice(component, component.get('v.car.Id'));
 		helper.loadCarImages(component);
+		helper.getLowestPrice(component);
+		helper.getStandardPrice(component);
+		helper.getCurrentUser(component);
 	},
 
 	onCarAddedToCart: function (component, event, helper) {
@@ -85,6 +89,8 @@
 
     onReviewAdded : function(component, event, helper) {
                console.log("handle event");
+               helper.getProductReviews(component);
+               component.set("v.editModal",false);
            },
 
 })

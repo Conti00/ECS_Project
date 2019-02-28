@@ -17,21 +17,21 @@
 	},
 
 	getCarById: function (component) {
-		let action = component.get('c.getCarById');
-		let carId = component.get("v.selectedCarId");
-		action.setParams({
-			'carId': carId
-		});
+      		let action = component.get('c.getCarById');
+      		let carId = component.get("v.selectedCarId");
+      		action.setParams({
+      			'carId': carId
+      		});
 
-		action.setCallback(this, function (response) {
-			let state = response.getState();
-			if (state === "SUCCESS") {
-				component.set("v.selectedCar", response.getReturnValue());
-				component.set("v.productCardShown", true);
-				component.set("v.selectedCarId", component.get("v.selectedCar.Id"));
-			} else {}
-		});
-		$A.enqueueAction(action);
-	},
+      		action.setCallback(this, function (response) {
+      			let state = response.getState();
+      			if (state === "SUCCESS") {
+      				component.set("v.selectedCar", response.getReturnValue());
+      				component.set("v.productCardShown", true);
+      				component.set("v.selectedCarId", component.get("v.selectedCar.Id"));
+      			} else {}
+      		});
+      		$A.enqueueAction(action);
+      	},
 
 })

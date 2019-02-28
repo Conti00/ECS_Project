@@ -49,3 +49,16 @@
 .THIS .slds-form-element__label{
     font-size:20px;
 }
+
+.THIS .slds-p-around_small{
+    text-align:left;
+}
+
+.THIS .slds-rich-text-editor__textarea:last-child{
+    color:black;
+}
+
+.THIS .slds-text-color_weak{
+    font-size:20px;
+    color: black;
+}

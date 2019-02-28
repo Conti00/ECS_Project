@@ -62,7 +62,9 @@
                                     </aura:if>
                                     <aura:set attribute="else">
                                         <div class="mainPhoto">
+                                            <br/>
                                             <lightning:icon iconName="action:approval" size="medium"/>
+
 
                                             This is main photo
                                         </div>
@@ -70,6 +72,7 @@
                                 </aura:if>
 
                             </div>
+
                         </lightning:layoutItem>
                     </lightning:layout>
                 </aura:iteration>

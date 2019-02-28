@@ -14,6 +14,8 @@
 		})
 		$A.enqueueAction(action);
 
+		console.log(component.get("v.car.Id"));
+
 	},
 
 	getOrgUrl: function (component) {
@@ -198,40 +200,113 @@
 		$A.enqueueAction(action);
 	},
 
-	getLowestPrice: function (component, carId) {
-		var action = component.get('c.getCarCurrentLowestPrice');
-		action.setParams({
-			'carId': carId
-		});
-
-		action.setCallback(this, function (response) {
-			let state = response.getState();
-			if (state === "SUCCESS") {
-				component.set("v.carCurrentLowestPrice", response.getReturnValue());
-			} else {
-				let resultsToast = $A.get("e.force:showToast");
-				if ($A.util.isUndefined(resultsToast)) {
-					alert('Error while getting price');
-				} else {
-					resultsToast.setParams({
-						"type": "error",
-						"title": "Error",
-						"message": "Error while getting price"
-					});
-					resultsToast.fire();
-				}
-
-			}
-		});
-		$A.enqueueAction(action);
-	},
+//	getLowestPrice: function (component, carId) {
+//		var action = component.get('c.getCarCurrentLowestPrice');
+//		action.setParams({
+//			'carId': carId
+//		});
+//
+//		action.setCallback(this, function (response) {
+//			let state = response.getState();
+//			if (state === "SUCCESS") {
+//				component.set("v.carCurrentLowestPrice", response.getReturnValue());
+//			} else {
+//				let resultsToast = $A.get("e.force:showToast");
+//				if ($A.util.isUndefined(resultsToast)) {
+//					alert('Error while getting price');
+//				} else {
+//					resultsToast.setParams({
+//						"type": "error",
+//						"title": "Error",
+//						"message": "Error while getting price"
+//					});
+//					resultsToast.fire();
+//				}
+//
+//			}
+//		});
+//		$A.enqueueAction(action);
+//	},
 
     editReview: function(component, productReview){
-
          component.set("v.productReviewToUpdate", productReview);
-         component.set('v.editModal',true);
+         if(component.get("v.editModal")==true? component.set('v.editModal',false):component.set('v.editModal',true));
 
-        }
+        },
+
+    	getLowestPrice: function (component) {
+    	    let carId = component.get("v.car.Id");
+    	    console.log(component.get("v.car.Name"));
+    		var action = component.get('c.getCarCurrentLowestPrice');
+    		action.setParams({
+    			'carId': carId
+    		});
+
+    		action.setCallback(this, function (response) {
+    			let state = response.getState();
+    			if (state === "SUCCESS") {
+    				component.set("v.carCurrentLowestPrice", response.getReturnValue());
+    			} else {
+    				let resultsToast = $A.get("e.force:showToast");
+    				if ($A.util.isUndefined(resultsToast)) {
+    					alert('Error while getting price');
+    				} else {
+    					resultsToast.setParams({
+    						"type": "error",
+    						"title": "Error",
+    						"message": "Error while getting price"
+    					});
+    					resultsToast.fire();
+    				}
+
+    			}
+    		});
+    		$A.enqueueAction(action);
+    	},
+
+    getStandardPrice: function (component) {
+            let carId = component.get("v.car.Id");
+    		var action = component.get('c.getCarStandardPrice');
+    		action.setParams({
+    			'carId': carId
+    		});
+
+    		action.setCallback(this, function (response) {
+    			let state = response.getState();
+    			if (state === "SUCCESS") {
+    				component.set("v.carStandardPrice", response.getReturnValue());
+    			} else {
+    				let resultsToast = $A.get("e.force:showToast");
+    				if ($A.util.isUndefined(resultsToast)) {
+    					alert('Error while getting price');
+    				} else {
+    					resultsToast.setParams({
+    						"type": "error",
+    						"title": "Error",
+    						"message": "Error while getting price"
+    					});
+    					resultsToast.fire();
+    				}
+
+    			}
+    		});
+    		$A.enqueueAction(action);
+    	},
+
+
+    getCurrentUser: function(component){
+                    var action = component.get("c.getCurrentUser");
+                    action.setCallback(this, function(response){
+                        var state = response.getState();
+                        if(state === "SUCCESS"){
+                            component.set("v.currentUser", response.getReturnValue());
+                        }else{
+                            console.log("Error geting user info ");
+                        }
+                    });
+                    $A.enqueueAction(action);
+
+            },
 
 
 })

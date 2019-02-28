@@ -456,6 +456,12 @@ public with sharing class ECS_CarsManagerController {
     }
 
     @AuraEnabled
+    public static User getCurrentUser(){
+        User currentUser = ECS_Utils.getCurrentUser();
+        return currentUser;
+    }
+
+    @AuraEnabled
     public static String createCase(Case newCase) {
         User currentUser = ECS_Utils.getCurrentUser();
         Database.DMLOptions dmlOpts = new Database.DMLOptions();

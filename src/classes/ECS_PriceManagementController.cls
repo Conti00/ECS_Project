@@ -10,7 +10,7 @@ public with sharing class ECS_PriceManagementController {
         return [
                 SELECT Id, ECS_BeginDate__c, ECS_EndDate__c, ECS_CurrentlyActive__c, Name, ECS_DiscountType__c, ECS_DiscountValue__c
                 FROM Pricebook2
-                WHERE IsActive = true AND IsStandard = false
+                WHERE IsActive = true AND IsStandard = false ORDER By ECS_BeginDate__c
         ];
 
     }

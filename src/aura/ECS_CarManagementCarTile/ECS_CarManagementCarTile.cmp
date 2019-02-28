@@ -5,8 +5,8 @@
 <aura:component description="ECS_CarManagementCarTile" controller="ECS_CarsManagerController">
     <aura:attribute name="car" type="Product2"/>
     <aura:attribute name="carId" type="String"/>
-    <aura:attribute name="carStandardPrice" type="String"/>
-    <aura:attribute name="carCurrentLowestPrice" type="String"/>
+    <aura:attribute name="carStandardPrice" type="Currency"/>
+    <aura:attribute name="carCurrentLowestPrice" type="Currency"/>
     <aura:attribute name="carSelected" type="Boolean" default="false"/>
     <aura:attribute name="orgUrl" type="String"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -16,11 +16,13 @@
                       class="{! v.selected == true ? 'tile selected' : 'tile'}">
         <div style="{!v.car.ECS_ImageID__c != null ?
                 'background-image:url(\''+v.orgUrl+'/sfc/servlet.shepherd/document/download/'+v.car.ECS_ImageID__c+'\')'
-                : 'background-image:url(\''+v.orgUrl+'/sfc/servlet.shepherd/document/download/0691t000000KgkFAAS'}"
+                : 'background-image:url(\''+v.orgUrl+'/sfc/servlet.shepherd/document/download/0691t000001mDckAAE'}"
              class="innertile">
             <div class="lower-third">
                 <h1 class="slds-truncate">{!v.car.Name}</h1>
+                    <strike><h1 class="{!v.carStandardPrice == v.carCurrentLowestPrice?'slds-hide':'slds-truncate'}"> {!v.carStandardPrice}</h1></strike>
                 <h1 class="slds-truncate">{!v.carCurrentLowestPrice}</h1>
+
             </div>
         </div>
     </lightning:button>

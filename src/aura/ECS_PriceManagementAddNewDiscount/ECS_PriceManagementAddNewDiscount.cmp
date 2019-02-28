@@ -35,7 +35,7 @@
                 <c:ECS_SearchedCarsListTable aura:id="carList"/>
             </lightning:card>
         </lightning:layoutItem>
-        <lightning:layoutItem flexibility="grow" size="6" padding="around-small">
+        <lightning:layoutItem flexibility="grow" size="" padding="around-small">
 
             <aura:if isTrue="{!v.carIds.length != 0}">
 
@@ -50,7 +50,7 @@
                 </div>
                 <br/>
 
-                <lightning:layoutItem flexibility="grow" size="6" padding="around-small">
+                <lightning:layoutItem flexibility="grow" padding="around-small">
                     <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                         <thead>
                         <tr class="slds-text-title_caps">
@@ -103,7 +103,7 @@
                     </table>
                 </lightning:layoutItem>
 
-                <lightning:layoutItem size="6" padding="around-small" flexibility="grow">
+                <lightning:layoutItem padding="around-small" flexibility="grow">
 
                     <div class="slds-grid slds-gutters">
                         <div class="slds-col slds-size_1-of-1">
@@ -114,6 +114,7 @@
                                                       value="{! v.value }"
                                                       type="button"/>
                             </div>
+                            <br/>
 
                             <aura:if isTrue="{!v.value == 'amountDiscount'}">
 

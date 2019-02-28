@@ -8,6 +8,9 @@
             let carId = component.get("v.car.Id");
             helper.getLowestPrice(component, carId);
             helper.getStandardPrice(component, carId);
+            console.log(parseInt(component.get("v.carStandardPrice")));
+            console.log(parseInt(component.get("v.carCurrentLowestPrice")));
+            console.log(parseInt(component.get("v.carStandardPrice"))<parseInt(component.get("v.carCurrentLowestPrice")));
         },
 
 

@@ -10,7 +10,10 @@
     <aura:attribute name="carId" type="String"/>
     <aura:attribute name="newReview" type="ECS_Review__c"/>
     <aura:attribute name="reviewId" type="String"/>
+    <aura:attribute name="isEdit" type="Boolean" default="false"/>
     <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="reviewToUpdate" type="ECS_Review__c"/>
+    <aura:attribute name="reviewToUpdateComment" type="String"/>
     <aura:registerEvent name="ReviewAdded" type="c:ECS_ReviewAdded"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -26,19 +29,26 @@
 
         <lightning:layoutItem size="12" padding="around-small">
             <label class="slds-form-element__label" for="input-id-01">{!$Label.c.ECS_Your_Opinion}</label>
-            <lightning:inputRichText value="{!v.newReview.ECS_Comment__c}" disabledCategories="FORMAT_FONT"/>
+            <lightning:inputRichText value="{!v.newReview.ECS_Comment__c}" disabledCategories="FORMAT_FONT" placeholder="{!v.reviewToUpdateComment}"/>
         </lightning:layoutItem>
 
         <lightning:layoutItem size="12" padding="around-small">
             <label class="slds-form-element__label" for="input-id-01">{!$Label.c.ECS_Rating}</label>
-            <c:FiveStarRating value="{!v.newReview.ECS_Rating__c}" readonly="false"/>
+            <c:FiveStarRating value="{!v.newReview.ECS_Rating__c}" readonly="false" />
         </lightning:layoutItem>
 
         <lightning:layoutItem size="12" class="slds-align--absolute-center">
-            <lightning:button name="Submit" onclick="{!c.onSave}">
+            <lightning:button name="Submit" onclick="{!c.onSave}" class="{!v.isEdit? 'slds-hide':''}">
                 <lightning:icon iconName="action:update_status" size="medium"/>
                     {!$Label.c.ECS_Submit}
             </lightning:button>
+                <lightning:button name="Submit" onclick="{!c.onEdit}"  class="{!v.isEdit? '':'slds-hide'}">
+                    <lightning:icon iconName="action:update_status" size="medium"/>
+                        {!$Label.c.ECS_Update}
+                </lightning:button>
+
+
+
 
 
         </lightning:layoutItem>

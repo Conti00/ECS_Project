@@ -115,7 +115,7 @@
                                 <lightning:card title="" iconName="" class="slds-m-horizontal--small" actions="">
 
                                     <aura:if isTrue="{!!v.displayReviewList}">
-                                        <c:ECS_AddCarReview carId="{!v.selectedCarId}"/>
+                                        <c:ECS_AddCarReview carId="{!v.selectedCarId}" />
                                         <aura:set attribute="else">
                                             <c:ECS_WatchOpinion carId="{!v.selectedCarId}"/>
                                         </aura:set>

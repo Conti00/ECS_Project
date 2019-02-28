@@ -94,7 +94,7 @@
                     </aura:set>
                 </aura:if>
                 <aura:set attribute="else">
-                    <c:ECS_AddCarReview carId="{!v.carId}" reviewId="{!v.productReviewToUpdate.Id}"/>
+                    <c:ECS_AddCarReview carId="{!v.carId}" reviewId="{!v.productReviewToUpdate.Id}" isEdit="true"/>
                 </aura:set>
 
             </aura:if>
