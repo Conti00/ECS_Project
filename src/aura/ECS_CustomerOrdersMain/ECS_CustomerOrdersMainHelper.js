@@ -11,16 +11,15 @@
             if (state === "SUCCESS")
             {
                 component.set("v.customerOrdersItems", response.getReturnValue());
-                console.log('Main recived orders: '+JSON.stringify(response.getReturnValue()));
             }else{
                 let resultsToast = $A.get("e.force:showToast");
                 if ($A.util.isUndefined(resultsToast)){
-                    alert('Error when loading orders items');
+                    alert( $A.get('$Label.c.ECS_Error_when_loading_orders_items'));
                 }else{
                     resultsToast.setParams({
                         "type": "error",
                         "title": "Error",
-                        "message": "Error when loading orders items"
+                        "message": $A.get('$Label.c.ECS_Error_when_loading_orders_items')
                     });
                     resultsToast.fire();
                 }

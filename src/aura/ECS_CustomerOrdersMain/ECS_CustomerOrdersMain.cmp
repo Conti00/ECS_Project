@@ -3,40 +3,39 @@
  -->
 
 <aura:component description="ECS_CustomerOrdersMain"
-                    implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes" access="global"
-                    controller="ECS_CarsManagerController">
+                implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes" access="global"
+                controller="ECS_CarsManagerController">
 
-        <aura:attribute name="customerOrdersItems" type="Object[]"/>
-        <aura:attribute name="selectedOrderId" type="String"/>
-        <aura:attribute name="selectedTabId" type="String" default="completedTab"/>
-        <aura:attribute name="selectedOrderDetailItem" type="Object[]"/>
-        <aura:attribute name="orderItemsVisible" type="Boolean" default="true"/>
-        <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
-        <!--<aura:handler name="pricebookSelected" event="c:ECS_PricebookSelectedEvent" action="{!c.handleOrderSelected}"/>-->
-        <aura:handler name="orderItemSelected" event="c:ECS_SelectedTableRowEvent" action="{!c.handleOrderItemSelected}"/>
-        <aura:handler name="change" value="{!v.selectedOrderId}" action="{!c.handleSelectedOrderIdChange}"/>
+    <aura:attribute name="customerOrdersItems" type="Object[]"/>
+    <aura:attribute name="selectedOrderId" type="String"/>
+    <aura:attribute name="selectedTabId" type="String" default="completedTab"/>
+    <aura:attribute name="selectedOrderDetailItem" type="Object[]"/>
+    <aura:attribute name="orderItemsVisible" type="Boolean" default="true"/>
 
-                <lightning:layout horizontalAlign="spread" verticalAlign="start" multipleRows="true">
-                    <lightning:layoutItem size="{! v.selectedOrderId == null ? 7 : 7}" padding="around-small"
-                                          flexibility="grow">
-                        <c:ECS_CustomerOrdersList customerOrdersItems="{!v.customerOrdersItems}"/>
-                    </lightning:layoutItem>
-                    <aura:if isTrue="{!v.selectedOrderDetailItem != null}">
-                        <lightning:layoutItem flexibility="grow" size="5" padding="around-small">
-                            <aura:if isTrue="{!v.orderItemsVisible}">
-                                <c:DynamicTable
-                                        Title="Order products"
-                                        SObjectName="OrderItem"
-                                        FieldNames="['Product2.ECS_Brand__c', 'Product2.ECS_Model__c', 'Product2.ECS_ProductionYear__c', 'UnitPrice']"
-                                        FieldLabels="['Product2.ECS_Brand__c:Brand', 'Product2.ECS_Model__c:Model', 'Product2.ECS_ProductionYear__c:Year', 'UnitPrice: Price']"
-                                        MatchCriteria="{#'OrderId = \'' + v.selectedOrderId + '\''}"
-                                        ReferenceFields="['Product2.ECS_Brand__c']"
-                                        SortByField="Quantity"
-                                        SortOrder="DESC"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="orderItemSelected" event="c:ECS_SelectedTableRowEvent" action="{!c.handleOrderItemSelected}"/>
+    <aura:handler name="change" value="{!v.selectedOrderId}" action="{!c.handleSelectedOrderIdChange}"/>
 
-                            </aura:if>
-                        </lightning:layoutItem>
-                    </aura:if>
-                </lightning:layout>
+    <lightning:layout horizontalAlign="spread" verticalAlign="start" multipleRows="true">
+        <lightning:layoutItem size="{! v.selectedOrderId == null ? 7 : 7}" padding="around-small"
+                              flexibility="grow">
+            <c:ECS_CustomerOrdersList customerOrdersItems="{!v.customerOrdersItems}"/>
+        </lightning:layoutItem>
+        <aura:if isTrue="{!v.selectedOrderDetailItem != null}">
+            <lightning:layoutItem flexibility="grow" size="5" padding="around-small">
+                <aura:if isTrue="{!v.orderItemsVisible}">
+                    <c:DynamicTable
+                            Title="Order products"
+                            SObjectName="OrderItem"
+                            FieldNames="['Product2.ECS_Brand__c', 'Product2.ECS_Model__c', 'Product2.ECS_ProductionYear__c', 'UnitPrice']"
+                            FieldLabels="['Product2.ECS_Brand__c:Brand', 'Product2.ECS_Model__c:Model', 'Product2.ECS_ProductionYear__c:Year', 'UnitPrice: Price']"
+                            MatchCriteria="{#'OrderId = \'' + v.selectedOrderId + '\''}"
+                            ReferenceFields="['Product2.ECS_Brand__c']"
+                    />
 
-    </aura:component>
+                </aura:if>
+            </lightning:layoutItem>
+        </aura:if>
+    </lightning:layout>
+
+</aura:component>

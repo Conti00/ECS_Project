@@ -11,8 +11,7 @@ global with sharing class ECS_SendNotificationToNewsletterGroup implements Sched
     public static void sendEmailsToNewsletterGroup(){
 
         List<String> mailToAddresses = new List<String>();
-        EmailTemplate emailTemplate = new EmailTemplate();
-        String content ='\n';
+        EmailTemplate emailTemplate = [Select id, Subject from EmailTemplate where Name='AvailableCarsToNewsletter'];
         List<User> users = [SELECT Email FROM User WHERE Id IN (
                 SELECT UserOrGroupId
                 FROM GroupMember
@@ -23,19 +22,13 @@ global with sharing class ECS_SendNotificationToNewsletterGroup implements Sched
             mailToAddresses.add(u.email);
         }
 
-
-        List<Product2> listOfCars = [SELECT Name FROM Product2 ];
-        for(integer i=0;i<listOfCars.size();i++){
-            content = content + listOfCars[i].Name +'\n';
-        }
-
         Messaging.SingleEmailMessage message = new Messaging.SingleEmailMessage();
+        message.setTemplateId(emailTemplate.Id);
         message.toAddresses = mailToAddresses;
         message.optOutPolicy = 'FILTER';
-        message.subject = 'List of Available Cars';
+        message.setSubject(emailTemplate.Subject);
+//        message.subject = 'List of Available Cars';
 
-        message.plainTextBody = 'Our Available Cars: '+content;
-//
         Messaging.SingleEmailMessage[] messages =   new List<Messaging.SingleEmailMessage> {message};
         Messaging.SendEmailResult[] results = Messaging.sendEmail(messages);
 

@@ -316,7 +316,7 @@
                                 </lightning:card>
                             </lightning:layoutItem>
                         </div>
-                        
+
                     </div>
                 </section>
                 <div class="slds-backdrop slds-backdrop_open"></div>

@@ -1,0 +1,56 @@
+<!--
+ - Created by BRITENET on 28.02.2019.
+ -->
+
+<apex:component id="ECS_carToNewsletter" controller="ECS_findCarToNewsletter" access="global">
+
+    <style>
+      .headerRow .TableTitle {
+        background-color: #F0F8FF !important;
+        background-image: none !important;
+        color: #CC0000 !important;
+        font-size:100% !important;
+        border:solid;
+      }
+
+    </style>
+
+    <apex:slds>
+        <apex:outputPanel>
+            <table class='list'>
+                <thead>
+                <tr class='headerRow'>
+                    <th colspan='50%' align="center">{!$Label.ECS_Our_available_cars}</th>
+                </tr>
+                <tr class='headerRow' align="left">
+                    <th> {!$Label.ECS_Model}</th>
+                    <th> {!$Label.ECS_Year}</th>
+                    <th> {!$Label.ECS_Vin}</th>
+                    <th> {!$Label.ECS_Current_Price}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <apex:repeat value="{!Cars}" var="car">
+                    <tr>
+                        <td>
+                            <a href="{!'https://electriccarsshop-developer-edition.eu16.force.com/ECSCommunity/s/search-cars?carId='+car.Id}"
+                               target="_blank">{!car.Name}</a> &nbsp;
+                        </td>
+                        <td>{!car.ECS_ProductionYear__c}</td>
+                        <td>{!car.ECS_VinNumber__c}</td>
+                        <td>{!car.PricebookEntries[0].UnitPrice}&nbsp;</td>
+                    </tr>
+                </apex:repeat>
+                </tbody>
+                <tfoot>
+                <tr class='headerRow'>
+                    <th colspan='50%' align="center"><br/>{!$Label.ECS_For_more_information_please_visit_our}
+                        <a href="{!'https://electriccarsshop-developer-edition.eu16.force.com/ECSCommunity/s/'}"
+                           target="_blank"> {!$Label.ECS_Website}</a> &nbsp;
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </apex:outputPanel>
+    </apex:slds>
+</apex:component>

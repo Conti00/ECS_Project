@@ -3,7 +3,8 @@
  -->
 
 <aura:component description="ECS_CarManagementGallery"
-                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,
+                force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
                 controller="ECS_CarsManagerController">
 
     <aura:attribute name="carId" type="String"/>
@@ -29,7 +30,6 @@
                                       onuploadfinished="{!c.handleUploadFinished}"/>
             </div>
         </lightning:card>
-
 
         <aura:if isTrue="{!v.carImages.length != 0 }">
             <lightning:card class="slds-grid_align-center">
@@ -64,15 +64,11 @@
                                         <div class="mainPhoto">
                                             <br/>
                                             <lightning:icon iconName="action:approval" size="medium"/>
-
-
-                                            This is main photo
+                                            {!$Label.c.ECS_This_is_main_photo}
                                         </div>
                                     </aura:set>
                                 </aura:if>
-
                             </div>
-
                         </lightning:layoutItem>
                     </lightning:layout>
                 </aura:iteration>

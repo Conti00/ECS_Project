@@ -4,7 +4,6 @@
 
 ({
     doInit: function(component, event, helper){
-        console.log('init selectedorderid: '+ component.get("v.selectedOrderId"));
         helper.loadCustomerOrdersItems(component);
     },
     handleOrderItemSelected: function(component, event, helper){
@@ -13,7 +12,6 @@
         component.set("v.selectedOrderId", transfered.Id);
     },
     handleSelectedOrderIdChange: function(component, event, helper){
-        console.log('selectedorderid: '+ component.get("v.selectedOrderId"));
         component.set("v.orderItemsVisible", false);
         component.set("v.orderItemsVisible", true);
     },
