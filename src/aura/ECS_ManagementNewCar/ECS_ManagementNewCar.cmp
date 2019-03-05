@@ -40,7 +40,6 @@
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
-
     <force:recordData aura:id="newCarData"
                       fields="Id, Name, IsActive, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c,
                           ECS_isCreatingCompleted__c, ECS_EngineSize__c,ECS_BatteryCapacity__c,ECS_BodyStyle__c,
@@ -170,15 +169,12 @@
                                 </div>
                             </div>
 
-
                             <div class="slds-form-element__row slds-grid_align-center">
                                 <lightning:button name="{!$Label.c.ECS_Next}" onclick="{!c.handleCreateRecord}">
                                     <lightning:icon iconName="action:check" size="medium"/>
                                     &nbsp;{!$Label.c.ECS_Next}
                                 </lightning:button>
-
                             </div>
-
                         </div>
                     </fieldset>
                 </div>
@@ -189,7 +185,6 @@
                 <lightning:progressStep label="Specify Car Details" value="1"/>
                 <lightning:progressStep label="Add Pictures" value="2"/>
             </lightning:progressIndicator>
-
 
             <lightning:card iconName="" title="" >
                 <c:ECS_CarManagementGallery carId="{!v.carId}"/>
