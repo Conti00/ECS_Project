@@ -8,8 +8,7 @@
         var helper = this;
         action.setCallback(this, function(response){
             let state = response.getState();
-            if (state === "SUCCESS")
-            {
+            if (state === "SUCCESS"){
                 component.set("v.customerOrdersItems", response.getReturnValue());
             }else{
                 let resultsToast = $A.get("e.force:showToast");

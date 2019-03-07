@@ -3,54 +3,51 @@
  */
 
 ({
-    init: function (component, event, helper) {
-            helper.loadCustomerCartItems(component);
+	init: function (component, event, helper) {
+		helper.loadCustomerCartItems(component);
+	},
 
-    },
+	deleteCartItem: function (component, event, helper) {
+		let listOfSelectedIds = component.get("v.selectedCarsIds");
+		let carId = event.getSource().get("v.value");
+		if (!listOfSelectedIds.includes(carId)) {
+			listOfSelectedIds.push(carId);
+			component.set("v.selectedCarsIds", listOfSelectedIds);
+		}
+		helper.removeCartItem(component, listOfSelectedIds);
+	},
 
-    deleteCartItem: function (component, event, helper) {
-        let listOfSelectedIds = component.get("v.selectedCarsIds");
-        let carId = event.getSource().get("v.value");
-        if(!listOfSelectedIds.includes(carId)){
-            listOfSelectedIds.push(carId);
-            component.set("v.selectedCarsIds", listOfSelectedIds);
-        }
-        console.log(listOfSelectedIds);
+	redirectToDetailsPage: function (component, event, helper) {
+		let carId = event.getSource().get("v.value");
+		let urlEvent = $A.get("e.force:navigateToURL");
+		urlEvent.setParams({
+			"url": "/search-cars?carId=" + carId
+		});
+		urlEvent.fire();
+	},
 
-        helper.removeCartItem(component, listOfSelectedIds);
-    },
+	redirectToSearch: function (component, event, helper) {
+		let urlEvent = $A.get("e.force:navigateToURL");
+		urlEvent.setParams({
+			"url": "/search-cars"
+		});
+		urlEvent.fire();
+	},
 
-    redirectToDetailsPage: function(component, event, helper){
-        let carId = event.getSource().get("v.value");
-        let urlEvent = $A.get("e.force:navigateToURL");
-           urlEvent.setParams({
-             "url": "/search-cars?carId="+carId
-           });
-           urlEvent.fire();
-    },
+	redirectToOrders: function (component, event, helper) {
+		let urlEvent = $A.get("e.force:navigateToURL");
+		urlEvent.setParams({
+			"url": "/orders"
+		});
+		urlEvent.fire();
+	},
 
-    redirectToSearch: function(component, event, helper){
-        let urlEvent = $A.get("e.force:navigateToURL");
-            urlEvent.setParams({
-              "url": "/search-cars"
-            });
-            urlEvent.fire();
-    },
+	sendCarItemsToCheckout: function (component, event, helper) {
+		helper.proceedCheckout(component);
+	},
 
-    redirectToOrders: function(component, event, helper){
-        let urlEvent = $A.get("e.force:navigateToURL");
-             urlEvent.setParams({
-               "url": "/orders"
-             });
-             urlEvent.fire();
-    },
-
-    sendCarItemsToCheckout: function(component, event, helper){
-        helper.proceedCheckout(component);
-    },
-
-    onCartItemsChange: function(component, event, helper){
-            helper.summarizeCartAmount(component);
-        },
+	onCartItemsChange: function (component, event, helper) {
+		helper.summarizeCartAmount(component);
+	},
 
 })

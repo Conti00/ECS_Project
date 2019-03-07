@@ -73,12 +73,6 @@
                                 <lightning:icon iconName="action:follow" size="medium"/>
                                 &nbsp;{!$Label.c.ECS_Add_Review}
                             </lightning:button>
-                            <!--<lightning:button name="{!$Label.c.ECS_Watch_Opinion}"-->
-                                              <!--class="{!customerPurchasedItem.ECS_isReviewed__c?'':'slds-hide'}"-->
-                                              <!--onclick="{!c.displayReviewModal}" value="{!customerPurchasedItem}" title="watch">-->
-                                <!--<lightning:icon iconName="action:description" size="medium"/>-->
-                                <!--&nbsp;{!$Label.c.ECS_Watch_Opinion}-->
-                            <!--</lightning:button>-->
                             <lightning:button name="{!$Label.c.ECS_Watch_Opinion}"
                                               class="{!customerPurchasedItem.ECS_isReviewed__c?'':'slds-hide'}"
                                               onclick="{!c.displayReviewModal}" value="{!customerPurchasedItem}" title="watch">
@@ -91,14 +85,10 @@
                 </tbody>
             </table>
 
-
             <aura:if isTrue="{!v.displayReviewModal}">
-
-                <!--###### MODAL BOX Start######-->
                 <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
                          aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
                     <div class="slds-modal__container">
-                        <!-- ###### MODAL BOX HEADER Start ######-->
                         <header class="slds-modal__header">
                             <lightning:buttonIcon iconName="utility:close"
                                                   onclick="{! c.hideReviewModal }"
@@ -108,7 +98,6 @@
                             <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
                                 {!v.selectedCarName}</h2>
                         </header>
-                        <!--###### MODAL BOX BODY Part Start######-->
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
 
                             <lightning:layoutItem size="">
@@ -120,27 +109,13 @@
                                             <c:ECS_WatchOpinion carId="{!v.selectedCarId}"/>
                                         </aura:set>
                                     </aura:if>
-
                                 </lightning:card>
                             </lightning:layoutItem>
-
-
                         </div>
-                        <!--###### MODAL BOX FOOTER Part Start ######-->
-                        <!--<footer class="slds-modal__footer">-->
-                            <!--<lightning:button variant="neutral"-->
-                                              <!--label="{!$Label.c.ECS_Close}"-->
-                                              <!--title="{!$Label.c.ECS_Close}"-->
-                                              <!--onclick="{! c.hideReviewModal }"/>-->
-                        <!--</footer>-->
                     </div>
                 </section>
-                <div class="slds-backdrop slds-backdrop_open"></div>
-                <!--###### MODAL BOX Part END Here ######-->
-
+                <div class="slds-backdrop slds-backdrop_open"/>
             </aura:if>
-
-
         </lightning:layout>
     </lightning:card>
 </aura:component>

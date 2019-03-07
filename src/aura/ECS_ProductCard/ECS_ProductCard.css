@@ -45,3 +45,54 @@
 .THIS .slds-show{
     text-align:center;
 }
+
+.THIS .priceProductCard{
+    text-align:center;
+    margin-top:10%;
+    font-size:55px;
+    font-weight:bold;
+    color: green;
+    font-weight: bold;
+    font-family: Helvetica;
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1),
+    0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25),
+    0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+}
+
+
+
+.THIS .slds-media__figure{
+    text-align:left;
+}
+
+.THIS .slds-p-around_small{
+    padding:0;
+}
+
+.THIS .authorClass{
+    color:rgb(105,105,105);
+    font-size:17px;
+
+}
+
+.THIS .dateClass{
+    color:rgb(105,105,105);
+    font-size:15px;
+
+}
+
+.THIS .review-item:not(:last-child){
+     border-bottom: 1px solid rgb(217, 219, 221);
+}
+
+.THIS .star-item{
+      padding-bottom:15px;
+}
+
+.THIS .sale-price{
+    color: #800000;
+    text-shadow:none;
+    text-decoration:line-through;
+
+}
+

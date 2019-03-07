@@ -6,7 +6,6 @@
                 implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes" access="global">
 
     <aura:attribute name="carId" type="String"/>
-    <aura:attribute name="car" type="Product2"/>
     <aura:attribute name="carImages" type="String[]"/>
     <aura:attribute name="selectedCarsIds" type="String[]"/>
     <aura:attribute name="carStandardPrice" type="Currency"/>
@@ -17,17 +16,18 @@
     <aura:attribute name="displayPresentationModal" type="Boolean"/>
     <aura:attribute name="productReviews" type="ECS_Review__c[]"/>
     <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+    <aura:attribute name="car" type="Product2"/>
     <aura:attribute name="carIsFromHotSale" type="Boolean" default="false"/>
     <aura:attribute name="productReviewToUpdate" type="ECS_Review__c"/>
     <aura:attribute name="currentUser" type="User"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler name="ReviewAdded" event="c:ECS_ReviewAdded" action="{!c.onReviewAdded}"/>
-    <lightning:layout>
 
+    <lightning:layout>
         <lightning:layoutItem size="12">
             <lightning:card iconName=""
-                            title="{!!equals(v.carIsFromHotSale, true) ? v.car.Name+' - '+ v.carCurrentLowestPrice +'€':''}"
+                            title="{!!equals(v.carIsFromHotSale, true) ? v.car.Name:''}"
                             variant="narrow">
                 <div class="slds-p-horizontal--small">
                     <fieldset class="slds-form--compound">
@@ -35,13 +35,14 @@
                             <div class="slds-form-element__row slds-grid_vertical-align-start">
                                 <div class="slds-form-element slds-size--1-of-2">
                                     <aura:if isTrue="{!v.car.ECS_ImageID__c}">
-                                        <img src="{!v.orgUrl+'/sfc/servlet.shepherd/document/download/'+v.car.ECS_ImageID__c}"/>
+                                        <img src="{!v.orgUrl+'/sfc/servlet.shepherd/document/download/'
+                                                +v.car.ECS_ImageID__c}"/>
                                         <aura:set attribute="else">
                                             <img src="{!v.orgUrl+'/sfc/servlet.shepherd/document/download/0691t000001mDckAAE'}"/>
                                         </aura:set>
                                     </aura:if>
                                 </div>
-                                <div class="slds-form-element slds-size--1-of-2">
+                                <div class="slds-form-element slds-size--1-of-2" style="text-align:center">
                                     <lightning:button name="{!$Label.c.ECS_Add_To_Cart}"
                                                       onclick="{!c.onCarAddedToCart}"
                                                       class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale':''}">
@@ -62,6 +63,11 @@
                                             &nbsp;{!$Label.c.ECS_Show_All_Pictures}
                                         </lightning:button>
                                     </aura:if>
+                                    <div class="{!equals(v.carIsFromHotSale, true) ? 'carIsFromHotSale':'priceProductCard'}">
+                                        <h1 class="{!v.carStandardPrice == v.carCurrentLowestPrice?'slds-hide':'slds-truncate sale-price'}"> {!v.carStandardPrice+' €'}</h1>
+                                           <h3> {!v.carCurrentLowestPrice+' €'}</h3>
+
+                                    </div>
                                     <lightning:button name="{!$Label.c.ECS_Go_to_Product}"
                                                       onclick="{!c.redirectToDetailsPage}" value="{!v.car.Id}"
                                                       class="{!equals(v.carIsFromHotSale, true) ? '':'carIsFromHotSale'}">
@@ -69,7 +75,6 @@
                                         &nbsp;{!$Label.c.ECS_Go_to_Product}
                                     </lightning:button>
                                 </div>
-
                             </div>
                             <div class="slds-form-element__row slds-grid_vertical-align-end">
                                 <div class="slds-form-element slds-size--1-of-3">
@@ -130,7 +135,7 @@
                                 <div class="slds-form-element slds-size--1-of-3">
                                     <p class="slds-text-body_small slds-text-color_weak">
                                     {!$Label.c.ECS_Battery_Capacity}: </p>
-                                    <ui:outputText value="{!v.car.ECS_BatteryCapacity__c+' kWh'}"
+                                    <ui:outputText value="{!v.car.ECS_BatteryCapacity__c+' '+$Label.c.ECS_Kwh}"
                                                    title="{!$Label.c.ECS_Battery_Capacity}"
                                                    class="slds-text-heading_medium"/>
                                 </div>
@@ -153,92 +158,84 @@
                         : 'slds-form-element__row slds-grid_vertical-align-end'}">
                     <lightning:tabset variant="scoped">
                         <lightning:tab title="{!$Label.c.ECS_Reviews}" label="{!$Label.c.ECS_Reviews}">
-                            <lightning:layoutItem size="">
+                            <lightning:layoutItem>
                                 <lightning:card title="" iconName="" class="slds-m-horizontal--small" actions="">
 
                                     <aura:if isTrue="{!v.productReviews.length > 0}">
-                                            <div>
-                                                <ul class="slds-feed__list">
-                                                    <aura:iteration items="{!v.productReviews}" var="productReview">
-                                                        <li class="slds-feed__item slds-p-vertical--x-small"
-                                                            style="border-bottom: 1px solid rgb(217, 219, 221)">
-                                                            <article class="slds-post">
-                                                                <div class="slds-grid slds-grid--align-spread">
-                                                                    <p class="slds-col ">
-                                                                        <header class="slds-post__header slds-media">
-                                                                            <div class="slds-media__figure">
-                                                                                <a href="javascript:void(0);"
-                                                                                   class="slds-avatar slds-avatar_circle slds-avatar_large">
-                                                                                    <lightning:icon
-                                                                                            iconName="standard:messaging_user"/>
-                                                                                </a>
-                                                                                <div class="slds-media__body">
-                                                                                    <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate ">
-                                                                                        <lightning:formattedDateTime
-                                                                                                value="{!productReview.CreatedDate}"
-                                                                                                year="numeric"
-                                                                                                day="2-digit"
-                                                                                                month="short"
-                                                                                                weekday="short"
-                                                                                                hour="2-digit"
-                                                                                                minute="2-digit"/>
-                                                                                    </div>
-                                                                                    <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center">
-                                                                                            {!productReview.CreatedBy.Name}
-                                                                                    </div>
-                                                                                    <div class="slds-text-body_small">
-                                                                                        <c:FiveStarRating
-                                                                                                value="{!productReview.ECS_Rating__c}"
-                                                                                                readonly="true"/>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <lightning:layout
-                                                                                                multipleRows="true">
-                                                                                            <lightning:layoutItem
-                                                                                                    size="12"
-                                                                                                    padding="around-small">
-                                                                                                <label class="slds-form-element__label"
-                                                                                                       for="input-id-01">{!$Label.c.ECS_Opinion}</label>
-                                                                                                <ui:outputRichText
-                                                                                                        value="{!productReview.ECS_Comment__c}"/>
-                                                                                            </lightning:layoutItem>
-                                                                                        </lightning:layout>
-                                                                                    </div>
+                                        <div>
+                                            <ul class="slds-feed__list">
+                                                <aura:iteration items="{!v.productReviews}" var="productReview">
+                                                    <li class="slds-feed__item slds-p-vertical--x-small review-item">
+                                                        <article class="slds-post">
+                                                            <div class="slds-grid slds-grid--align-spread">
+                                                                <p class="slds-col ">
+                                                                    <header class="slds-post__header slds-media">
+                                                                        <div class="slds-media__figure">
+
+                                                                            <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center authorClass">
+                                                                                    {!productReview.CreatedBy.Name}
+
+
+                                                                            </div>
+                                                                            <div class="slds-media__body">
+                                                                                <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate dateClass ">
+                                                                                    <lightning:formattedDateTime
+                                                                                            value="{!productReview.CreatedDate}"
+                                                                                            year="numeric"
+                                                                                            day="2-digit"
+                                                                                            month="short"
+                                                                                            hour="2-digit"
+                                                                                            minute="2-digit"/>
+                                                                                </div>
+
+                                                                                <div class="slds-text-body_small star-item">
+                                                                                    <c:FiveStarRating
+                                                                                            value="{!productReview.ECS_Rating__c}"
+                                                                                            readonly="true"/>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <lightning:layout
+                                                                                            multipleRows="true">
+                                                                                        <lightning:layoutItem
+                                                                                                size="12"
+                                                                                                padding="around-small">
+
+                                                                                            <ui:outputRichText
+                                                                                                    value="{!productReview.ECS_Comment__c}"/>
+                                                                                        </lightning:layoutItem>
+                                                                                    </lightning:layout>
                                                                                 </div>
                                                                             </div>
-                                                                        </header>
-                                                                    </p>
-
-                                                                    <p class="slds-col slds-size--2-of-12">
-
-                                                                        <aura:if isTrue="{!v.isAdmin}">
-                                                                            <lightning:button name="Remove Reviews"
-                                                                                              onclick="{!c.deleteMovieReview}"
-                                                                                              value="{!productReview.Id}"
-                                                                                              class="slds-float_right">
-                                                                                <lightning:icon iconName="action:delete"
-                                                                                                size="medium"/>
-                                                                            </lightning:button>
-                                                                        </aura:if>
-                                                                        <aura:if isTrue="{!v.currentUser.Name == productReview.CreatedBy.Name}">
-
-
-
-                                                                            <lightning:button name="Edit Reviews"
-                                                                                              onclick="{!c.editReview}"
-                                                                                              value="{!productReview}"
-                                                                                              class="slds-float_right">
-                                                                                <lightning:icon iconName="action:edit"
-                                                                                                size="medium"/>
-                                                                            </lightning:button>
-                                                                        </aura:if>
-                                                                    </p>
-                                                                </div>
-                                                            </article>
-                                                        </li>
-                                                    </aura:iteration>
-                                                </ul>
-                                            </div>
+                                                                        </div>
+                                                                    </header>
+                                                                </p>
+                                                                <p class="slds-col slds-size--2-of-12">
+                                                                    <aura:if isTrue="{!v.isAdmin}">
+                                                                        <lightning:button name="Remove Reviews"
+                                                                                          onclick="{!c.deleteMovieReview}"
+                                                                                          value="{!productReview.Id}"
+                                                                                          class="slds-float_right">
+                                                                            <lightning:icon iconName="action:delete"
+                                                                                            size="medium"/>
+                                                                        </lightning:button>
+                                                                    </aura:if>
+                                                                    <aura:if
+                                                                            isTrue="{!v.currentUser.Name == productReview.CreatedBy.Name}">
+                                                                        <lightning:button name="Edit Reviews"
+                                                                                          onclick="{!c.editReview}"
+                                                                                          value="{!productReview}"
+                                                                                          class="slds-float_right">
+                                                                            <lightning:icon iconName="action:edit"
+                                                                                            size="medium"/>
+                                                                        </lightning:button>
+                                                                    </aura:if>
+                                                                </p>
+                                                            </div>
+                                                        </article>
+                                                    </li>
+                                                </aura:iteration>
+                                            </ul>
+                                        </div>
                                         <aura:set attribute="else">
                                             <lightning:layoutItem class="slds-align_absolute-center"
                                                                   flexibility="auto"
@@ -247,7 +244,6 @@
                                             </lightning:layoutItem>
                                         </aura:set>
                                     </aura:if>
-
                                 </lightning:card>
                             </lightning:layoutItem>
                         </lightning:tab>
@@ -288,13 +284,6 @@
                 </div>
             </lightning:card>
 
-            <!--<aura:if isTrue="{!v.editModal}">-->
-
-               <!---->
-
-            <!--</aura:if>-->
-
-
             <aura:if isTrue="{!v.editModal}">
                 <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
                          aria-describedby="modal-content-id-1"
@@ -307,12 +296,13 @@
                                                   variant="bare-inverse"
                                                   class="slds-modal__close"/>
                             <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
-                             {!v.car.Name}</h2>
+                                    {!v.car.Name}</h2>
                         </header>
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                             <lightning:layoutItem size="">
                                 <lightning:card title="" iconName="" class="slds-m-horizontal--small" actions="">
-                                    <c:ECS_AddCarReview carId="{!v.car.Id}" reviewId="{!v.productReviewToUpdate.Id}" isEdit="true" reviewToUpdate="{!v.productReviewToUpdate}"/>
+                                    <c:ECS_AddCarReview carId="{!v.car.Id}" reviewId="{!v.productReviewToUpdate.Id}"
+                                                        isEdit="true" reviewToUpdate="{!v.productReviewToUpdate}"/>
                                 </lightning:card>
                             </lightning:layoutItem>
                         </div>
@@ -321,7 +311,6 @@
                 </section>
                 <div class="slds-backdrop slds-backdrop_open"></div>
             </aura:if>
-
         </lightning:layoutItem>
     </lightning:layout>
 

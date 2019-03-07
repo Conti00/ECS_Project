@@ -4,11 +4,9 @@
 ({
 
 	doInit: function (component, event, helper) {
-
 		helper.getOrgUrl(component);
 		helper.onInit(component);
 		helper.getProductReviews(component);
-//		helper.getLowestPrice(component, component.get('v.car.Id'));
 		helper.loadCarImages(component);
 		helper.getLowestPrice(component);
 		helper.getStandardPrice(component);
@@ -16,8 +14,7 @@
 	},
 
 	onCarAddedToCart: function (component, event, helper) {
-		var carObj = component.get("v.car");
-		helper.addCarToCart(component, carObj);
+		helper.addCarToCart(component);
 		component.set('v.carInCart', true);
 	},
 
@@ -48,8 +45,7 @@
 	},
 
 	deleteMovieReview: function (component, event, helper) {
-		let reviewId = event.getSource().get("v.value");
-		helper.deleteReview(component, reviewId);
+		helper.deleteReview(component, event);
 	},
 
 	deleteCartItem: function (component, event, helper) {
@@ -59,7 +55,6 @@
 			listOfSelectedIds.push(carId);
 			component.set("v.selectedCarsIds", listOfSelectedIds);
 		}
-
 		helper.removeCartItem(component, listOfSelectedIds);
 		component.set('v.carInCart', false);
 
@@ -74,23 +69,21 @@
 		urlEvent.fire();
 	},
 
-	openAllFiles: function(component, event, helper){
-            var imagesIds = component.get("v.carImages");
-            $A.get('e.lightning:openFiles').fire({
-                recordIds: imagesIds,
-                selectedRecordId: imagesIds[0]
-            });
-        },
+	openAllFiles: function (component, event, helper) {
+		let imagesIds = component.get("v.carImages");
+		$A.get('e.lightning:openFiles').fire({
+			recordIds: imagesIds,
+			selectedRecordId: imagesIds[0]
+		});
+	},
 
-    editReview : function(component, event, helper){
-            let productReview = event.getSource().get("v.value");
-            helper.editReview(component, productReview);
-        },
+	editReview: function (component, event, helper) {
+		helper.editReview(component, event);
+	},
 
-    onReviewAdded : function(component, event, helper) {
-               console.log("handle event");
-               helper.getProductReviews(component);
-               component.set("v.editModal",false);
-           },
+	onReviewAdded: function (component, event, helper) {
+		helper.getProductReviews(component);
+		component.set("v.editModal", false);
+	},
 
 })

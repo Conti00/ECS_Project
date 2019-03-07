@@ -48,12 +48,12 @@
 			} else {
 				let resultsToast = $A.get("e.force:showToast");
 				if ($A.util.isUndefined(resultsToast)) {
-					alert('Error while getting Url');
+					alert($A.get('$Label.c.ECS_Error_while_getting_url'));
 				} else {
 					resultsToast.setParams({
 						"type": "error",
 						"title": "Error",
-						"message": "Error while getting Url"
+						"message": $A.get('$Label.c.ECS_Error_while_getting_url')
 					});
 					resultsToast.fire();
 				}
@@ -76,12 +76,12 @@
 			} else {
 				let resultsToast = $A.get("e.force:showToast");
 				if ($A.util.isUndefined(resultsToast)) {
-					alert('Error while getting price');
+					alert('Error while getting price1');
 				} else {
 					resultsToast.setParams({
 						"type": "error",
 						"title": "Error",
-						"message": "Error while getting price"
+						"message": "Error while getting price1"
 					});
 					resultsToast.fire();
 				}
@@ -104,12 +104,12 @@
 			} else {
 				let resultsToast = $A.get("e.force:showToast");
 				if ($A.util.isUndefined(resultsToast)) {
-					alert('Error while getting price');
+					alert('Error while getting price2');
 				} else {
 					resultsToast.setParams({
 						"type": "error",
 						"title": "Error",
-						"message": "Error while getting price"
+						"message": "Error while getting price2"
 					});
 					resultsToast.fire();
 				}

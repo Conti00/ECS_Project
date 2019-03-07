@@ -8,7 +8,6 @@
                 access="global">
 
     <aura:attribute name="car" type="Product2"/>
-    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
     <aura:attribute name="yearOptions" type="String[]"/>
     <aura:attribute name="bodyStyleOptions" type="String[]"/>
     <aura:attribute name="fuelTypeOptions" type="String[]"/>
@@ -59,13 +58,11 @@
                           targetRecord="{!v.carToDelete}"/>
     </aura:if>
 
-    <aura:if isTrue="{!v.isAdmin}">
-
         <div class="{!v.newCarCreatingStage == 'carDetails' ? 'slds' : 'slds-hide'}">
             <lightning:progressIndicator currentStep="1" type="path" hasError="false" variant="base"
                                          class="progressBar">
-                <lightning:progressStep label="Specify Car Details" value="1"/>
-                <lightning:progressStep label="Add Pictures" value="2"/>
+                <lightning:progressStep label="{!$Label.c.ECS_Specify_Car_Details}" value="1"/>
+                <lightning:progressStep label="{!$Label.c.ECS_Add_Pictures}" value="2"/>
             </lightning:progressIndicator>
             <lightning:card iconName="" title="">
                 <div class="slds-p-horizontal--small">
@@ -73,44 +70,43 @@
                         <div class="slds-form-element__group">
                             <div class="slds-form-element__row slds-grid_vertical-align-end">
                                 <div class="slds-form-element slds-size--1-of-2">
-                                    <lightning:input aura:id="newCarFormField" label="Product Name"
+                                    <lightning:input aura:id="newCarFormField" label="{!$Label.c.ECS_Product_Name}"
                                                      value="{!v.newCar.Name}" required="true"/>
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-2">
-                                    <lightning:input label="Car Model" value="{!v.newCar.ECS_Model__c}"
-                                                     aura:id="newCarFormField" required="true"/>
+                                    <lightning:input aura:id="newCarFormField" label="{!$Label.c.ECS_Model}"
+                                                     value="{!v.newCar.ECS_Model__c}"
+                                                      required="true"/>
                                 </div>
                             </div>
                             <div class="slds-form-element__row slds-grid_vertical-align-end">
                                 <div class="slds-form-element slds-size--1-of-2">
-                                    <lightning:select label="Model Year" aura:id="newCarFormField"
+                                    <lightning:select label="{!$Label.c.ECS_Year}" aura:id="newCarFormField"
                                                       value="{!v.newCar.ECS_ProductionYear__c}" required="true">
-                                        <option value=""></option>
                                         <aura:iteration var="year" items="{!v.yearOptions}">
                                             <option value="{!year}" text="{!year}"/>
                                         </aura:iteration>
                                     </lightning:select>
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-2">
-                                    <lightning:input aura:id="newCarFormField" label="VIN"
+                                    <lightning:input aura:id="newCarFormField" label="{!$Label.c.ECS_Vin}"
                                                      value="{!v.newCar.ECS_VinNumber__c}" required="true"/>
                                 </div>
                             </div>
                             <div class="slds-form-element__row slds-grid_vertical-align-end">
                                 <div class="slds-form-element slds-size--1-of-2">
                                     <p class="slds-text-body_small slds-text-color_weak"></p>
-                                    <lightning:input type="number" label="Price" value="{!v.newCarListPrice}"
+                                    <lightning:input type="number" label="{!$Label.c.ECS_Current_Price}" value="{!v.newCarListPrice}"
                                                      formatter="currency" step="1" required="true"
                                                      aura:id="newCarFormField"/>
                                 </div>
                                 <div class="slds-form-element slds-size--1-of-2">
                                     <p class="slds-text-body_small slds-text-color_weak"></p>
-                                    <lightning:input type="number" label="Engine Size"
+                                    <lightning:input type="number" label="{!$Label.c.ECS_Engine_Size}"
                                                      value="{!v.newCar.ECS_EngineSize__c}"
                                                      step="1" required="true" aura:id="newCarFormField"/>
                                 </div>
                             </div>
-
 
                             <div class="slds-form-element__row slds-grid_vertical-align-end">
                                 <div class="slds-form-element slds-size--1-of-2">
@@ -182,32 +178,12 @@
         </div>
         <div class="{!v.newCarCreatingStage == 'carPictures' ? 'slds' : 'slds-hide'}">
             <lightning:progressIndicator currentStep="2" type="path" hasError="false" variant="base">
-                <lightning:progressStep label="Specify Car Details" value="1"/>
-                <lightning:progressStep label="Add Pictures" value="2"/>
+                <lightning:progressStep label="{!$Label.c.ECS_Specify_Car_Details}" value="1"/>
+                <lightning:progressStep label="{!$Label.c.ECS_Add_Pictures}" value="2"/>
             </lightning:progressIndicator>
 
-            <lightning:card iconName="" title="" >
+            <lightning:card title="" >
                 <c:ECS_CarManagementGallery carId="{!v.carId}"/>
             </lightning:card>
         </div>
-        <aura:set attribute="else">
-            <lightning:card title="">
-                <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
-                    <h1></h1><br/>
-                    <span></span>
-                    <div class="slds-form-element__row slds-grid_vertical-align-end">
-                        <div class="slds-text-align_center">{!$Label.c.ECS_No_permisson_to_access_page}</div>
-                        <div class="slds-text-align_center">{!$Label.c.ECS_Only_administrator_could_add_new_cars}
-                        </div>
-                        <lightning:layoutItem padding="around-large" class="slds-text-align_center">
-                            <lightning:button name="{!$Label.c.ECS_Go_To_Home_Page}" onclick="{!c.redirectToHome}">
-                                <lightning:icon iconName="action:google_news" size="medium"/>
-                                &nbsp;{!$Label.c.ECS_Go_To_Home_Page}
-                            </lightning:button>
-                        </lightning:layoutItem>
-                    </div>
-                </lightning:layout>
-            </lightning:card>
-        </aura:set>
-    </aura:if>
 </aura:component>

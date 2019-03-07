@@ -25,14 +25,13 @@
             <lightning:layoutItem flexibility="grow" size="5" padding="around-small">
                 <aura:if isTrue="{!v.orderItemsVisible}">
                     <c:DynamicTable
-                            Title="Order products"
+                            Title="{!$Label.c.ECS_Order_products}"
                             SObjectName="OrderItem"
                             FieldNames="['Product2.ECS_Brand__c', 'Product2.ECS_Model__c', 'Product2.ECS_ProductionYear__c', 'UnitPrice']"
                             FieldLabels="['Product2.ECS_Brand__c:Brand', 'Product2.ECS_Model__c:Model', 'Product2.ECS_ProductionYear__c:Year', 'UnitPrice: Price']"
                             MatchCriteria="{#'OrderId = \'' + v.selectedOrderId + '\''}"
                             ReferenceFields="['Product2.ECS_Brand__c']"
                     />
-
                 </aura:if>
             </lightning:layoutItem>
         </aura:if>
