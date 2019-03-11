@@ -4,7 +4,6 @@
 ({
     loadCustomerOrdersItems: function(component){
         let action = component.get('c.getCustomerOrdersItems');
-        var helper = this;
         action.setCallback(this, function(response){
             let state = response.getState();
             if (state === "SUCCESS")
@@ -30,7 +29,7 @@
     summarizeOrdersAmount: function(component){
         let orders = component.get("v.customerOrdersItems");
         let totalAmount = 0;
-        for(var ii=0; ii<orders.length; ii++){
+        for(let ii=0; ii<orders.length; ii++){
             totalAmount += orders[ii].TotalAmount;
         }
         component.set("v.ordersTotalAmount", totalAmount);

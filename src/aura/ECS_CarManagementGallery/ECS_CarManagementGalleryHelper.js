@@ -6,13 +6,18 @@
 
 	onInit: function (component) {
 		let action = component.get("c.hasCurrentUserAdminProfile");
-
 		action.setCallback(this, function (response) {
 			let state = response.getState();
 			if (state === "SUCCESS") {
 				let isAdmin = response.getReturnValue();
 				component.set("v.isAdmin", isAdmin);
-			} else {}
+			} else {
+				resultsToast.setParams({
+					"title": "Error",
+					"message": $A.get('$Label.c.ECS_Error_while_getting_user_info')
+				});
+				resultsToast.fire();
+			}
 		})
 		$A.enqueueAction(action);
 	},
@@ -41,7 +46,9 @@
 		}
 	},
 
-	setMainPicture: function (component, carId, pictureId) {
+	setMainPicture: function (component, event) {
+		let pictureId = event.getSource().get("v.value");
+		let carId = component.get("v.carId");
 		let action = component.get("c.setCarMainPictureId");
 		action.setParams({
 			carId: carId,
@@ -77,7 +84,8 @@
 		$A.enqueueAction(action);
 
 	},
-	deleteCarImage: function (component, imageId) {
+	deleteCarImage: function (component, event) {
+		let imageId = event.getSource().get("v.value");
 		let action = component.get("c.removeCarImage");
 		action.setParams({
 			imageId: imageId,

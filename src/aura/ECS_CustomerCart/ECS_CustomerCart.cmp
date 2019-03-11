@@ -14,38 +14,38 @@
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
     <aura:handler name="change" value="{!v.customerCartItems}" action="{!c.onCartItemsChange}"/>
 
-
     <lightning:card title="{!$Label.c.ECS_Cart}" class="slds-tabs_card">
         <aura:if isTrue="{!v.customerCartItems.length>0}">
             <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
                 <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                     <thead>
-                    <tr class="slds-text-title_caps">
+                      <tr class="slds-text-title_caps">
                         <th scope="col">
-                            <div class="slds-truncate" title="NO.">{!$Label.c.ECS_NO}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_NO}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Car Brand">{!$Label.c.ECS_Brand}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Brand}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Car Model">{!$Label.c.ECS_Model}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Model}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Model Year">{!$Label.c.ECS_Year}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Year}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="VIN">{!$Label.c.ECS_VIN}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_VIN}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Price">{!$Label.c.ECS_Current_Price}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Current_Price}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Actions">{!$Label.c.ECS_Actions}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Actions}</div>
                         </th>
-                    </tr>
+                      </tr>
                     </thead>
+
                     <tbody>
-                    <aura:iteration items="{!v.customerCartItems}" var="customerCartItem" indexVar="index">
+                      <aura:iteration items="{!v.customerCartItems}" var="customerCartItem" indexVar="index">
                         <tr aura:id="tableRow" data-index="{!index}">
                             <td data-label="{!$Label.c.ECS_NO}">
                                 <lightning:formattedNumber value="{!index + 1}"/>
@@ -66,12 +66,10 @@
                                 <lightning:formattedText value="{!customerCartItem.carPrice}"/>
                             </td>
                             <td data-label="{!$Label.c.ECS_Actions}">
-
                                 <lightning:button name="{!$Label.c.ECS_Go_to_Product}"
                                                   onclick="{!c.redirectToDetailsPage}"
                                                   value="{!customerCartItem.car.Id}">
                                     <lightning:icon iconName="action:info" size="small"/>
-
                                 </lightning:button>
                                 <lightning:button name="{!$Label.c.ECS_Remove}" onclick="{!c.deleteCartItem}"
                                                   value="{!customerCartItem.car.Id}">
@@ -79,7 +77,7 @@
                                 </lightning:button>
                             </td>
                         </tr>
-                    </aura:iteration>
+                      </aura:iteration>
                     </tbody>
                 </table>
             </lightning:layout>
@@ -108,12 +106,11 @@
 
             <aura:set attribute="else">
                 <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
-                    <h1></h1><br/>
-                    <span></span>
-                    <div class="slds-form-element__row slds-grid_vertical-align-end">
-                        <div class="slds-text-align_center">{!$Label.c.ECS_Cart_Is_Empty}</div>
-                        <div class="slds-text-align_center">{!$Label.c.ECS_No_Items_In_Cart}
+                    <br/>
+                     <div class="slds-form-element__row slds-grid_vertical-align-end">
+                        <div class="slds-text-align_center">{!$Label.c.ECS_Cart_Is_Empty}
                         </div>
+                         <div class="slds-text-align_center">{!$Label.c.ECS_No_Items_In_Cart}</div>
                         <lightning:layoutItem padding="around-large" class="slds-text-align_center">
                             <lightning:button name="{!$Label.c.ECS_Go_To_Search}" onclick="{!c.redirectToSearch}">
                                 <lightning:icon iconName="action:change_record_type" size="medium"/>
@@ -125,12 +122,11 @@
                                 &nbsp;{!$Label.c.ECS_Go_To_Your_Order}
                             </lightning:button>
                         </lightning:layoutItem>
-                    </div>
+                     </div>
                 </lightning:layout>
             </aura:set>
         </aura:if>
     </lightning:card>
-
 </aura:component>
 
 

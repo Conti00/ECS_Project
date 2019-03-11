@@ -9,39 +9,35 @@
         <aura:attribute name="customerOrdersItems" type="Object[]"/>
         <aura:attribute name="ordersTotalAmount" type="Decimal"/>
         <aura:attribute name="selectedOrderId" type="String"/>
-        <aura:attribute name="newLine" type="String" />
         <aura:handler name="change" value="{!v.customerOrdersItems}" action="{!c.onOrderItemsChange}"/>
         <aura:registerEvent name="orderItemSelected" type="c:ECS_SelectedTableRowEvent"/>
 
         <lightning:card title="{!$Label.c.ECS_My_Orders}"  class="slds-tabs_card" footer="">
-            <aura:set attribute="actions">
-
-            </aura:set>
+            <aura:set attribute="actions"/>
             <lightning:layout horizontalAlign="center" verticalAlign="center" multipleRows='true'>
                 <table class="slds-table slds-table_bordered slds-table_cell-buffer ">
                     <thead>
-                    <tr class="slds-text-title_caps">
+                     <tr class="slds-text-title_caps">
                         <th scope="col">
-                            <div class="slds-truncate" title="Index">{!$Label.c.ECS_NO}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_NO}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Order number">{!$Label.c.ECS_Order_Number}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Order_Number}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Created Date">{!$Label.c.ECS_Order_Date}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Order_Date}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Products quantity">{!$Label.c.ECS_Cars}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Cars}</div>
                         </th>
                         <th scope="col">
-                            <div class="slds-truncate" title="Order Amount">{!$Label.c.ECS_Amount}</div>
+                            <div class="slds-truncate">{!$Label.c.ECS_Amount}</div>
                         </th>
-                    </tr>
+                     </tr>
                     </thead>
-                    <tfoot>
-                    </tfoot>
+
                     <tbody>
-                    <aura:iteration items="{!v.customerOrdersItems}" var="orderItem" indexVar="index">
+                     <aura:iteration items="{!v.customerOrdersItems}" var="orderItem" indexVar="index">
                         <tr aura:id="tableRow" onclick="{!c.tableRowClicked}" data-id="{!orderItem.Id}"
                             data-index="{!index}" >
                             <td data-label="{!$Label.c.ECS_NO}">
@@ -60,16 +56,14 @@
                                 <lightning:formattedNumber style="currency" value="{!orderItem.TotalAmount}"/>
                             </td>
                         </tr>
-                    </aura:iteration>
+                     </aura:iteration>
                     </tbody>
                 </table>
-
             </lightning:layout>
-            <footer class="slds-float_right slds-align-bottom">
 
+            <footer class="slds-float_right slds-align-bottom">
                 <lightning:formattedText value="{!$Label.c.ECS_Total_Amount}"/>
                 <ui:outputCurrency  value="{!v.ordersTotalAmount}"/>
-
             </footer>
         </lightning:card>
 

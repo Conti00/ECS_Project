@@ -5,7 +5,6 @@
 ({
     loadCustomerOrdersItems: function(component){
         let action = component.get('c.getCustomerOrdersItems');
-        var helper = this;
         action.setCallback(this, function(response){
             let state = response.getState();
             if (state === "SUCCESS"){

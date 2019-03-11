@@ -4,7 +4,6 @@
 ({
 	doInit: function (component, event, helper) {
 		helper.getYearOptions(component);
-		helper.onInit(component);
 		helper.fetchPickListVal(component, 'ECS_BodyStyle__c', 'v.bodyStyleOptions');
 		helper.fetchPickListVal(component, 'ECS_FuelType__c', 'v.fuelTypeOptions');
 		helper.fetchPickListVal(component, 'ECS_Transmission__c', 'v.transmissionOptions');
@@ -29,14 +28,5 @@
 			formErrorToast.fire();
 		}
 
-	},
-	handleUploadFinished: function (component, event, helper) {
-		let rec = component.get("v.carToDelete");
-		let uploadedFiles = event.getParam("files");
-		let carId = component.get("v.carId");
-		rec.fields.ECS_isCreatingCompleted__c.value = true;
-		helper.createAcar(component);
-		helper.initializeNewRecord(component);
-		component.set("v.newCarCreatingStage", 'carDetails');
 	},
 })

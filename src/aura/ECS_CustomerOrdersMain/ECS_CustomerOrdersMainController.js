@@ -6,6 +6,7 @@
     doInit: function(component, event, helper){
         helper.loadCustomerOrdersItems(component);
     },
+
     handleOrderItemSelected: function(component, event, helper){
         let transfered = event.getParam("transferredObject");
         component.set("v.selectedOrderDetailItem", transfered);

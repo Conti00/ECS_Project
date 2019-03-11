@@ -51,7 +51,7 @@ public with sharing class ECS_CarsManagerController {
         conditionsSection += String.isBlank(searchedCar.ECS_FuelType__c) ? '' : 'ECS_FuelType__c = \'' + searchedCar.ECS_FuelType__c + '\'';
         conditionsSection += String.isNotBlank(conditionsSection) && String.isNotBlank(searchedCar.ECS_Transmission__c) ? ' AND ' : '' ;
         conditionsSection += String.isBlank(searchedCar.ECS_Transmission__c) ? '' : 'ECS_Transmission__c = \'' + searchedCar.ECS_Transmission__c + '\'';
-        conditionsSection +=' AND isActive = true';
+        conditionsSection += ' AND isActive = true';
 
         queryString += conditionsSection == null ? '' : conditionsSection;
         return queryString;
@@ -456,7 +456,7 @@ public with sharing class ECS_CarsManagerController {
     }
 
     @AuraEnabled
-    public static User getCurrentUser(){
+    public static User getCurrentUser() {
         User currentUser = ECS_Utils.getCurrentUser();
         return currentUser;
     }
@@ -630,6 +630,7 @@ public with sharing class ECS_CarsManagerController {
     @AuraEnabled
     public static Product2 getCarById(String carId) {
 
+        System.debug('debug');
         Product2 car = [
                 SELECT Id,
                         Name,
@@ -652,6 +653,7 @@ public with sharing class ECS_CarsManagerController {
 
         return car;
     }
+
 
 
 }

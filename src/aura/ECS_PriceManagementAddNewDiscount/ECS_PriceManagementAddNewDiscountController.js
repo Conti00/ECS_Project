@@ -16,7 +16,7 @@
     onCarsIdsListRecived: function(component, event, helper){
         component.set("v.carIds", event.getParam("carIds"));
         component.set("v.selectedCars", event.getParam("cars"));
-        component.find("searchForCarsModal").hide();
+//        component.find("searchForCarsModal").hide();
     },
     onNewDiscountSave: function(component, event, helper){
         helper.createNewDiscount(component);

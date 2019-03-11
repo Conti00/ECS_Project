@@ -38,7 +38,7 @@
                             <div class="slds-form-element__row slds-grid_vertical-align-end">
                                 <div class="slds-form-element slds-size--1-of-1">
                                     <lightning:input type="number" name="discountAmount" min="0"
-                                                     max="{!v.carCurrentLowestPrice - 1}" label="Discount value"
+                                                     max="{!v.carCurrentLowestPrice - 1}" label="{!$Label.c.ECS_Value}"
                                                      value="{!v.amountDiscountValue}" formatter="currency" step="1"
                                                      onchange="{!c.onDiscountAmountChange}"/>
                                 </div>

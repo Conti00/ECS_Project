@@ -18,14 +18,11 @@
     },
 
     setAsMainPicture: function(component, event, helper){
-        let pictureId = event.getSource().get("v.value");
-        let carId = component.get("v.carId");
-        helper.setMainPicture(component, carId, pictureId);
+        helper.setMainPicture(component, event);
     },
 
     deleteImage : function(component, event, helper){
-        let imageId = event.getSource().get("v.value");
-        helper.deleteCarImage(component, imageId);
+        helper.deleteCarImage(component, event);
     },
 
     openAllFiles: function(component, event, helper){

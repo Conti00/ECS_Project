@@ -10,9 +10,6 @@
     <lightning:layout horizontalAlign="spread" verticalAlign="start" multipleRows="true">
         <lightning:layoutItem size="{! v.selectedPricebookId == null ? 7 : 7}" padding="around-small" flexibility="grow" >
             <lightning:card title=""  class="slds-tabs_card">
-                <!--<aura:set attribute="actions">-->
-                <!--<lightning:button label="New Discount" onclick="{!c.createNewDiscountModalOpen}"/>-->
-                <!--</aura:set>-->
                 <c:ECS_PriceBooksList/>
             </lightning:card>
         </lightning:layoutItem>

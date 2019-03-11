@@ -9,6 +9,7 @@
 
     <aura:attribute name="carId" type="String"/>
     <aura:attribute name="newCase" type="Case"/>
+    <aura:attribute name="OrderId" type="String"/>
     <aura:attribute name="recordError" type="String"/>
     <aura:attribute name="user" type="User"/>
     <aura:registerEvent name="CaseAdded" type="c:ECS_CaseAdded"/>
@@ -21,9 +22,7 @@
                       targetError="{!v.recordError}"
                       recordUpdated="{!c.onRecordUpdated}"
     />
-
     <lightning:layout multipleRows="true">
-    {!v.user}
             <fieldset class="slds-form--compound">
                 <div class="slds-form-element__group">
                     <div class="slds-form-element__row slds-grid_vertical-align-end">

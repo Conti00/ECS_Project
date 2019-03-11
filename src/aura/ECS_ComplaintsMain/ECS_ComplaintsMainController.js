@@ -7,10 +7,12 @@
         },
 
         displayCaseModal : function(component, event, helper){
+             let purchasedItems = event.getSource().get("v.value");
+             component.set("v.selectedCarId",purchasedItems.Product2.Id);
+             component.set("v.selectedCaseItemId",purchasedItems.Id);
             component.set("v.displayCaseModal",true);
-            let purchasedItems = event.getSource().get("v.value");
-            component.set("v.selectedCarId",purchasedItems.Product2.Id);
-            component.set("v.selectedCaseItemId",purchasedItems.Id);
+
+
 
         },
 

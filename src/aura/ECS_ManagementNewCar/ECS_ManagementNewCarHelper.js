@@ -3,25 +3,6 @@
  */
 
 ({
-	onInit: function (component) {
-		let action = component.get("c.hasCurrentUserAdminProfile");
-
-		action.setCallback(this, function (response) {
-			let state = response.getState();
-			if (state === "SUCCESS") {
-				let isAdmin = response.getReturnValue();
-				component.set("v.isAdmin", isAdmin);
-				let resultsToast = $A.get("e.force:showToast");
-			} else {
-				resultsToast.setParams({
-					"title": "Error",
-					"message": $A.get('$Label.c.ECS_Error_while_getting_user_info')
-				});
-				resultsToast.fire();
-			}
-		});
-		$A.enqueueAction(action);
-	},
 
 	initializeNewRecord: function (component) {
 		component.find("newCarData").getNewRecord(
@@ -55,7 +36,6 @@
 				let newCarId = component.get("v.carId");
 				let price = component.get("v.newCarListPrice");
 				helper.createNewPricebookEntry(component, newCarId, price);
-				component.find("carRecordToDelete").reloadRecord(true);
 				component.set("v.newCarCreatingStage", 'carPictures');
 			}
 		});
@@ -87,21 +67,6 @@
 			}
 		});
 		$A.enqueueAction(action);
-	},
-
-	createAcar: function (component) {
-		component.find("carRecordToDelete").saveRecord(function (saveResult) {
-			if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
-				let resultsToast = $A.get("e.force:showToast");
-				resultsToast.setParams({
-					"title": "Saved",
-					"message": $A.get('$Label.c.ECS_The_record_was_saved')
-				});
-				resultsToast.fire();
-
-			}
-		});
-
 	},
 
 	fetchPickListVal: function (component, fieldName, elementId) {

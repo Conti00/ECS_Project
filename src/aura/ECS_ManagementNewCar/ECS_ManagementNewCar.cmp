@@ -33,9 +33,6 @@
     <aura:attribute name="recordError" type="String"/>
     <aura:attribute name="carId" type="String"/>
     <aura:attribute name="newCarCreatingStage" type="String" default="carDetails"/>
-    <aura:attribute name="carToDelete" type="Product2"/>
-    <aura:attribute name="variant" type="String" default="non-linear"/>
-    <aura:attribute name="hideUpdateButton" type="Boolean" default="false"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
@@ -46,17 +43,6 @@
                       targetError="{!v.recordError}"
                       targetRecord="{!v.car}"
                       targetFields="{!v.newCar}"/>
-
-
-    <aura:if isTrue="{!v.carId != null}">
-        <force:recordData aura:id="carRecordToDelete"
-                          recordId="{!v.carId}"
-                          mode="EDIT"
-                          fields="Id, Name, ECS_VinNumber__c, ECS_ProductionYear__c, ECS_Model__c,
-                          ECS_isCreatingCompleted__c, ECS_EngineSize__c,ECS_BatteryCapacity__c,ECS_BodyStyle__c,
-                          ECS_FuelType__c,Description,ECS_Transmission__c,ECS_VideoPresentationUrl__c, IsActive "
-                          targetRecord="{!v.carToDelete}"/>
-    </aura:if>
 
         <div class="{!v.newCarCreatingStage == 'carDetails' ? 'slds' : 'slds-hide'}">
             <lightning:progressIndicator currentStep="1" type="path" hasError="false" variant="base"
@@ -182,7 +168,7 @@
                 <lightning:progressStep label="{!$Label.c.ECS_Add_Pictures}" value="2"/>
             </lightning:progressIndicator>
 
-            <lightning:card title="" >
+            <lightning:card title="">
                 <c:ECS_CarManagementGallery carId="{!v.carId}"/>
             </lightning:card>
         </div>

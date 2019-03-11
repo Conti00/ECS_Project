@@ -3,7 +3,7 @@
  */
 ({
     doInit: function(component, event, helper){
-            console.log('AddCase Init:');
+            helper.getOrderId(component);
             helper.onInit(component, event, helper);
         },
 
@@ -12,9 +12,12 @@
 
         },
 
+
+
         onSave: function(component, event, helper){
             let obj = component.get("v.newCase");
             console.log('on rewiev save controller');
+            component.set("v.newCase.ECS_Order__c",component.get("v.OrderId"));
             component.find("service").saveRecord(function(saveResult) {
                 console.log('save result: '+saveResult.state);
 
@@ -39,5 +42,7 @@
                 }
             });
         },
+
+
 
 })

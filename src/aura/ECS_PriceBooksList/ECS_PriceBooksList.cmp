@@ -24,22 +24,22 @@
                 <thead>
                 <tr class="slds-text-title_caps">
                     <th scope="col">
-                        <div class="slds-truncate" title="Pricebook Name">Name</div>
+                        <div class="slds-truncate">{!$Label.c.ECS_Name}</div>
                     </th>
                     <th scope="col">
-                        <div class="slds-truncate" title="Discount start date">Start Date</div>
+                        <div class="slds-truncate">{!$Label.c.ECS_Start_Date}</div>
                     </th>
                     <th scope="col">
-                        <div class="slds-truncate" title="Discount end date">End Date</div>
+                        <div class="slds-truncate">{!$Label.c.ECS_End_Date}</div>
                     </th>
                     <th scope="col">
-                        <div class="slds-truncate" title="Active">Active</div>
+                        <div class="slds-truncate">{!$Label.c.ECS_Active}</div>
                     </th>
                     <th scope="col">
-                        <div class="slds-truncate" title="Discount Value">Value</div>
+                        <div class="slds-truncate">{!$Label.c.ECS_Value}</div>
                     </th>
                     <th scope="col">
-                        <div class="slds-truncate" title="Actions">Actions</div>
+                        <div class="slds-truncate">{!$Label.c.ECS_Actions}</div>
                     </th>
                 </tr>
                 </thead>
@@ -84,8 +84,4 @@
                 <lightning:button variant="destructive" onclick="{!c.onDiscountDelete}" label="Delete"/>
             </aura:set>
         </c:ECS_Modal>
-
-        <!--&lt;!&ndash;<aura:if isTrue="{!v.openSearchModal}">&ndash;&gt;-->
-            <!--<c:ECS_PriceManagementAddNewDiscount/>-->
-        <!--&lt;!&ndash;</aura:if>&ndash;&gt;-->
     </aura:component>

@@ -19,7 +19,6 @@
     },
     onRemoveCarFromDiscount: function(component, event, helper){
         let pricebookEntryId = event.getSource().get("v.value");
-        console.log("pbentry: "+pricebookEntryId);
         helper.removePricebookEntry(component, pricebookEntryId);
     },
 })

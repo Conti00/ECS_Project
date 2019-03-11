@@ -10,9 +10,10 @@
     <aura:attribute name="carId" type="String"/>
     <aura:attribute name="carImages" type="String[]"/>
     <aura:attribute name="carTargetFields" type="Product2"/>
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+
     <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
     <aura:handler name="change" value="{!v.carId}" action="{!c.onCarIdChange}"/>
-    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
 
     <force:recordData aura:id="carImages"
                       recordId="{!v.carId}"
@@ -21,7 +22,7 @@
                       targetFields="{!v.carTargetFields}"/>
 
     <aura:if isTrue="{!v.isAdmin}">
-        <lightning:card title="Add new Images">
+        <lightning:card title="{!$Label.c.ECS_Add_Image}">
             <div class="slds-form-element__row slds-grid_align-center">
                 <lightning:fileUpload label="{!$Label.c.ECS_Add_Image}"
                                       multiple="true"
@@ -42,7 +43,6 @@
                                 <aura:if isTrue="{!imageId != v.carTargetFields.ECS_ImageID__c}">
                                     <aura:if isTrue="{!v.isAdmin}">
                                         <div class="buttons">
-
                                             <lightning:button name="{!$Label.c.ECS_Set_As_Main}"
                                                               onclick="{!c.setAsMainPicture}"
                                                               value="{!imageId}"
