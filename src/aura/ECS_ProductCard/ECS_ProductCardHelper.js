@@ -281,7 +281,6 @@
 						"message": $A.get('$Label.c.ECS_Error_while_getting_user_info')
 					});
 				}
-
 			}
 		});
 		$A.enqueueAction(action);

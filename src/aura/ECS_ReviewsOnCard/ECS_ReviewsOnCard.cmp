@@ -1,0 +1,136 @@
+<!--
+ - Created by BRITENET on 11.03.2019.
+ -->
+
+<aura:component description="ECS_ReviewsOnCard" controller="ECS_CarsManagerController"
+                implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes" access="global">
+
+    <aura:attribute name="productReviews" type="ECS_Review__c[]"/>
+    <aura:attribute name="productReviewToUpdate" type="ECS_Review__c"/>
+    <aura:attribute name="currentUser" type="User"/>
+    <aura:attribute name="car" type="Product2"/>
+    <aura:attribute name="editModal" type="Boolean" default="false"/>
+    <aura:attribute name="isAdmin" type="Boolean" default="false"/>
+
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="ReviewAdded" event="c:ECS_ReviewAdded" action="{!c.onReviewAdded}"/>
+
+    <lightning:layoutItem>
+        <lightning:card title="" iconName="" class="slds-m-horizontal--small" actions="">
+
+            <aura:if isTrue="{!v.productReviews.length > 0}">
+                <div>
+                    <ul class="slds-feed__list">
+                        <aura:iteration items="{!v.productReviews}" var="productReview">
+                            <li class="slds-feed__item slds-p-vertical--x-small review-item">
+                                <article class="slds-post">
+                                    <div class="slds-grid slds-grid--align-spread">
+                                        <p class="slds-col ">
+                                            <header class="slds-post__header slds-media">
+                                                <div class="slds-media__figure">
+
+                                                    <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate slds-grid_vertical-align-center authorClass">
+                                                            {!productReview.CreatedBy.Name}
+
+
+                                                    </div>
+                                                    <div class="slds-media__body">
+                                                        <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate dateClass ">
+                                                            <lightning:formattedDateTime
+                                                                    value="{!productReview.CreatedDate}"
+                                                                    year="numeric"
+                                                                    day="2-digit"
+                                                                    month="short"
+                                                                    hour="2-digit"
+                                                                    minute="2-digit"/>
+                                                        </div>
+
+                                                        <div class="slds-text-body_small star-item">
+                                                            <c:FiveStarRating
+                                                                    value="{!productReview.ECS_Rating__c}"
+                                                                    readonly="true"/>
+                                                        </div>
+                                                        <div>
+                                                            <lightning:layout
+                                                                    multipleRows="true">
+                                                                <lightning:layoutItem
+                                                                        size="12"
+                                                                        padding="around-small">
+
+                                                                    <ui:outputRichText
+                                                                            value="{!productReview.ECS_Comment__c}"/>
+                                                                </lightning:layoutItem>
+                                                            </lightning:layout>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </header>
+                                        </p>
+                                        <p class="slds-col slds-size--2-of-12">
+                                            <aura:if isTrue="{!v.isAdmin}">
+                                                <lightning:button name="Remove Reviews"
+                                                                  onclick="{!c.deleteMovieReview}"
+                                                                  value="{!productReview.Id}"
+                                                                  class="slds-float_right">
+                                                    <lightning:icon iconName="action:delete"
+                                                                    size="medium"/>
+                                                </lightning:button>
+                                            </aura:if>
+                                            <aura:if
+                                                    isTrue="{!v.currentUser.Name == productReview.CreatedBy.Name}">
+                                                <lightning:button name="Edit Reviews"
+                                                                  onclick="{!c.editReview}"
+                                                                  value="{!productReview}"
+                                                                  class="slds-float_right">
+                                                    <lightning:icon iconName="action:edit"
+                                                                    size="medium"/>
+                                                </lightning:button>
+                                            </aura:if>
+                                        </p>
+                                    </div>
+                                </article>
+                            </li>
+                        </aura:iteration>
+                    </ul>
+                </div>
+                <aura:set attribute="else">
+                    <lightning:layoutItem class="slds-align_absolute-center"
+                                          flexibility="auto"
+                                          padding="around-small">
+                        <ui:outputText value="{!$Label.c.ECS_No_reviews_found}"/>
+                    </lightning:layoutItem>
+                </aura:set>
+            </aura:if>
+        </lightning:card>
+
+        <aura:if isTrue="{!v.editModal}">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                     aria-describedby="modal-content-id-1"
+                     class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.editReview }"
+                                              alternativeText="{!$Label.c.ECS_Close}"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                                {!v.car.Name}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning:layoutItem size="">
+                            <lightning:card title="" iconName="" class="slds-m-horizontal--small" actions="">
+                                <c:ECS_AddCarReview carId="{!v.car.Id}" reviewId="{!v.productReviewToUpdate.Id}"
+                                                    isEdit="true" reviewToUpdate="{!v.productReviewToUpdate}"/>
+                            </lightning:card>
+                        </lightning:layoutItem>
+                    </div>
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+    </lightning:layoutItem>
+
+</aura:component>

@@ -1,0 +1,18 @@
+<!--
+ - Created by BRITENET on 11.03.2019.
+ -->
+
+<aura:component description="ECS_VideoPresentation">
+    <aura:attribute name="car" type="Product2"/>
+
+        <iframe hidden="{!!v.car.ECS_VideoPresentationUrl__c}" style="text-align:center"
+                width="720"
+                height="460" src="{!v.car.ECS_VideoPresentationUrl__c}"/>
+        <aura:set attribute="else">
+            <lightning:layoutItem class="slds-align_absolute-center"
+                                  flexibility="auto"
+                                  padding="around-small">
+                <ui:outputText value="{!$Label.c.ECS_No_video_presentation_found}"/>
+            </lightning:layoutItem>
+        </aura:set>
+</aura:component>

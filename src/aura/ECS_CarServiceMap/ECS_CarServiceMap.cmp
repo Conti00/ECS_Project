@@ -9,8 +9,17 @@
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
+    <aura:if isTrue="{!v.car.ECS_Service_Location__Longitude__s}">
     <lightning:map
             mapMarkers="{!v.mapMarkers}"
             zoomLevel="15"
             markersTitle="{!v.markersTitle}"/>
+        <aura:set attribute="else">
+            <lightning:layoutItem class="slds-align_absolute-center"
+                                  flexibility="auto"
+                                  padding="around-small">
+                <ui:outputText value="{!$Label.c.ECS_No_location_data_found}"/>
+            </lightning:layoutItem>
+        </aura:set>
+    </aura:if>
 </aura:component>
